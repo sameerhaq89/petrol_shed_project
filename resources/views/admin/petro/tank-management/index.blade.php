@@ -22,7 +22,7 @@
     <div class="row">
         @if(isset($tanks) && count($tanks) > 0)
         @foreach($tanks as $tank)
-        @include('admin.petro.tank-management.widget.tank_overview', $tank)
+        @include('admin.petro.tank-management.widget.tank-overview', $tank)
         @endforeach
         @else
         <div class="col-12">
@@ -45,7 +45,7 @@
     <div class="row">
         @if(isset($pumps) && count($pumps) > 0)
         @foreach($pumps as $pump)
-        @include('admin.petro.tank-management.widget.pump_distribution', $pump)
+        @include('admin.petro.tank-management.widget.pump-distribution', $pump)
         @endforeach
         @else
         <div class="col-12">
