@@ -54,7 +54,7 @@
             <div class="collapse" id="petro">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Tank Management</a>
+                        <a class="nav-link" href="{{ url('/tanks') }}">Tank Management</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">p1</a>
