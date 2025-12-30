@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ChallansController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TankController;
+use App\Http\Controllers\ChallansController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::middleware(['auth','is-admin'])->group(function () {
+Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/add-purchases', [App\Http\Controllers\AddPurchasesController::class, 'index'])->name('add-purchases');
     Route::get('/add-expenses', [App\Http\Controllers\AddExpensesController::class, 'index'])->name('add-expenses');
+    Route::get('/tanks', [TankController::class, 'index']);
 });
-
