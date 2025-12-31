@@ -20,5 +20,5 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
     <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 </head>

@@ -36,18 +36,9 @@ class SettlementController extends Controller
                 'price' => 300,
                 'sold_qty' => '2,350.00',
                 'total_price' => '705,000.00',
-            ],
-            [
-                'code' => 'B0012M88',
-                'products' => 'Diesel 50',
-                'pump' => 'LP2',
-                'start_meter' => '500,000.00',
-                'close_meter' => '502,350.00',
-                'price' => 300,
-                'sold_qty' => '2,350.00',
-                'total_price' => '705,000.00',
-            ],
+            ]
         ];
+        
         return response()->json($entries);
     }
 }

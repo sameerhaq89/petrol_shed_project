@@ -1,3 +1,17 @@
+let table;
+
+function initTable() {
+    // Destroy previous instance safely
+    if (table) {
+        table.destroy();
+    }
+
+    table = new DataTable('#entryTable', {
+        responsive: true,
+        pageLength: 10,
+        
+    });
+}
 async function fetchEntries(filter = {}) {
     let url = '/settlement/entries';
     if (filter.status) url += `?status=${filter.status}`;
@@ -27,6 +41,7 @@ async function fetchEntries(filter = {}) {
             `;
         tbody.appendChild(row);
     });
+    initTable();
 }
 
 // Call it after page loads

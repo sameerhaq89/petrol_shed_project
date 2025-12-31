@@ -1,0 +1,51 @@
+            .dataTables_length {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                /* space between "Show" text and dropdown */
+            }
+
+            .dataTables_length select {
+                margin-left: 5px;
+                /* optional extra spacing */
+                min-width: 60px;
+                /* prevent dropdown from being too small */
+            }
+
+            /* Shrink overall table font */
+            #entryTable {
+                font-size: 0.85rem;
+                /* smaller text */
+                table-layout: auto;
+                /* allow flexible column widths */
+            }
+
+            /* Shrink table cells */
+            #entryTable th,
+            #entryTable td {
+                padding: 0.35rem 0.5rem;
+                /* tighter padding */
+            }
+
+            /* Optional: make headers slightly smaller and muted */
+            #entryTable thead th {
+                font-weight: 500;
+                font-size: 0.8rem;
+            }
+
+            /* Shrink DataTables controls (Show entries, search box) */
+            .dataTables_length select,
+            .dataTables_filter input {
+                font-size: 0.8rem;
+                padding: 0.2rem 0.4rem;
+            }
+
+            /* Adjust buttons in the action column */
+            #entryTable .btn-sm {
+                padding: 0.2rem 0.35rem;
+                font-size: 0.7rem;
+            }
+
+            #entryTable .btn-sm i {
+                font-size: 0.8rem;
+            }

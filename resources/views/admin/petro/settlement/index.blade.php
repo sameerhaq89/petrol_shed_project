@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+<link rel="stylesheet" href="{{ asset('assets/css/settlement.css') }}">
 @section('content')
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
@@ -22,9 +23,8 @@
                 </ul>
             </nav>
         </div>
-
         {{-- 2. Module Tabs --}}
-        <div class="row mb-4">
+        <div class="row mb-3">
             <div class="col-12">
                 <div class="btn-group w-100 shadow-sm" role="group">
                     <button type="button" class="btn btn-gradient-primary active">
@@ -45,7 +45,6 @@
                 </div>
             </div>
         </div>
-
         {{-- 3. Active Widget Inclusion --}}
         <div class="row">
             <div class="col-12 mb-4 stretch-card">
@@ -56,7 +55,6 @@
                 </div>
             </div>
         </div>
-
         {{-- 4. Filter --}}
         <div class="row filter-open-on-click" style="display: none;">
             <div class="col-12 mb-4 ">
@@ -67,7 +65,6 @@
                 </div>
             </div>
         </div>
-
         {{-- 5. Table --}}
         <div class="row">
             <div class="col-12 mb-4 stretch-card">
@@ -108,7 +105,6 @@
                 </div>
             </div>
         </div>
-
         {{-- 6. Summary Widget --}}
         <div class="row">
             <div class="col-12 mb-4 stretch-card">
