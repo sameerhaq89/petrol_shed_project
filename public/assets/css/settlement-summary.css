@@ -1,0 +1,10 @@
+.summary-card {
+    transition: transform 0.2s ease-in-out;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.summary-card:hover {
+    transform: scale(1.03);
+    z-index: 1;
+}

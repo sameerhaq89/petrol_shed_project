@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TankController;
+use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\ChallansController;
 
 /*
@@ -23,4 +24,6 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::get('/add-purchases', [App\Http\Controllers\AddPurchasesController::class, 'index'])->name('add-purchases');
     Route::get('/add-expenses', [App\Http\Controllers\AddExpensesController::class, 'index'])->name('add-expenses');
     Route::get('/tanks', [TankController::class, 'index']);
+    Route::get('/settlement', [SettlementController::class, 'index']);
+     Route::get('/settlement/entries', [SettlementController::class, 'entries']); // just to check nothing else
 });
