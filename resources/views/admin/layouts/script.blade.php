@@ -12,8 +12,6 @@
 <script src="{{ asset('assets/js/todolist.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.cookie.js') }}"></script>
 <!-- endinject -->
-<!-- Jquery -->
-<script src="{{ asset('assets/js/jquery.js') }}"></script>
 <!-- Custom js for this page -->
 <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 <!-- End custom js for this page -->
@@ -21,5 +19,6 @@
 <!-- data-table -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<!-- Select 2-->
+<!-- Tom Select-->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
