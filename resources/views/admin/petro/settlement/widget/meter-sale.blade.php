@@ -37,6 +37,12 @@
         top: 50%;
         transform: translateY(-50%);
     }
+
+    .pump-select+button,
+    .product-select+button {
+        position: absolute;
+        z-index: 1050;
+    }
 </style>
 
 <div class="col-12">
