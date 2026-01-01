@@ -10,11 +10,12 @@
                     <label class="text-muted small mb-1">Pump No</label>
                     <div class="position-relative">
                         <select class="form-control form-control-sm mb-2 pe-5">
-                            <option>Please Select</option>
-                            <option selected>LP1</option>
+                            <option selected disabled>Please Select</option>
+                            <option>LP1</option>
                         </select>
                         <button type="button"
-                            class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2">
+                            class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2"
+                            data-bs-toggle="modal" data-bs-target="#recordDipModal">
                             <i class="mdi mdi-plus"></i>
                         </button>
                     </div>
@@ -25,8 +26,8 @@
                     <label class="text-muted small mb-1">Product</label>
                     <div class="position-relative">
                         <select class="form-control form-control-sm mb-2 pe-5">
-                            <option>Please Select</option>
-                            <option selected>Petrol</option>
+                            <option selected disabled>Please Select</option>
+                            <option>Petrol</option>
                         </select>
                         <button type="button"
                             class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2">

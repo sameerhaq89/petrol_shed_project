@@ -26,7 +26,7 @@
         {{-- 2. Module Tabs --}}
         <div class="row mb-3">
             <div class="col-12">
-                <div class="btn-group w-100 shadow-sm" role="group">
+                <div class="btn-group w-100 shadow-sm d-flex flex-wrap" role="group">
                     <button type="button" class="btn btn-gradient-primary active">
                         <i class="mdi mdi-gas-station me-1"></i> Meter Sale
                     </button>
@@ -43,6 +43,7 @@
                         <i class="mdi mdi-wallet-giftcard me-1"></i> Expense
                     </button>
                 </div>
+
             </div>
         </div>
         {{-- 3. Active Widget Inclusion --}}
@@ -74,14 +75,11 @@
                             <h4 class="card-title text-muted mb-0">
                                 <i class="mdi mdi-format-list-bulleted text-primary"></i> Summary Table
                             </h4>
-
-                            {{-- Filter button moved to opposite side --}}
                             <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary">
-                                <i class="mdi mdi-filter"></i> Show Filter
+                                <i class="mdi mdi-filter"></i> 
+                                <span id="tableFilterBtnText">Show Filter</span>
                             </button>
                         </div>
-
-                        {{-- Table --}}
                         <div class="table-responsive">
                             <table id="entryTable" class="table table-hover table-bordered w-100">
                                 <thead class="bg-light">
@@ -115,6 +113,8 @@
                 </div>
             </div>
         </div>
+        @include('admin.petro.settlement.widget.modals.create-pump-modal')
+        @include('admin.petro.settlement.widget.modals.view-details-modal')
     </div>
 @endsection
 <script src="{{ asset('assets/js/settlement.js') }}"></script>

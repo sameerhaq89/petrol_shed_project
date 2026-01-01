@@ -2,45 +2,35 @@
                 display: flex;
                 align-items: center;
                 gap: 5px;
-                /* space between "Show" text and dropdown */
             }
 
             .dataTables_length select {
                 margin-left: 5px;
-                /* optional extra spacing */
                 min-width: 60px;
-                /* prevent dropdown from being too small */
             }
 
-            /* Shrink overall table font */
             #entryTable {
                 font-size: 0.85rem;
-                /* smaller text */
                 table-layout: auto;
-                /* allow flexible column widths */
             }
 
-            /* Shrink table cells */
             #entryTable th,
             #entryTable td {
                 padding: 0.35rem 0.5rem;
-                /* tighter padding */
             }
 
-            /* Optional: make headers slightly smaller and muted */
             #entryTable thead th {
                 font-weight: 500;
                 font-size: 0.8rem;
             }
 
-            /* Shrink DataTables controls (Show entries, search box) */
             .dataTables_length select,
             .dataTables_filter input {
                 font-size: 0.8rem;
                 padding: 0.2rem 0.4rem;
+                margin: 0 0 0.5rem 0;
             }
 
-            /* Adjust buttons in the action column */
             #entryTable .btn-sm {
                 padding: 0.2rem 0.35rem;
                 font-size: 0.7rem;
@@ -48,4 +38,109 @@
 
             #entryTable .btn-sm i {
                 font-size: 0.8rem;
+            }
+
+            .dataTables_paginate .paginate_button {
+                /* padding: 4px 10px !important; */
+                line-height: 10px !important;
+                font-size: 13px;
+                border-radius: 6px;
+                margin: 0 2px;
+            }
+
+            /* Mobile responsive */
+            @media (max-width: 768px) {
+                .dataTables_filter {
+                    float: right !important;
+                    text-align: left !important;
+                    margin: 0 0 0.5rem 0;
+                    width: auto !important;
+                }
+
+                .dataTables_filter input {
+                    width: 100px !important;
+                }
+
+                .table-responsive {
+                    overflow-x: hidden !important;
+                }
+
+                .dataTables_info {
+                    margin-bottom: 0.5rem;
+                    font-size: 0.8rem;
+                    text-align: left !important;
+                }
+
+                .dataTables_length label {
+                    font-size: 0;
+                }
+
+                .dataTables_length select {
+                    font-size: 12px;
+                    height: 30px;
+                    padding: 2px 4px;
+                }
+
+                .dataTables_paginate .paginate_button {
+                    font-size: 14px !important;
+                    line-height: 1.5 !important;
+                    min-width: 56px;
+                    border-radius: 6px;
+                }
+
+                .dataTables_paginate {
+                    gap: 6px;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+
+                #entryTable thead {
+                    display: none;
+                }
+
+                #entryTable td:nth-child(4),
+                #entryTable td:nth-child(5) {
+                    display: none;
+                }
+
+                #entryTable,
+                #entryTable tbody,
+                #entryTable tr,
+                #entryTable td {
+                    display: block;
+                    width: 100%;
+                }
+
+                #entryTable tr {
+                    margin-bottom: 1rem;
+                    border: 1px solid #ddd;
+                    border-radius: 6px;
+                    padding: 0.5rem;
+                }
+
+                #entryTable td {
+                    text-align: right;
+                    padding: 0.5rem;
+                    position: relative;
+                    border: none;
+                    border-bottom: 1px solid #eee;
+                }
+
+                #entryTable td::before {
+                    content: attr(data-label);
+                    position: absolute;
+                    left: 0;
+                    width: 50%;
+                    padding-left: 0.5rem;
+                    font-weight: 600;
+                    text-align: left;
+                }
+
+                #entryTable td:last-child {
+                    border-bottom: 0;
+                }
+
+                #tableFilterBtnText {
+                    font-size: 0px;
+                }
             }
