@@ -1,26 +1,8 @@
 <div class="col-12">
     <div class="card mb-2">
         <div class="card-body py-2">
-
             <!-- Line 1 -->
             <div class="row">
-
-                <!-- Pump No -->
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Pump No</label>
-                    <div class="position-relative">
-                        <select class="form-control form-control-sm mb-2 pe-5">
-                            <option selected disabled>Please Select</option>
-                            <option>LP1</option>
-                        </select>
-                        <button type="button"
-                            class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2"
-                            data-bs-toggle="modal" data-bs-target="#recordDipModal">
-                            <i class="mdi mdi-plus"></i>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- Product -->
                 <div class="col-md-3">
                     <label class="text-muted small mb-1">Product</label>
@@ -36,6 +18,22 @@
                     </div>
                 </div>
 
+                <!-- Pump No -->
+                <div class="col-md-3">
+                    <label class="text-muted small mb-1">Pump No</label>
+                    <div class="position-relative">
+                        <select class="form-control form-control-sm mb-2 pe-5" id="pumpNo">
+                            <option value="1">LP1</option>
+                            <option value="2">LP2</option>
+                            <option value="3">LP3</option>
+                        </select>
+                        <button type="button"
+                            class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2"
+                            data-bs-toggle="modal" data-bs-target="#recordDipModal">
+                            <i class="mdi mdi-plus"></i>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="col-md-3">
                     <label class="text-muted small mb-1">Starting Meter</label>

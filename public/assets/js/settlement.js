@@ -60,14 +60,15 @@ async function fetchEntries(filter = {}) {
         row.innerHTML = `
             <td data-label="Code">${entry.code}</td>
             <td data-label="Products"><strong>${entry.products}</strong></td>
-            <td data-label="Pump"><span class="badge badge-outline-primary">${entry.pump}</span></td>
+            <td data-label="Pump"><span class="badge badge-outline-primary badge-compact">${entry.pump}</span></td>
             <td data-label="Start Meter">${entry.start_meter}</td>
             <td data-label="Close Meter">${entry.close_meter}</td>
             <td data-label="Price">${entry.price}</td>
             <td data-label="Sold Qty">${entry.sold_qty}</td>
             <td data-label="Total Price" class="font-weight-bold">${entry.total_price}</td>
-            <td data-label="Action" class="text-center">
-                <button class="btn btn-sm btn-gradient-success btn-icon view-details"
+            <td data-label="Action" class=" text-center">
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-details"
                         data-id="${entry.id}"
                         data-code="${entry.code}"
                         data-products="${entry.products}"
@@ -83,9 +84,10 @@ async function fetchEntries(filter = {}) {
                         data-bs-toggle="modal"
                         data-bs-target="#viewDetailsModal">
                     <i class="mdi mdi-eye-arrow-right-outline"></i>
-                </button>
-                <button class="btn btn-sm btn-gradient-info btn-icon edit" data-id="${entry.id}"><i class="mdi mdi-pencil"></i></button>
-                <button class="btn btn-sm btn-gradient-danger btn-icon delete" data-id="${entry.id}"><i class="mdi mdi-delete"></i></button>
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit" data-id="${entry.id}"><i class="mdi mdi-pencil"></i></button>
+                    <button class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete" data-id="${entry.id}"><i class="mdi mdi-delete"></i></button>
+                </div>
             </td>
         `;
         tbody.appendChild(row);
