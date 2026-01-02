@@ -56,6 +56,7 @@
         @endif
     </div>
 </div>
+<x-add-meter-sale />
 @endsection
 
 @section('scripts')
