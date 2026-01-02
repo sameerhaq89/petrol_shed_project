@@ -124,7 +124,7 @@
         </div>
         <div class="card-body p-2">
             <!-- Product -->
-            <div class="mb-1">
+            <div class="mb-2 ">
                 <label class="text-muted small mb-1">Product</label>
                 <div class="position-relative">
                     <select class="form-control form-control-sm pe-5 product-select-quick" autocomplete="off">
@@ -140,7 +140,7 @@
             </div>
 
             <!-- Pump No -->
-            <div class="mb-1">
+            <div class="mb-2">
                 <label class="text-muted small mb-1">Pump No</label>
                 <div class="position-relative">
                     <select class="form-control form-control-sm pe-5 pump-select-quick" autocomplete="off">
@@ -157,25 +157,25 @@
             </div>
 
             <!-- Starting Meter -->
-            <div class="mb-1">
+            <div class="mb-2">
                 <label class="text-muted small mb-1">Starting Meter</label>
                 <input type="text" class="form-control form-control-sm bg-light" readonly>
             </div>
 
             <!-- Closing Meter -->
-            <div class="mb-1">
+            <div class="mb-2">
                 <label class="text-muted small mb-1">Closing Meter</label>
                 <input type="text" class="form-control form-control-sm">
             </div>
 
             <!-- Sold Qty -->
-            <div class="mb-1">
+            <div class="mb-2">
                 <label class="text-muted small mb-1">Sold Qty</label>
                 <input type="text" class="form-control form-control-sm bg-light">
             </div>
 
             <!-- Unit Price -->
-            <div class="mb-1">
+            <div class="mb-2">
                 <label class="text-muted small mb-1">Unit Price</label>
                 <input type="text" class="form-control form-control-sm bg-light">
             </div>
