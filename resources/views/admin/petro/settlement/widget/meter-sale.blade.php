@@ -1,25 +1,25 @@
 <style>
-    .ts-dropdown .option:hover,
-    .ts-dropdown .active {
+    .meter-sale-widget .ts-dropdown .option:hover,
+    .meter-sale-widget .ts-dropdown .active {
         background-color: #7367f0 !important;
         color: white !important;
     }
 
-    .ts-dropdown .option.active {
+    .meter-sale-widget .ts-dropdown .option.active {
         background-color: #7367f0 !important;
     }
 
-    .ts-dropdown .option:hover {
+    .meter-sale-widget .ts-dropdown .option:hover {
         background-color: #f3f2f7 !important;
         color: #5e5873 !important;
     }
 
-    .ts-dropdown .option.selected {
+    .meter-sale-widget .ts-dropdown .option.selected {
         background-color: #e7e7ff !important;
         color: #7367f0 !important;
     }
 
-    .ts-control {
+    .meter-sale-widget .ts-control {
         min-height: 31px !important;
         height: 40px !important;
         padding: 0.25rem 0.5rem !important;
@@ -28,24 +28,24 @@
         box-shadow: none !important;
     }
 
-    .ts-control>input,
-    .ts-control>.item {
+    .meter-sale-widget .ts-control>input,
+    .meter-sale-widget .ts-control>.item {
         line-height: 1.5 !important;
     }
 
-    .ts-wrapper.single .ts-control:after {
+    .meter-sale-widget .ts-wrapper.single .ts-control:after {
         top: 50%;
         transform: translateY(-50%);
     }
 
-    .pump-select+button,
-    .product-select+button {
+    .meter-sale-widget .pump-select+button,
+    .meter-sale-widget .product-select+button {
         position: absolute;
         z-index: 1050;
     }
 </style>
 
-<div class="col-12">
+<div class="col-12 meter-sale-widget">
     <div class="card mb-2">
         <div class="card-body py-2">
             <!-- Line 1 -->
@@ -123,8 +123,8 @@
     </div>
 </div>
 @push('js')
-    <script>
-        new TomSelect(".pump-select", {
+<script>
+    new TomSelect(".meter-sale-widget .pump-select", {
             sortField: {
                 field: "text",
                 direction: "asc"
@@ -136,7 +136,7 @@
             },
             persist: false,
         });
-        new TomSelect(".product-select", {
+        new TomSelect(".meter-sale-widget .product-select", {
             sortField: {
                 field: "text",
                 direction: "asc"
@@ -148,5 +148,5 @@
             },
             persist: false,
         });
-    </script>
+</script>
 @endpush

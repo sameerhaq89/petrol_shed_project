@@ -1,20 +1,20 @@
 <style>
-    #quickMeterSaleBtn:hover {
+    .qms-btn:hover {
         transform: scale(1.1);
         box-shadow: 0 8px 20px rgba(103, 58, 183, 0.4) !important;
     }
 
-    #quickMeterSaleBtn:focus {
+    .qms-btn:focus {
         box-shadow: 0 8px 20px rgba(103, 58, 183, 0.6) !important;
     }
 
-    #quickMeterSalePanel .card {
-        animation: slideUp 0.3s ease-out;
+    .qms-panel .card {
+        animation: qmsSlideUp 0.3s ease-out;
     }
 
     /* Force shrink all inputs in quick panel */
-    #quickMeterSalePanel input.form-control,
-    #quickMeterSalePanel select.form-control {
+    .qms-panel input.form-control,
+    .qms-panel select.form-control {
         height: 32px !important;
         min-height: 32px !important;
         padding: 0.25rem 0.5rem !important;
@@ -23,18 +23,18 @@
     }
 
     /* Shrink the + buttons */
-    .quick-add-btn {
+    .qms-add-btn {
         padding: 0.15rem 0.4rem !important;
         font-size: 0.75rem !important;
         height: 24px !important;
         line-height: 1 !important;
     }
 
-    .quick-add-btn .mdi {
+    .qms-add-btn .mdi {
         font-size: 14px !important;
     }
 
-    @keyframes slideUp {
+    @keyframes qmsSlideUp {
         from {
             opacity: 0;
             transform: translateY(20px);
@@ -47,39 +47,39 @@
     }
 
     @media (max-width: 576px) {
-        #quickMeterSalePanel {
+        .qms-panel {
             width: calc(100vw - 20px) !important;
             right: 10px !important;
             bottom: 80px !important;
         }
 
-        #quickMeterSaleBtn {
+        .qms-btn {
             right: 10px !important;
             bottom: 10px !important;
         }
     }
 
-    .ts-dropdown .option:hover,
-    .ts-dropdown .active {
+    .qms-panel .ts-dropdown .option:hover,
+    .qms-panel .ts-dropdown .active {
         background-color: #7367f0 !important;
         color: white !important;
     }
 
-    .ts-dropdown .option.active {
+    .qms-panel .ts-dropdown .option.active {
         background-color: #7367f0 !important;
     }
 
-    .ts-dropdown .option:hover {
+    .qms-panel .ts-dropdown .option:hover {
         background-color: #f3f2f7 !important;
         color: #5e5873 !important;
     }
 
-    .ts-dropdown .option.selected {
+    .qms-panel .ts-dropdown .option.selected {
         background-color: #e7e7ff !important;
         color: #7367f0 !important;
     }
 
-    .ts-control {
+    .qms-panel .ts-control {
         min-height: 31px !important;
         height: 32px !important;
         padding: 0.25rem 0.5rem !important;
@@ -88,24 +88,24 @@
         box-shadow: none !important;
     }
 
-    .ts-control>input,
-    .ts-control>.item {
+    .qms-panel .ts-control>input,
+    .qms-panel .ts-control>.item {
         line-height: 1.5 !important;
     }
 
-    .ts-wrapper.single .ts-control:after {
+    .qms-panel .ts-wrapper.single .ts-control:after {
         top: 50%;
         transform: translateY(-50%);
     }
 
-    .pump-select-quick+button,
-    .product-select-quick+button {
+    .qms-panel .pump-select-quick+button,
+    .qms-panel .product-select-quick+button {
         position: absolute;
         z-index: 1050;
     }
 </style>
 <div style="position:fixed; bottom:20px; right:20px; z-index:9999;">
-    <button class="btn btn-gradient-primary btn-lg shadow-lg" id="quickMeterSaleBtn" data-bs-toggle="collapse"
+    <button class="btn btn-gradient-primary btn-lg shadow-lg qms-btn" id="quickMeterSaleBtn" data-bs-toggle="collapse"
         data-bs-target="#quickMeterSalePanel" style="border-radius: 50%; width: 60px; height: 60px; 
                     padding: 0; display: flex; align-items: center; 
                     justify-content: center; transition: all 0.3s ease;">
@@ -114,7 +114,7 @@
 </div>
 
 <!-- Quick Meter Sale Panel -->
-<div class="collapse" id="quickMeterSalePanel"
+<div class="collapse qms-panel" id="quickMeterSalePanel"
     style="position:fixed; bottom:90px; right:20px; z-index:9998; width: 400px; max-width: calc(100vw - 40px);">
     <div class="card shadow-lg border-0">
         <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center py-2">
@@ -133,7 +133,7 @@
                         <option value="2">Diesel</option>
                     </select>
                     <button type="button"
-                        class="btn btn-light position-absolute top-50 end-0 translate-middle-y me-1 quick-add-btn">
+                        class="btn btn-light position-absolute top-50 end-0 translate-middle-y me-1 qms-add-btn">
                         <i class="mdi mdi-plus"></i>
                     </button>
                 </div>
@@ -150,7 +150,7 @@
                         <option value="3">LP3</option>
                     </select>
                     <button type="button"
-                        class="btn btn-light position-absolute top-50 end-0 translate-middle-y me-1 quick-add-btn">
+                        class="btn btn-light position-absolute top-50 end-0 translate-middle-y me-1 qms-add-btn">
                         <i class="mdi mdi-plus"></i>
                     </button>
                 </div>
