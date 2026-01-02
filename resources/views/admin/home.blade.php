@@ -168,7 +168,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-3 stretch-card" style="padding-right: unset;margin-bottom: 1rem;">
+            <div class="col-md-3 stretch-card" style="margin-bottom: 1rem;">
                 <div class="card bg-gradient-primary card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
@@ -181,7 +181,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3 stretch-card" style="padding-right: unset;margin-bottom: 1rem;">
+            <div class="col-md-3 stretch-card" style="margin-bottom: 1rem;">
                 <div class="card bg-gradient-success card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
@@ -194,7 +194,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3 stretch-card" style="padding-right: unset;margin-bottom: 1rem;">
+            <div class="col-md-3 stretch-card" style="margin-bottom: 1rem;">
                 <div class="card bg-gradient-warning card-img-holder text-white">
                     <div class="card-body">
                         <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" alt="circle-image" />
@@ -227,27 +227,28 @@
                     <div class="card-body">
                         <div class="card-title-header">
                             Tanks Overview
-                            <div class="text-muted"><i class="mdi mdi-chevron-left"></i><i
-                                    class="mdi mdi-chevron-right"></i></div>
+                            <div class="text-muted"><!--<i class="mdi mdi-chevron-left"></i><i
+                                        class="mdi mdi-chevron-right"></i>--></div>
                         </div>
-                        <div class="btn-group w-100 mb-3" role="group">
-                            <button class="btn btn-outline-secondary btn-sm active">Petrol 92</button>
-                            <button class="btn btn-outline-secondary btn-sm">Petrol 95</button>
+                        <div class="btn-group w-100 mb-3" role="group" id="tankFilterBtns">
+                            <button class="btn btn-outline-secondary btn-sm active" data-type="petrol92">Petrol 92</button>
+                            <button class="btn btn-outline-secondary btn-sm" data-type="petrol95">Petrol 95</button>
+                            <button class="btn btn-outline-secondary btn-sm" data-type="diesel">Diesel</button>
                         </div>
                         <div class="progress tank-progress mb-2">
-                            <div class="progress-bar bg-info" style="width: 80%"></div>
+                            <div class="progress-bar bg-info" id="tankProgress1" style="width: 80%"></div>
                         </div>
                         <div class="row small text-muted">
-                            <div class="col-6">Tank ID: 5,820 L</div>
-                            <div class="col-6 text-end">Capacity: 5,820 L</div>
+                            <div class="col-6">Tank ID: <span id="tank1Current">5,820</span> L</div>
+                            <div class="col-6 text-end">Capacity: <span id="tank1Capacity">5,820</span> L</div>
                         </div>
                         <hr>
                         <div class="progress tank-progress mb-2">
-                            <div class="progress-bar bg-info" style="width: 40%"></div>
+                            <div class="progress-bar bg-info" id="tankProgress2" style="width: 40%"></div>
                         </div>
                         <div class="row small text-muted">
-                            <div class="col-6">Tank ID: 3,330 L</div>
-                            <div class="col-6 text-end">Capacity: 1,430 L</div>
+                            <div class="col-6">Tank ID: <span id="tank2Current">3,330</span> L</div>
+                            <div class="col-6 text-end">Capacity: <span id="tank2Capacity">1,430</span> L</div>
                         </div>
                     </div>
                 </div>
@@ -388,4 +389,100 @@
 
 
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        // Tanks data for demo — replace with server values as needed
+        const TANKS_DATA = {
+            petrol92: {
+                tanks: [{
+                        current: 5820,
+                        capacity: 5820,
+                        percent: 80
+                    },
+                    {
+                        current: 3330,
+                        capacity: 1430,
+                        percent: 40
+                    }
+                ]
+            },
+            petrol95: {
+                tanks: [{
+                        current: 6820,
+                        capacity: 8200,
+                        percent: 75
+                    },
+                    {
+                        current: 6682,
+                        capacity: 8000,
+                        percent: 60
+                    }
+                ]
+            },
+            diesel: {
+                tanks: [{
+                        current: 3330,
+                        capacity: 5000,
+                        percent: 66
+                    },
+                    {
+                        current: 2100,
+                        capacity: 3000,
+                        percent: 50
+                    }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnGroup = document.getElementById('tankFilterBtns');
+            const btns = btnGroup?.querySelectorAll('button[data-type]') || [];
+
+            function setActive(btn) {
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            function updateView(type) {
+                const data = TANKS_DATA[type];
+                if (!data) return;
+                // progress bars
+                const p1 = document.getElementById('tankProgress1');
+                const p2 = document.getElementById('tankProgress2');
+                const t1c = document.getElementById('tank1Current');
+                const t1cap = document.getElementById('tank1Capacity');
+                const t2c = document.getElementById('tank2Current');
+                const t2cap = document.getElementById('tank2Capacity');
+
+                const a = data.tanks[0];
+                const b = data.tanks[1];
+                if (p1) {
+                    p1.style.width = (a.percent || 0) + '%';
+                    p1.setAttribute('aria-valuenow', a.percent || 0);
+                }
+                if (p2) {
+                    p2.style.width = (b.percent || 0) + '%';
+                    p2.setAttribute('aria-valuenow', b.percent || 0);
+                }
+                if (t1c) t1c.textContent = (a.current || 0).toLocaleString();
+                if (t1cap) t1cap.textContent = (a.capacity || 0).toLocaleString();
+                if (t2c) t2c.textContent = (b.current || 0).toLocaleString();
+                if (t2cap) t2cap.textContent = (b.capacity || 0).toLocaleString();
+            }
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    setActive(this);
+                    updateView(type);
+                });
+            });
+
+            // initialize with active
+            const active = btnGroup?.querySelector('button.active');
+            if (active) updateView(active.getAttribute('data-type'));
+        });
+    </script>
 @endsection

@@ -57,7 +57,7 @@
                         <a class="nav-link" href="{{ url('/tanks') }}">Tank Management</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">p1</a>
+                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">p2</a>
