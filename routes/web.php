@@ -3,12 +3,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TankController;
-<<<<<<< HEAD
 use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\ChallansController;
-=======
 use App\Http\Controllers\DipManagementController;
->>>>>>> origin/main
 
 /*
 |--------------------------------------------------------------------------
