@@ -30,7 +30,7 @@
                 padding: 0.2rem 0.4rem;
                 margin: 0 0 0.5rem 0;
             }
-            
+
             .dataTables_paginate .paginate_button {
                 /* padding: 4px 10px !important; */
                 line-height: 10px !important;
@@ -38,6 +38,7 @@
                 border-radius: 6px;
                 margin: 0 2px;
             }
+
             .btn-icon {
                 width: 35px !important;
                 height: 25px !important;
