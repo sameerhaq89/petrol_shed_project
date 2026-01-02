@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TankController;
+<<<<<<< HEAD
 use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\ChallansController;
+=======
+use App\Http\Controllers\DipManagementController;
+>>>>>>> origin/main
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +30,5 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::get('/tanks', [TankController::class, 'index']);
     Route::get('/settlement', [SettlementController::class, 'index']);
      Route::get('/settlement/entries', [SettlementController::class, 'entries']); // just to check nothing else
+    Route::get('/dip-management', [DipManagementController::class, 'index']);
 });
