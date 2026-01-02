@@ -1,0 +1,75 @@
+/* Simple, clean styles for dip management */
+.summary-card { border-left: 4px solid #17a2b8; }
+.page-header .page-title-icon { width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; }
+#dipEntriesTable tbody tr td, #dipListTable tbody tr td { vertical-align:middle; }
+#dipEntriesTable tbody tr td, #dipListTable tbody tr td { vertical-align:middle; }
+.table-responsive { max-height:520px; }
+.table { width:100%; }
+
+/* Prevent horizontal scroll by truncating long cell content with ellipsis */
+table.table { table-layout: fixed; }
+table.table th, table.table td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#dipEntriesTable tbody tr td, #dipListTable tbody tr td { vertical-align:middle; }
+.modal .form-label { font-size:0.85rem; }
+.tank-badge { font-weight:600; }
+
+/* Small responsive tweaks */
+@media (max-width:768px){
+    .page-header { flex-direction:column; gap:.75rem; align-items:flex-start; }
+}
+
+.modal .modal-body { max-height:60vh; overflow:auto; }
+
+/* Form tweaks */
+.card .card-body .form-label { font-weight:600; }
+.card .card-body .form-control, .card .card-body .form-select { border-radius:6px; }
+.card .card-title { font-weight:700; }
+.table .btn-group .btn { padding: .25rem .5rem; }
+
+@media (max-width:768px){
+    table.table th, table.table td { white-space:normal; }
+}
+
+/* dip-management form & button styles */
+.dip-management-form .form-control,
+.dip-management-form .form-select,
+.dip-management-form input[type="date"],
+.dip-management-form input[type="datetime-local"],
+.dip-management-form input[type="number"],
+.dip-management-form input[type="text"] {
+    /* smaller, tighter controls */
+    height: 40px;
+    padding: .38rem .65rem;
+    font-size: .92rem;
+    line-height: 1.15;
+    box-sizing: border-box;
+    border-radius: 6px;
+    border: 1px solid #e6e9f2;
+    background-color: #fff;
+    box-shadow: 0 1px 2px rgba(32,40,60,0.02);
+}
+
+.dip-management-form .form-select { background-position: right .75rem center; }
+.dip-management-form .form-label { margin-bottom: .35rem; font-weight:600 }
+
+.dip-management-form #addDipRow { height:40px; padding: .25rem .6rem; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; }
+.dip-management-form #addDipRow i { margin:0; font-size:16px }
+
+/* Make primary button color closer to Purple Admin theme */
+.dip-management-form .btn-primary {
+    background-color: #6f42c1;
+    border-color: #663399;
+    color: #fff;
+    padding: .28rem .7rem;
+    font-size: .92rem;
+}
+.dip-management-form .btn-primary:hover{ background-color:#5e36aa; border-color:#542f95 }
+
+/* Reduce table padding so header aligns closer to form */
+table.table thead th, table.table tbody td { padding: .65rem .9rem; }
+
+/* Slight responsive tweak */
+@media (max-width:768px){
+    .dip-management-form .form-control, .dip-management-form .form-select { height:44px }
+    .dip-management-form #addDipRow { height:40px }
+}

@@ -58,6 +58,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
+                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">p2</a>
