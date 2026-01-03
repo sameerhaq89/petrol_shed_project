@@ -25,6 +25,6 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::get('/add-expenses', [App\Http\Controllers\AddExpensesController::class, 'index'])->name('add-expenses');
     Route::get('/tanks', [TankController::class, 'index']);
     Route::get('/settlement', [SettlementController::class, 'index']);
-     Route::get('/settlement/entries', [SettlementController::class, 'entries']); // just to check nothing else
+    Route::get('/settlement/entries', [SettlementController::class, 'entries']); // just to check nothing else
     Route::get('/dip-management', [DipManagementController::class, 'index']);
 });

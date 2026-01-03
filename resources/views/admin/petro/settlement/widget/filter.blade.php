@@ -1,5 +1,5 @@
 <!-- Card Header / Toggle -->
-<div class="d-flex justify-content-between align-items-center py-1">
+{{-- <div class="d-flex justify-content-between align-items-center py-1">
     <div class="d-flex align-items-center">
         <i class="mdi mdi-filter me-2"></i>
         <h6 class="mb-0 fw-bold">Filters</h6>
@@ -8,7 +8,7 @@
         data-bs-target="#metaFilterBody" aria-expanded="false" aria-controls="metaFilterBody">
         <i class="mdi mdi-chevron-down"></i>
     </button>
-</div>
+</div> --}}
 
 <!-- Collapse Body -->
 <div class="collapse" id="metaFilterBody">
@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<!-- JS for toggle icon -->
+{{-- <!-- JS for toggle icon -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.querySelector('.filter-toggle');
@@ -97,5 +97,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-</script>
+</script> --}}
 

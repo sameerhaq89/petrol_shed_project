@@ -1,13 +1,22 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Yajra\DataTables\Facades\DataTables;
 
 class SettlementController extends Controller
 {
+
+    protected array $pageHeader;
+
+    public function __construct()
+    {
+        $this->pageHeader = [
+            'title' => 'Daily Settlement',
+            'icon'  => 'mdi mdi-cash-register'
+        ];
+
+        view()->share('pageHeader', $this->pageHeader);
+    }
 
     public function index()
     {
@@ -78,7 +87,7 @@ class SettlementController extends Controller
                 'after_discount' => '620,685.00'
             ]
         ];
-        
+
         return response()->json($entries);
     }
 }
