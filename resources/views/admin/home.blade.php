@@ -148,26 +148,19 @@
             background: #d1fae5;
             color: #10b981;
         }
+
+        .command-font-size {
+            font-size: 0.8em !important;
+        }
+        .command-row-gap {
+            --bs-gutter-x: 12px !important;
+        }
     </style>
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
-        <div class="page-header" style="margin: 0 0 0.5rem 0;">
-            <h3 class="page-title">
-                <span class="page-title-icon bg-gradient-primary text-white me-2">
-                    <i class="mdi mdi-gas-station"></i>
-                </span>
-                Petrol Station Dashboard
-            </h3>
-            <nav aria-label="breadcrumb">
-                <ul class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <span></span>Overview
-                        <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
-                    </li>
-                </ul>
-            </nav>
-        </div>
 
-        <div class="row">
+        @include('admin.command.widgets.page-header', $pageHeader)
+
+        <div class="row command-row-gap">
             <div class="col-md-3 stretch-card" style="margin-bottom: 1rem;">
                 <div class="card bg-gradient-primary card-img-holder text-white">
                     <div class="card-body">
@@ -221,10 +214,10 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row command-row-gap">
             <div class="col-lg-4 d-flex flex-column">
                 <div class="card dashboard-card mb-3">
-                    <div class="card-body">
+                    <div class="card-body command-font-size">
                         <div class="card-title-header">
                             Tanks Overview
                             <div class="text-muted"><!--<i class="mdi mdi-chevron-left"></i><i
@@ -254,7 +247,7 @@
                 </div>
 
                 <div class="card dashboard-card">
-                    <div class="card-body">
+                    <div class="card-body command-font-size">
                         <div class="card-title-header">Pumps Overview</div>
                         <table class="table table-sm table-borderless table-custom">
                             <thead>
@@ -265,7 +258,7 @@
                                     <th>Closing</th>
                                 </tr>
                             </thead>
-                            <tbody class="small">
+                            <tbody class="small command-font-size">
                                 <tr>
                                     <td>Pump 01</td>
                                     <td><span class="badge badge-soft-success">Active</span></td>
@@ -286,7 +279,7 @@
 
             <div class="col-lg-4 d-flex flex-column">
                 <div class="card dashboard-card mb-3">
-                    <div class="card-body">
+                    <div class="card-body command-font-size">
                         <div class="card-title-header">Fuel Stock & Dip Management</div>
                         <table class="table table-sm table-custom">
                             <thead>
@@ -296,7 +289,7 @@
                                     <th>Last Dip</th>
                                 </tr>
                             </thead>
-                            <tbody class="small">
+                            <tbody class="small command-font-size">
                                 <tr>
                                     <td>Petrol 92</td>
                                     <td>5,820 L</td>
@@ -318,7 +311,7 @@
                     </div>
                 </div>
 
-                <div class="card dashboard-card">
+                <div class="card dashboard-card command-font-size">
                     <div class="card-body">
                         <div class="card-title-header">Sales Summary <span class="text-primary">LKR 66,200</span></div>
                         <div class="d-flex align-items-center mb-2">
@@ -345,7 +338,7 @@
 
             <div class="col-lg-4 d-flex flex-column">
                 <div class="card dashboard-card mb-3">
-                    <div class="card-body">
+                    <div class="card-body command-font-size">
                         <div class="card-title-header">Shift & Settlement Summary</div>
 
                         <div class="shift-box current-shift">
@@ -363,14 +356,14 @@
 
                         <div class="shift-box next-shift">
                             <span class="text-danger small fw-bold">Next Shift</span>
-                            <div class="small">Evening Shift (2:00 PM - 10:00 PM)</div>
+                            <div class="small mt-1">Evening Shift (2:00 PM - 10:00 PM)</div>
                             <div class="text-muted x-small mt-1">Variance: 5.00 LKR</div>
                             <button class="btn btn-warning btn-action mt-2 w-100">Close Shift</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="card dashboard-card">
+                <div class="card dashboard-card command-font-size">
                     <div class="card-body">
                         <div class="card-title-header">Alerts</div>
                         <div class="alert alert-light border small d-flex justify-content-between">

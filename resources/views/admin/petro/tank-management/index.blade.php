@@ -1,25 +1,15 @@
 @extends('admin.layouts.app')
 @section('content')
-<div class="content-wrapper">
-    {{-- Fuel Tank Overview Section --}}
-    <div class="page-header">
-        <h3 class="page-title">
-            <span class="page-title-icon bg-gradient-primary text-white me-2">
-                <i class="mdi mdi-gas-station"></i>
-            </span> Fuel Tank Overview
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">
-                    <button class="btn btn-sm btn-gradient-primary" id="recordDipBtn">
-                        <i class="mdi mdi-plus"></i> Record New Dip
-                    </button>
-                </li>
-            </ul>
-        </nav>
-    </div>
+<style>
+    .command-row-gap {
+        --bs-gutter-x: 12px !important;
+    }
+</style>
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
-    <div class="row">
+    @include('admin.command.widgets.page-header', $pageHeader)
+
+    <div class="row mt-3 command-row-gap">
         @if(isset($tanks) && count($tanks) > 0)
         @foreach($tanks as $tank)
         @include('admin.petro.tank-management.widget.tank-overview', $tank)
@@ -34,9 +24,9 @@
     </div>
 
     {{-- Fuel Pump Distribution Section --}}
-    <div class="page-header mt-5">
+    <div class="page-header mt-2">
         <h3 class="page-title">
-            <span class="page-title-icon bg-gradient-success text-white me-2">
+            <span class="page-title-icon bg-gradient-primary text-white me-2">
                 <i class="mdi mdi-water-pump"></i>
             </span> Fuel Pump Distribution
         </h3>

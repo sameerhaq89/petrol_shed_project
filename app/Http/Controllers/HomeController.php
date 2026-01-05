@@ -11,9 +11,24 @@ class HomeController extends Controller
      *
      * @return void
      */
+
+    protected array $pageHeader;
+
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->pageHeader = [
+            'title' => 'Petrol Station Dashboard',
+            'icon'  => 'mdi mdi-gas-station',
+            'showButton' => false,
+            'buttonText' => '',
+            'buttonId' => '',
+            'buttonClass' => '',
+            'buttonIcon' => '',
+        ];
+
+        view()->share('pageHeader', $this->pageHeader);
     }
 
     /**

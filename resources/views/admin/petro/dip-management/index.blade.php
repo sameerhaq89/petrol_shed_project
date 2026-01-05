@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 @section('content')
-<div class="content-wrapper">
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
     @include('admin.command.widgets.page-header', $pageHeader)
 
     {{-- Top: Inline Add Dip Form (first content) --}}
-    <div class="row mt-3">
+    <div class="row mt-2">
         <div class="col-12">
-            <div class="card shadow-sm">
+            <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Add New Dip</h5>
                     @include('admin.petro.dip-management.widget.dip-form')
@@ -17,9 +17,9 @@
     </div>
 
     {{-- Second content: Recent Dip Entries (DataTable) --}}
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-12">
-            <div class="card">
+            <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Recent Dip Entries</h5>
                     @include('admin.petro.dip-management.widget.dip-list')

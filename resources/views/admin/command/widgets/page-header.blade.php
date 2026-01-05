@@ -1,4 +1,4 @@
-<div class="page-header">
+<div class="page-header" style="margin: 0 0 0.8rem 0;">
     <h3 class="page-title">
         @if(!empty($icon))
             <span class="page-title-icon bg-gradient-primary text-white me-2">
