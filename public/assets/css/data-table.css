@@ -30,7 +30,7 @@
                 padding: 0.2rem 0.4rem;
                 margin: 0 0 0.5rem 0;
             }
-            
+
             .dataTables_paginate .paginate_button {
                 /* padding: 4px 10px !important; */
                 line-height: 10px !important;
@@ -38,6 +38,7 @@
                 border-radius: 6px;
                 margin: 0 2px;
             }
+
             .btn-icon {
                 width: 35px !important;
                 height: 25px !important;
@@ -58,11 +59,27 @@
 
             /* Mobile responsive */
             @media (max-width: 768px) {
-                .dataTables_filter {
-                    float: right !important;
-                    text-align: left !important;
-                    margin: 0 0 0.5rem 0;
+
+                /* Force single row for controls */
+                .dataTables_wrapper .row:first-child {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    flex-wrap: nowrap !important;
+                }
+
+                .dataTables_wrapper .row:first-child>div {
                     width: auto !important;
+                    flex: 0 0 auto !important;
+                }
+
+                .dataTables_length {
+                    margin: 0 !important;
+                }
+
+                .dataTables_filter {
+                    text-align: right !important;
+                    margin: 0 !important;
                 }
 
                 .dataTables_filter input {
@@ -80,7 +97,9 @@
                 }
 
                 .dataTables_length label {
+                    padding-left: 5px !important;
                     font-size: 0;
+                    margin: 0;
                 }
 
                 .dataTables_length select {
@@ -90,14 +109,16 @@
                 }
 
                 .dataTables_paginate .paginate_button {
+
                     font-size: 14px !important;
                     line-height: 1.5 !important;
-                    min-width: 56px;
+                    min-width: 50px !important;
                     border-radius: 6px;
                 }
 
                 .dataTables_paginate {
-                    gap: 6px;
+                    padding: 0 10px !important;
+                    gap: 2px;
                     justify-content: center;
                     flex-wrap: wrap;
                 }

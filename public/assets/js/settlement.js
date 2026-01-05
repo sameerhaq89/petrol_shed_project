@@ -125,7 +125,6 @@ document.addEventListener('click', function (e) {
 });
 
 
-// Call it after page loads
 document.addEventListener('DOMContentLoaded', () => {
     fetchEntries();
 });
