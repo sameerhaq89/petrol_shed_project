@@ -5,7 +5,7 @@
 
     @include('admin.command.widgets.page-header', $pageHeader)
 
-    {{-- 2. Module Tabs --}}
+    {{-- 1. Module Tabs --}}
     <div class="row mb-3">
         <div class="col-12">
             <div class="btn-group w-100 shadow-sm d-flex flex-wrap" role="group">
@@ -28,7 +28,7 @@
 
         </div>
     </div>
-    {{-- 3. Active Widget Inclusion --}}
+    {{-- 2. Active Widget Inclusion --}}
     <div class="row">
         <div class="col-12 mb-4 stretch-card">
             <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
@@ -38,10 +38,10 @@
             </div>
         </div>
     </div>
-    {{-- 5. Table --}}
+    {{-- 3. Table --}}
     <div class="row">
         <div class="col-12 mb-4 stretch-card">
-            <div class="card">
+            <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h4 class="card-title text-muted mb-0">
@@ -79,7 +79,7 @@
             </div>
         </div>
     </div>
-    {{-- 6. Summary Widget --}}
+    {{-- 4. Summary Widget --}}
     <div class="row">
         <div class="col-12 mb-4 stretch-card">
             <div class="card border-primary shadow-sm">

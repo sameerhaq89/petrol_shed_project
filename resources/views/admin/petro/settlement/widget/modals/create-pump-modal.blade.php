@@ -9,7 +9,7 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                     aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="margin-bottom: -15px">
                 <form id="dipRecordForm">
                     {{-- Tank Selection --}}
                     <div class="card mb-3">
@@ -38,7 +38,6 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer bg-light">
