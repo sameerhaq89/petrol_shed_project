@@ -45,8 +45,7 @@
             </div>
         </li> --}}
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#petro" aria-expanded="false"
-                aria-controls="ui-basic">
+            <a class="nav-link" data-bs-toggle="collapse" href="#petro" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">Petro</span>
                 <i class="menu-arrow"></i>
                 <i class="mdi mdi-fire menu-icon"></i>
@@ -59,6 +58,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
                         <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
+                        <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">p2</a>
