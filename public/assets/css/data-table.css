@@ -57,17 +57,17 @@
                 line-height: 0.60 !important;
             }
 
-            /* Mobile responsive */
+            /* Mobile responsive 
             @media (max-width: 768px) {
 
-                /* Force single row for controls */
+             Force single row for controls
                 .dataTables_wrapper .row:first-child {
                     display: flex !important;
                     justify-content: space-between !important;
                     align-items: center !important;
                     flex-wrap: nowrap !important;
                 }
-
+                
                 .dataTables_wrapper .row:first-child>div {
                     width: auto !important;
                     flex: 0 0 auto !important;
@@ -131,7 +131,7 @@
                 #entryTable td:nth-child(5) {
                     display: none;
                 }
-
+                
                 #entryTable,
                 #entryTable tbody,
                 #entryTable tr,
@@ -173,3 +173,4 @@
                     font-size: 0px;
                 }
             }
+                */

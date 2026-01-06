@@ -16,7 +16,12 @@ function initTable() {
                 previous: '‹',
                 next: '›'
             }
-        }
+        },
+        columnDefs: [
+            { responsivePriority: 1, targets: -1 }, 
+            { responsivePriority: 2, targets: 0 },  
+            { responsivePriority: 3, targets: 2 }
+        ]
     });
 }
 

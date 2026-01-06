@@ -17,7 +17,12 @@ function initSettlementTable() {
                 previous: '‹',
                 next: '›'
             }
-        }
+        },
+        columnDefs: [
+            { responsivePriority: 1, targets: -1 }, // Action column
+            { responsivePriority: 2, targets: 0 },  // Settlement ID
+            { responsivePriority: 3, targets: 2 }   // Pump Operator
+        ]
     });
 }
 
