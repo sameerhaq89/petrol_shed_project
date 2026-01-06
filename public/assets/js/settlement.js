@@ -1,49 +1,10 @@
-let table;
-
-function initTable() {
-    if (table) {
-        table.destroy();
-    }
-
-    table = new DataTable('#entryTable', {
-        responsive: true,
-        pageLength: 10,
-        pagingType: 'simple_numbers',
-        language: {
-            search: '',
-            searchPlaceholder: 'Search…',
-            paginate: {
-                previous: '‹',
-                next: '›'
-            }
-        },
-        columnDefs: [
-            { responsivePriority: 1, targets: -1 }, 
-            { responsivePriority: 2, targets: 0 },  
-            { responsivePriority: 3, targets: 2 }
-        ]
-    });
-}
-
 async function fetchEntries(filter = {}) {
-    let url = '/settlement/entries';
-    // if (filter.status) url += ?status=${filter.status};
-
-    const res = await fetch(url);
+    const res = await fetch('/settlement/entries');
     const entries = await res.json();
 
-    const tbody = document.querySelector('#entryTable tbody');
-    tbody.innerHTML = '';
+    const table = $('.data-table').DataTable();
 
-    const totalQty = document.getElementById('totalQty');
-    const grossAmount = document.getElementById('grossAmount');
-    const totalDiscount = document.getElementById('totalDiscount');
-    const netWorth = document.getElementById('netWorth');
-
-    totalQty.innerHTML = '';
-    grossAmount.innerHTML = '';
-    totalDiscount.innerHTML = '';
-    netWorth.innerHTML = '';
+    table.clear();
 
     let totalQtySum = 0;
     let grossAmountSum = 0;
@@ -61,51 +22,57 @@ async function fetchEntries(filter = {}) {
         totalDiscountSum += discountAmount;
         grossAmountSum += netAmount;
 
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td data-label="Code">${entry.code}</td>
-            <td data-label="Products"><strong>${entry.products}</strong></td>
-            <td data-label="Pump"><span class="badge badge-outline-primary badge-compact">${entry.pump}</span></td>
-            <td data-label="Start Meter">${entry.start_meter}</td>
-            <td data-label="Close Meter">${entry.close_meter}</td>
-            <td data-label="Price">${entry.price}</td>
-            <td data-label="Sold Qty">${entry.sold_qty}</td>
-            <td data-label="Total Price" class="font-weight-bold">${entry.total_price}</td>
-            <td data-label="Action" class=" text-center">
-                <div class="btn-group">
-                    <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-details"
-                        data-id="${entry.id}"
-                        data-code="${entry.code}"
-                        data-products="${entry.products}"
-                        data-pump="${entry.pump}"
-                        data-start="${entry.start_meter}"
-                        data-close="${entry.close_meter}"
-                        data-sold="${entry.sold_qty}"
-                        data-price="${entry.price}"
-                        data-total="${entry.total_price}"
-                        data-discount="${entry.discount_value}"
-                        data-before="${entry.before_discount}"
-                        data-after="${netAmount.toFixed(2)}"
-                        data-bs-toggle="modal"
-                        data-bs-target="#viewDetailsModal">
+        table.row.add([
+            entry.code,
+            `<strong>${entry.products}</strong>`,
+            `<span class="badge badge-outline-primary badge-compact">${entry.pump}</span>`,
+            entry.start_meter,
+            entry.close_meter,
+            entry.price,
+            entry.sold_qty,
+            `<strong>${entry.total_price}</strong>`,
+            `
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-details"
+                    data-id="${entry.id}"
+                    data-code="${entry.code}"
+                    data-products="${entry.products}"
+                    data-pump="${entry.pump}"
+                    data-start="${entry.start_meter}"
+                    data-close="${entry.close_meter}"
+                    data-sold="${entry.sold_qty}"
+                    data-price="${entry.price}"
+                    data-total="${entry.total_price}"
+                    data-discount="${entry.discount_value}"
+                    data-before="${entry.before_discount}"
+                    data-after="${netAmount.toFixed(2)}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#viewDetailsModal">
                     <i class="mdi mdi-eye-arrow-right-outline"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit" data-id="${entry.id}"><i class="mdi mdi-pencil"></i></button>
-                    <button class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete" data-id="${entry.id}"><i class="mdi mdi-delete"></i></button>
-                </div>
-            </td>
-        `;
-        tbody.appendChild(row);
+                </button>
+                <button class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit" data-id="${entry.id}">
+                    <i class="mdi mdi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete" data-id="${entry.id}">
+                    <i class="mdi mdi-delete"></i>
+                </button>
+            </div>
+            `
+        ]);
     });
+    table.draw(false);
 
-    const netWorthSum = grossAmountSum - totalDiscountSum;
+    document.getElementById('totalQty').innerText =
+        totalQtySum.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
-    totalQty.innerHTML = totalQtySum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    grossAmount.innerHTML = grossAmountSum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    totalDiscount.innerHTML = totalDiscountSum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    netWorth.innerHTML = netWorthSum.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('grossAmount').innerText =
+        grossAmountSum.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
-    initTable();
+    document.getElementById('totalDiscount').innerText =
+        totalDiscountSum.toLocaleString(undefined, { minimumFractionDigits: 2 });
+
+    document.getElementById('netWorth').innerText =
+        (grossAmountSum - totalDiscountSum).toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
 document.addEventListener('click', function (e) {

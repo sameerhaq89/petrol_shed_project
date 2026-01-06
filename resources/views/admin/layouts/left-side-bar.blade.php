@@ -57,8 +57,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
-                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
                         <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
+                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
+                        <a class="nav-link" href="{{ url('/pump-management') }}">Pump Management</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">p2</a>

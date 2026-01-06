@@ -9,17 +9,17 @@
                 min-width: 60px;
             }
 
-            #entryTable {
+            .data-table {
                 font-size: 0.85rem;
                 table-layout: auto;
             }
 
-            #entryTable th,
-            #entryTable td {
+            .data-table th,
+            .data-table td {
                 padding: 0.35rem 0.5rem;
             }
 
-            #entryTable thead th {
+            .data-table thead th {
                 font-weight: 500;
                 font-size: 0.8rem;
             }
@@ -41,33 +41,32 @@
 
             .btn-icon {
                 width: 35px !important;
-                height: 25px !important;
+                height: 20px !important;
                 padding: 0 !important;
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
 
-            .btn-icon i {
+            /* .btn-icon i {
                 font-size: 3px;
-            }
+            } */
 
             .badge-compact {
                 padding: 0 0.3rem;
-                line-height: 0.60 !important;
+                line-height: 1.5 !important;
             }
 
-            /* Mobile responsive 
+            /* Mobile responsive */
             @media (max-width: 768px) {
 
-             Force single row for controls
-                .dataTables_wrapper .row:first-child {
+                Force single row for controls .dataTables_wrapper .row:first-child {
                     display: flex !important;
                     justify-content: space-between !important;
                     align-items: center !important;
                     flex-wrap: nowrap !important;
                 }
-                
+
                 .dataTables_wrapper .row:first-child>div {
                     width: auto !important;
                     flex: 0 0 auto !important;
@@ -123,31 +122,48 @@
                     flex-wrap: wrap;
                 }
 
-                #entryTable thead {
+                
+                #tableFilterBtnText {
+                    font-size: 0px;
+                }
+            }
+
+            /*
+                .data-table thead {
                     display: none;
                 }
 
-                #entryTable td:nth-child(4),
-                #entryTable td:nth-child(5) {
+                .data-table td::before {
+                    content: attr(data-label);
+                    position: absolute;
+                    left: 0;
+                    width: 50%;
+                    padding-left: 0.5rem;
+                    font-weight: 600;
+                    text-align: left;
+                }
+                    
+                .data-table td:nth-child(4),
+                .data-table td:nth-child(5) {
                     display: none;
                 }
                 
-                #entryTable,
-                #entryTable tbody,
-                #entryTable tr,
-                #entryTable td {
+                .data-table,
+                .data-table tbody,
+                .data-table tr,
+                .data-table td {
                     display: block;
                     width: auto;
                 }
 
-                #entryTable tr {
+                .data-table tr {
                     margin-bottom: 1rem;
                     border: 1px solid #ddd;
                     border-radius: 6px;
                     padding: 0.5rem;
                 }
 
-                #entryTable td {
+                .data-table td {
                     text-align: right;
                     padding: 0.5rem;
                     position: relative;
@@ -155,7 +171,7 @@
                     border-bottom: 1px solid #eee;
                 }
 
-                #entryTable td::before {
+                .data-table td::before {
                     content: attr(data-label);
                     position: absolute;
                     left: 0;
@@ -165,12 +181,8 @@
                     text-align: left;
                 }
 
-                #entryTable td:last-child {
+                .data-table td:last-child {
                     border-bottom: 0;
                 }
-
-                #tableFilterBtnText {
-                    font-size: 0px;
-                }
-            }
-                */
+                    /*
+                

@@ -6,6 +6,7 @@ use App\Http\Controllers\TankController;
 use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\DipManagementController;
 use App\Http\Controllers\SettlementListcontroller;
+use App\Http\Controllers\PumpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::get('/settlement', [SettlementController::class, 'index']);
     Route::get('/settlement/entries', [SettlementController::class, 'entries']); // just to check nothing else
     Route::get('/dip-management', [DipManagementController::class, 'index']);
+    Route::get('/pump-management', [PumpController::class, 'index']);
     Route::resource('settlement-list', SettlementListcontroller::class);
     Route::get('/settlement-data', [SettlementListcontroller::class, 'getData']);
 });

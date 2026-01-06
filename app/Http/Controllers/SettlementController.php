@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\Controller;
 
 class SettlementController extends Controller
@@ -20,7 +21,28 @@ class SettlementController extends Controller
 
     public function index()
     {
-        return view('admin.petro.settlement.index');
+
+        $dataTables = [
+            'Entry' => [
+                'title'   => 'Entry',
+                'id' => 'pumpWidget',
+                'class' => ['active'],
+                'columns' => [
+                    'Code',
+                    'Products',
+                    'Pump',
+                    'Start Meter',
+                    'Close Meter',
+                    'Price',
+                    'Sold Qty',
+                    'Total Price',
+                    'Action'
+                ],
+                'Actions' =>
+                ['view', 'edit', 'delete']
+            ]
+        ];
+        return view('admin.petro.settlement.index', compact('dataTables'));
     }
 
     public function entries()

@@ -80,7 +80,7 @@
 
                         <!-- Table -->
                         <div class="table-responsive">
-                            <table id="entryTable" class="table table-hover table-bordered w-100">
+                            <table id="entryTable" class="table table-hover table-bordered w-100 compact">
                                 <thead class="bg-light">
                                     <tr>
                                         <th>Settlement ID</th>
