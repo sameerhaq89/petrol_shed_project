@@ -2,14 +2,48 @@
     <div class="col-12 mb-4 stretch-card">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
-                {{-- Filter button --}}
-                {{-- <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#metaFilterBodyEntry">
-                    <i class="mdi mdi-filter"></i>
-                    <span id="tableFilterBtnText">Show Filter</span>
-                </button> --}}
-                <h3 class="page-title mb-3">Pump</h3>
-                {{-- @include('admin.petro.settlement.widget.filter') --}}
+                <div class="d-flex align-items-center mb-3 flex-wrap">
+                    <h3 class="page-title mb-3">All Your Pumps</h3>
+                    <div class="d-flex align-items-center gap-2 ms-auto">
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false" title="Export Options">
+                                <i class="fa fa-download"></i> Export
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        onclick="exportTableToCSV('settlement_data.csv'); return false;">
+                                        <i class="fa fa-file-text-o  me-2"></i> CSV
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                        onclick="exportTableToExcel('settlement_data.xlsx'); return false;">
+                                        <i class="fa fa-file-excel-o text me-2"></i> Excel
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="exportTableToPDF(); return false;">
+                                        <i class="fa fa-file-pdf-o me-2"></i> PDF
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#" onclick="printTable(); return false;">
+                                        <i class="fa fa-print me-2"></i> Print
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-gradient-primary" data-bs-toggle="modal"
+                            data-bs-target="#importModal" title="Import">
+                            <i class="fa fa-upload"></i> Import
+                        </button>
+                        <button class="btn btn-sm btn-gradient-primary" id="recordDipBtn">
+                            <i class="mdi mdi-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="data-table table table-hover table-bordered w-100">
                         <thead class="bg-light">
@@ -17,25 +51,26 @@
                                 <th>Date</th>
                                 <th>Transaction Date</th>
                                 <th>Pump No</th>
-                                <th>Name</th>
+                                <th>Pump Name</th>
                                 <th>Start Meter</th>
                                 <th>Current Meter</th>
                                 <th>Product Name</th>
-                                <th>Fuel Tanks</th>
+                                <th>Fuel Tank</th>
                                 {{-- <th>Action</th> --}}
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($pumps as $pump)
                             <tr>
-                                <td>{{ $pump['date'] ?? '2026-01-07' }}</td>
-                                <td>{{ $pump['transaction_date'] ?? '2026-01-07 08:00' }}</td>
-                                <td>{{ $pump['pump_no'] }}</td>
-                                <td>{{ $pump['name'] ?? 'Dummy Name' }}</td>
-                                <td>{{ $pump['start_meter'] }}</td>
-                                <td>{{ $pump['close_meter'] }}</td>
-                                <td>{{ $pump['product_name'] }}</td>
-                                <td>{{ $pump['fuel_tanks'] ?? 'Tank A' }}</td>
+                                <td data-label="Date">{{ $pump['date'] ?? '2026-01-07' }}</td>
+                                <td data-label="Transaction Date">{{ $pump['transaction_date'] ?? '2026-01-07 08:00' }}
+                                </td>
+                                <td data-label="Pump No">{{ $pump['pump_no'] }}</td>
+                                <td data-label="Pump Name">{{ $pump['name'] ?? 'Dummy Name' }}</td>
+                                <td data-label="Start Meter">{{ $pump['start_meter'] }}</td>
+                                <td data-label="Current Meter">{{ $pump['close_meter'] }}</td>
+                                <td data-label="Product Name">{{ $pump['product_name'] }}</td>
+                                <td data-label="Fuel Tank">{{ $pump['fuel_tanks'] ?? 'Tank A' }}</td>
                             </tr>
                             @endforeach
                         </tbody>

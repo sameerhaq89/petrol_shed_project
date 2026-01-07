@@ -3,12 +3,17 @@
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
                 {{-- Filter button --}}
-                <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#metaFilterBodyEntry">
-                    <i class="mdi mdi-filter"></i>
-                    <span id="tableFilterBtnText">Show Filter</span>
-                </button>
-                <h3 class="page-title mb-3">Entry</h3>
+
+                <div class="d-flex align-items-center mb-3 flex-wrap">
+                    <h3 class="page-title mb-3">Entry</h3>
+                    <div class="d-flex align-items-center gap-2 ms-auto">
+                        <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#metaFilterBodyEntry">
+                            <i class="mdi mdi-filter"></i>
+                            <span id="tableFilterBtnText">Show Filter</span>
+                        </button>
+                    </div>
+                </div>
                 @include('admin.petro.settlement.widget.filter')
                 <div class="table-responsive">
                     <table class="data-table table table-hover table-bordered w-100">
