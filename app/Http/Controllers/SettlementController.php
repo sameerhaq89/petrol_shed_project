@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\Controller;
 
 class SettlementController extends Controller
@@ -33,8 +34,8 @@ class SettlementController extends Controller
                 'start_meter' => '912,500.50',
                 'close_meter' => '914,672.56',
                 'price' => 297,
-                'sold_qty' => '2,172.06', // close_meter - start_meter
-                'total_price' => '645,164.82', // sold_qty * price
+                'sold_qty' => '2,172.06', 
+                'total_price' => '645,164.82', 
                 'discount_type' => 'None',
                 'discount_value' => 0,
                 'total_qty' => '2,172.06',

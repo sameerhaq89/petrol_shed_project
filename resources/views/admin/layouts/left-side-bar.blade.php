@@ -57,9 +57,14 @@
                     </li>
                     <li class="nav-item {{ Request::is('/settlement') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
+<<<<<<< HEAD
                     </li>
                     <li class="nav-item {{ Request::is('/settlement-list') ? 'active' : '' }}">
+=======
+>>>>>>> origin/feat-settlement
                         <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
+                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
+                        <a class="nav-link" href="{{ url('/pump-management') }}">Pump Management</a>
                     </li>
                     <li class="nav-item {{ Request::is('/dip-management') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>

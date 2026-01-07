@@ -2,113 +2,112 @@
 <link rel="stylesheet" href="{{ asset('assets/css/data-table.css') }}">
 <style>
     .dropdown-item:hover,
-    .dropdown-item{
+    .dropdown-item {
         color: gray !important;
     }
 </style>
 @section('content')
-    <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
-        @include('admin.command.widgets.page-header', $pageHeader)
+    @include('admin.command.widgets.page-header', $pageHeader)
 
-        <div class="row">
-            <div class="col-12 mb-4 stretch-card">
-                <div class=" card border-primary shadow-sm" style="border-top: 3px solid;">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3 flex-wrap">
-                            <h4 class="card-title text-muted mb-0">
-                                <i class="mdi mdi-format-list-bulleted text-primary"></i> Summary Table
-                            </h4>
+    <div class="row">
+        <div class="col-12 mb-4 stretch-card">
+            <div class=" card border-primary shadow-sm" style="border-top: 3px solid;">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3 flex-wrap">
+                        <h4 class="card-title text-muted mb-0">
+                            <i class="mdi mdi-format-list-bulleted text-primary"></i> Summary Table
+                        </h4>
 
-                            <!-- Right side buttons -->
-                            <div class="d-flex align-items-center gap-2 ms-auto">
+                        <!-- Right side buttons -->
+                        <div class="d-flex align-items-center gap-2 ms-auto">
 
-                                <div class="dropdown">
-                                    <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
-                                        data-bs-toggle="dropdown" aria-expanded="false" title="Export Options">
-                                        <i class="fa fa-download"></i> Export
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <a class="dropdown-item" href="#"
-                                                onclick="exportTableToCSV('settlement_data.csv'); return false;">
-                                                <i class="fa fa-file-text-o  me-2"></i> CSV
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#"
-                                                onclick="exportTableToExcel('settlement_data.xlsx'); return false;">
-                                                <i class="fa fa-file-excel-o text me-2"></i> Excel
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#"
-                                                onclick="exportTableToPDF(); return false;">
-                                                <i class="fa fa-file-pdf-o me-2"></i> PDF
-                                            </a>
-                                        </li>
-                                        {{-- <li>
-                                            <hr class="dropdown-divider">
-                                        </li> --}}
-                                        <li>
-                                            <a class="dropdown-item" href="#" onclick="printTable(); return false;">
-                                                <i class="fa fa-print me-2"></i> Print
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <button type="button" class="btn btn-sm btn-gradient-primary" data-bs-toggle="modal"
-                                    data-bs-target="#importModal" title="Import">
-                                    <i class="fa fa-upload"></i> Import
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false" title="Export Options">
+                                    <i class="fa fa-download"></i> Export
                                 </button>
-                                {{-- <!-- Add Button -->
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="#"
+                                            onclick="exportTableToCSV('settlement_data.csv'); return false;">
+                                            <i class="fa fa-file-text-o  me-2"></i> CSV
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#"
+                                            onclick="exportTableToExcel('settlement_data.xlsx'); return false;">
+                                            <i class="fa fa-file-excel-o text me-2"></i> Excel
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="exportTableToPDF(); return false;">
+                                            <i class="fa fa-file-pdf-o me-2"></i> PDF
+                                        </a>
+                                    </li>
+                                    {{-- <li>
+                                        <hr class="dropdown-divider">
+                                    </li> --}}
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="printTable(); return false;">
+                                            <i class="fa fa-print me-2"></i> Print
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button type="button" class="btn btn-sm btn-gradient-primary" data-bs-toggle="modal"
+                                data-bs-target="#importModal" title="Import">
+                                <i class="fa fa-upload"></i> Import
+                            </button>
+                            {{--
+                            <!-- Add Button -->
                             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
                                 <i class="mdi mdi-plus-circle"></i> Add
                             </button> --}}
-                                <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#metaFilterBody">
-                                    <i class="mdi mdi-filter"></i>
-                                    <span id="tableFilterBtnText">Show Filter</span>
-                                </button>
-                            </div>
+                            <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#metaFilterBody">
+                                <i class="mdi mdi-filter"></i>
+                                <span id="tableFilterBtnText">Show Filter</span>
+                            </button>
                         </div>
-                        <!-- Filter Section -->
-                        <div class="mb-3">
-                            @include('admin.petro.settlement-list.widgets.filter')
-                        </div>
-
-                        <!-- Table -->
-                        <div class="table-responsive">
-                            <table id="entryTable" class="table table-hover table-bordered w-100">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th>Settlement ID</th>
-                                        <th>Settlement Date</th>
-                                        <th>Pump Operator</th>
-                                        <th>Pumps</th>
-                                        <th>Location</th>
-                                        <th>Shift</th>
-                                        <th>Total Amount</th>
-                                        <th>Added User</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
+                    </div>
+                    <!-- Filter Section -->
+                    <div class="mb-3">
+                        @include('admin.petro.settlement-list.widgets.filter')
+                    </div>
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table id="entryTable" class="data-table table table-hover table-bordered w-100 compact">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Settlement ID</th>
+                                    <th>Settlement Date</th>
+                                    <th>Pump Operator</th>
+                                    <th>Pumps</th>
+                                    <th>Location</th>
+                                    <th>Shift</th>
+                                    <th>Total Amount</th>
+                                    <th>Added User</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- View Details Modal -->
-    @include('admin.petro.settlement-list.widgets.models.view-details')
+<!-- View Details Modal -->
+@include('admin.petro.settlement-list.widgets.models.view-details')
 
-    @include('admin.petro.settlement-list.widgets.models.import')
+@include('admin.petro.settlement-list.widgets.models.import')
 @endsection
 
 <script src="{{ asset('assets/js/settlementList.js') }}"></script>
