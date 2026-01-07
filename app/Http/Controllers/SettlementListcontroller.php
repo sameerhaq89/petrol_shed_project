@@ -21,8 +21,29 @@ class SettlementListcontroller extends Controller
 
     public function index()
     {
-        $settelementLists = $this->getDummyData();
-        return view('admin.petro.settlement-list.index', compact('settelementLists'));
+
+        $dataTables = [
+            'Entry' => [
+                'title'   => 'Entry',
+                'id' => 'pumpWidget',
+                'class' => ['active'],
+                'columns' => [
+                    'settlement ID',
+                    'Settlement Date',
+                    'Pump Operator',
+                    'Pumps',
+                    'location',
+                    'Shift',
+                    'Total Amount',
+                    'Added User',
+                    'Status',
+                    'Action'
+                ],
+                'Actions' =>
+                ['view','delete']
+            ]
+        ];
+        return view('admin.petro.settlement-list.index', compact('dataTables'));
     }
 
     // Add this method to return data as JSON

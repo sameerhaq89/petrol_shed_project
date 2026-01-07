@@ -79,7 +79,7 @@
                         </div>
 
                         <!-- Table -->
-                        <div class="table-responsive">
+                        {{-- <div class="table-responsive">
                             <table id="entryTable" class="table table-hover table-bordered w-100 compact">
                                 <thead class="bg-light">
                                     <tr>
@@ -98,7 +98,8 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                        </div>
+                        </div> --}}
+                        <x-data-table :tables="$dataTables" />
                     </div>
                 </div>
             </div>
