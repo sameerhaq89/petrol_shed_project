@@ -185,7 +185,7 @@
                 }
             }
 
-            /*
+            @media (max-width: 768px) {
                 .data-table thead {
                     display: none;
                 }
@@ -199,12 +199,12 @@
                     font-weight: 600;
                     text-align: left;
                 }
-                    
+
                 .data-table td:nth-child(4),
                 .data-table td:nth-child(5) {
                     display: none;
                 }
-                
+
                 .data-table,
                 .data-table tbody,
                 .data-table tr,
@@ -241,5 +241,5 @@
                 .data-table td:last-child {
                     border-bottom: 0;
                 }
-                    /*
-                
+
+            }

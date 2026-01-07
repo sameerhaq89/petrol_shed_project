@@ -75,6 +75,21 @@ async function fetchEntries(filter = {}) {
         (grossAmountSum - totalDiscountSum).toLocaleString(undefined, { minimumFractionDigits: 2 });
 }
 
+function addDataLabels() {
+    const table = document.querySelector('.data-table');
+    if (!table) return;
+
+    const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+
+    table.querySelectorAll('tbody tr').forEach(row => {
+        row.querySelectorAll('td').forEach((td, index) => {
+            if (headers[index]) {
+                td.setAttribute('data-label', headers[index]);
+            }
+        });
+    });
+}
+
 document.addEventListener('click', function (e) {
     const btn = e.target.closest('.view-details');
     if (!btn) return;
@@ -95,19 +110,13 @@ document.addEventListener('click', function (e) {
     document.getElementById('modalAfter').innerText =
         parseFloat(btn.dataset.after).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 });
-// function showFilter() {
-//     const filterBtn = document.getElementById('tableFilterBtn');
-//     if (!filterBtn) return;
-
-//     filterBtn.addEventListener('click', () => {
-//         const container = document.querySelector('.filterContainer');
-//         if (!container) return;
-//         container.textContent = `@include('admin.petro.settlement.widget.filter')`;
-//     });
-// }
-
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetchEntries();
-    showFilter();
+    fetchEntries().then(() => {
+        addDataLabels();
+
+        $('.data-table').on('draw.dt', function () {
+            addDataLabels();
+        });
+    });
 });

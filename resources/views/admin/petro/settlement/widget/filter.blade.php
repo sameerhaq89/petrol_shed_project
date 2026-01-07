@@ -1,24 +1,29 @@
 <style>
     @media (max-width: 768px) {
-        #metaFilterBody .d-flex.flex-nowrap {
+        #metaFilterBodyEntry .d-flex.flex-nowrap {
             flex-wrap: wrap !important;
         }
 
-        #metaFilterBody .overflow-auto {
+        #metaFilterBodyEntry .overflow-auto {
             overflow: visible !important;
         }
 
-        #metaFilterBody .d-flex.flex-nowrap>div {
+        #metaFilterBodyEntry>.d-flex>div {
             width: 100% !important;
             max-width: 100% !important;
             min-width: 100% !important;
+            margin-bottom: 0.5rem;
         }
 
-        #metaFilterBody .d-flex.flex-nowrap>div:nth-child(5),
-        #metaFilterBody .d-flex.flex-nowrap>div:nth-child(6) {
+        #metaFilterBodyEntry>.d-flex>div:nth-child(5),
+        #metaFilterBodyEntry>.d-flex>div:nth-child(6) {
             width: calc(50% - 4px) !important;
             max-width: calc(50% - 4px) !important;
             min-width: calc(50% - 4px) !important;
+        }
+
+        #metaFilterBodyEntry>.d-flex>div:nth-child(5) {
+            margin-right: 8px;
         }
     }
 </style>
