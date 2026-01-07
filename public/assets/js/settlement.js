@@ -95,8 +95,19 @@ document.addEventListener('click', function (e) {
     document.getElementById('modalAfter').innerText =
         parseFloat(btn.dataset.after).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 });
+// function showFilter() {
+//     const filterBtn = document.getElementById('tableFilterBtn');
+//     if (!filterBtn) return;
+
+//     filterBtn.addEventListener('click', () => {
+//         const container = document.querySelector('.filterContainer');
+//         if (!container) return;
+//         container.textContent = `@include('admin.petro.settlement.widget.filter')`;
+//     });
+// }
 
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchEntries();
+    showFilter();
 });

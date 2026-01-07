@@ -1,16 +1,14 @@
-// assets/js/data-tables.js
-let tables = []; // store all DataTable instances
+
+let tables = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     initDataTables();
 });
 
 function initDataTables() {
-    // destroy existing tables if they exist
     tables.forEach(t => t.destroy());
-    tables = []; // reset array
+    tables = [];
 
-    // initialize all tables with class .data-table
     document.querySelectorAll('.data-table').forEach(tableEl => {
         const dt = new DataTable(tableEl, {
             responsive: true,
@@ -26,6 +24,6 @@ function initDataTables() {
             }
         });
 
-        tables.push(dt); // keep track of this instance
+        tables.push(dt);
     });
 }

@@ -25,7 +25,9 @@
             </div>
         </div>
     </div>
-    <x-data-table :tables="$dataTables" />
+    @include('admin.petro.pump-management.widget.pump-table')
+    @include('admin.petro.pump-management.widget.testing-details-table')
+    @include('admin.petro.pump-management.widget.meter-readings-table')
 </div>
 @endsection
 <script src="{{ asset('assets/js/pump-management.js') }}"></script>

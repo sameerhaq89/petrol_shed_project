@@ -22,7 +22,7 @@
         }
     }
 </style>
-<div class="collapse" id="metaFilterBody">
+<div class="collapse" id="metaFilterBodyEntry">
     <div class="d-flex flex-nowrap align-items-end gap-2 py-1 overflow-auto">
         <div class="d-flex flex-column flex-shrink-0" style="width: 80px;">
             <label class="text-muted small mb-1">Ref</label>
