@@ -1,5 +1,4 @@
 @extends('admin.layouts.app')
-<link rel="stylesheet" href="{{ asset('assets/css/data-table.css') }}">
 <style>
     .dropdown-item:hover,
     .dropdown-item {
@@ -73,13 +72,10 @@
                             </button>
                         </div>
                     </div>
-                    <!-- Filter Section -->
-                    <div class="mb-3">
-                        @include('admin.petro.settlement-list.widgets.filter')
-                    </div>
+                    @include('admin.petro.settlement-list.widgets.filter')
                     <!-- Table -->
                     <div class="table-responsive">
-                        <table id="entryTable" class="data-table table table-hover table-bordered w-100 compact">
+                        <table class="data-table table table-hover table-bordered w-100">
                             <thead class="bg-light">
                                 <tr>
                                     <th>Settlement ID</th>
@@ -106,7 +102,6 @@
 
 <!-- View Details Modal -->
 @include('admin.petro.settlement-list.widgets.models.view-details')
-
 @include('admin.petro.settlement-list.widgets.models.import')
 @endsection
 

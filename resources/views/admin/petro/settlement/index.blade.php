@@ -37,8 +37,10 @@
             </div>
         </div>
     </div>
+    
     {{-- 3. Table --}}
     @include('admin.petro.settlement.widget.entry-table')
+
     {{-- 4. Summary Widget --}}
     <div class="row">
         <div class="col-12 mb-4 stretch-card">
