@@ -38,12 +38,12 @@
                             <tr>
                                 <th>Transaction Date</th>
                                 <th>Location</th>
-                                <th>Settlement No</th>
+                                <th>Settlement</th>
                                 <th>Pump No</th>
                                 <th>Product</th>
                                 <th>Operator</th>
-                                <th>Testing Ltr</th>
-                                <th>Testing Sale Value</th>
+                                <th>Leter</th>
+                                <th>Sale Value</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
