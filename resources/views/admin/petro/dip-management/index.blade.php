@@ -17,7 +17,7 @@
     </div>
 
     {{-- Second content: Recent Dip Entries (DataTable) --}}
-    <div class="row mt-3">
+    {{-- <div class="row mt-5">
         <div class="col-12">
             <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                 <div class="card-body">
@@ -26,22 +26,21 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
+    @include('admin.petro.dip-management.widget.dip-list')
 </div>
 @endsection
 
-@section('styles')
+{{-- @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/dip-management.css') }}">
-    {{-- DataTables CSS (CDN) --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 @endsection
 
 @section('scripts')
-    {{-- jQuery + DataTables (CDN) --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="{{ asset('assets/js/dip-management.js') }}"></script>
-@endsection
+@endsection --}}

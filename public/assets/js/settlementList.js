@@ -1,31 +1,3 @@
-let settlementTable;
-let allSettlementsData = [];
-
-function initSettlementTable() {
-    if (settlementTable) {
-        settlementTable.destroy();
-    }
-
-    settlementTable = new DataTable('#entryTable', {
-        responsive: true,
-        pageLength: 10,
-        pagingType: 'simple_numbers',
-        language: {
-            search: '',
-            searchPlaceholder: 'Search…',
-            paginate: {
-                previous: '‹',
-                next: '›'
-            }
-        },
-        columnDefs: [
-            { responsivePriority: 1, targets: -1 }, // Action column
-            { responsivePriority: 2, targets: 0 },  // Settlement ID
-            { responsivePriority: 3, targets: 2 }   // Pump Operator
-        ]
-    });
-}
-
 // Populate filter options from settlement data
 function populateFilterOptions(settlements) {
     const operators = new Set();
@@ -89,7 +61,6 @@ function populateFilterOptions(settlements) {
         reinitializeSelect2();
     }
 }
-
 async function fetchSettlements(filter = {}) {
     const res = await fetch('/settlement-data');
     const settlements = await res.json();
@@ -128,6 +99,30 @@ async function fetchSettlements(filter = {}) {
     });
 
     table.draw(false);
+    
+    // After drawing, add data-label attributes to each td
+    setTimeout(() => {
+        $('.data-table tbody tr').each(function() {
+            const $row = $(this);
+            $row.find('td').each(function(index) {
+                const labels = [
+                    "Settlement ID",
+                    "Settlement Date", 
+                    "Pump Operator",
+                    "Pumps",
+                    "Location",
+                    "Shift",
+                    "Total Amount",
+                    "Added User",
+                    "Status",
+                    "Action"
+                ];
+                if (labels[index]) {
+                    $(this).attr('data-label', labels[index]);
+                }
+            });
+        });
+    }, 100);
 }
 
 

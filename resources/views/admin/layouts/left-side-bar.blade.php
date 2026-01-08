@@ -57,8 +57,6 @@
                     </li>
                     <li class="nav-item {{ Request::is('/settlement') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
-                    </li>
-                    <li class="nav-item {{ Request::is('/settlement-list') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
                     </li>
                     <li class="nav-item {{ Request::is('/pump-management') ? 'active' : '' }}">

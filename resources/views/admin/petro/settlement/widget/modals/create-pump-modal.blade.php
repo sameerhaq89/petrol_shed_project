@@ -1,8 +1,8 @@
-<div class="modal fade" id="recordDipModal" tabindex="-1" aria-labelledby="recordDipModalLabel" aria-hidden="true">
+<div class="modal fade" id="addPumpModal" tabindex="-1" aria-labelledby="addPumpModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-gradient-primary text-white">
-                <h5 class="modal-title d-flex align-items-center" id="recordDipModalLabel">
+                <h5 class="modal-title d-flex align-items-center" id="addPumpModalLabel">
                     <i class="mdi mdi-gas-station me-2"></i>
                     Add New Pump
                 </h5>

@@ -1,9 +1,9 @@
-<div class="row d-none" id="testingWidget">
+<div class="row">
     <div class="col-12 mb-4 stretch-card">
-        <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
+        <div class=" card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3 flex-wrap">
-                    <h3 class="page-title mb-3 table-name">All Filling Station Tests</h3>
+                    <h3 class="page-title mb-3 table-name">Summary Table</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <div class="dropdown export-dropdown">
                             <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
@@ -24,50 +24,35 @@
                                             class="fa fa-print me-2"></i> Print</a></li>
                             </ul>
                         </div>
-                        <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#testingDetailsFilterDiv">
+                        <button type="button" class="btn btn-sm btn-gradient-primary" data-bs-toggle="modal"
+                            data-bs-target="#importModal" title="Import">
+                            <i class="fa fa-upload"></i> Import
+                        </button>
+                        <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#metaFilterBody">
                             <i class="mdi mdi-filter"></i>
                             <span id="tableFilterBtnText">Show Filter</span>
                         </button>
                     </div>
                 </div>
-                @include('admin.petro.pump-management.widget.testing-details-filter')
+                @include('admin.petro.settlement-list.widget.filter')
                 <div class="table-responsive">
                     <table class="data-table table table-hover table-bordered w-100">
                         <thead class="bg-light">
                             <tr>
-                                <th>Transaction Date</th>
+                                <th>Settlement ID</th>
+                                <th>Settlement Date</th>
+                                <th>Pump Operator</th>
+                                <th>Pumps</th>
                                 <th>Location</th>
-                                <th>Settlement No</th>
-                                <th>Pump No</th>
-                                <th>Product</th>
-                                <th>Operator</th>
-                                <th>Testing Ltr</th>
-                                <th>Testing Sale Value</th>
+                                <th>Shift</th>
+                                <th>Total Amount</th>
+                                <th>Added User</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($testing_details as $test)
-                            <tr>
-                                <td data-label="Transaction Date">{{ $test['transaction_date'] }}</td>
-                                <td data-label="Location">{{ $test['location'] }}</td>
-                                <td data-label="Settlement No">{{ $test['settlement_no'] }}</td>
-                                <td data-label="Pump No">{{ $test['pump_no'] }}</td>
-                                <td data-label="Product">{{ $test['product'] }}</td>
-                                <td data-label="Operator">{{ $test['operator'] }}</td>
-                                <td data-label="Testing Ltr">{{ $test['testing_ltr'] }}</td>
-                                <td data-label="Testing Sale Value">{{ $test['testing_sale_value'] }}</td>
-                                <td data-label="Action" class="text-center">
-                                    <div class="btn-group">
-                                        <button
-                                            class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-details">
-                                            <i class="mdi mdi-eye-arrow-right-outline"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
