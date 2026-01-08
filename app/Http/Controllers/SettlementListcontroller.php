@@ -31,11 +31,9 @@ class SettlementListcontroller extends Controller
                     'settlement ID',
                     'Settlement Date',
                     'Pump Operator',
-                    'Pumps',
                     'location',
                     'Shift',
                     'Total Amount',
-                    'Added User',
                     'Status',
                     'Action'
                 ],

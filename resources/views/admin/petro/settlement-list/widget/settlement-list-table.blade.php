@@ -43,11 +43,9 @@
                                 <th>Settlement ID</th>
                                 <th>Settlement Date</th>
                                 <th>Pump Operator</th>
-                                <th>Pumps</th>
                                 <th>Location</th>
                                 <th>Shift</th>
                                 <th>Total Amount</th>
-                                <th>Added User</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
