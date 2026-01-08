@@ -3,36 +3,25 @@
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3 flex-wrap">
-                    <h3 class="page-title mb-3">All Filling Station Tests</h3>
+                    <h3 class="page-title mb-3 table-name">All Filling Station Tests</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
-                        <div class="dropdown">
+                        <div class="dropdown export-dropdown">
                             <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-expanded="false" title="Export Options">
                                 <i class="fa fa-download"></i> Export
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                        onclick="exportTableToCSV('settlement_data.csv'); return false;">
-                                        <i class="fa fa-file-text-o  me-2"></i> CSV
-                                    </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="exportDropdown">
+                                <li><a class="dropdown-item" href="#" data-export="copy"><i class="fa fa-copy me-2"></i>
+                                        Copy</a></li>
+                                <li><a class="dropdown-item" href="#" data-export="csv"><i
+                                            class="fa fa-file-text-o me-2"></i> CSV</a></li>
+                                <li><a class="dropdown-item" href="#" data-export="excel"><i
+                                            class="fa fa-file-excel-o text me-2"></i> Excel</a>
                                 </li>
-                                <li>
-                                    <a class="dropdown-item" href="#"
-                                        onclick="exportTableToExcel('settlement_data.xlsx'); return false;">
-                                        <i class="fa fa-file-excel-o text me-2"></i> Excel
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#" onclick="exportTableToPDF(); return false;">
-                                        <i class="fa fa-file-pdf-o me-2"></i> PDF
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#" onclick="printTable(); return false;">
-                                        <i class="fa fa-print me-2"></i> Print
-                                    </a>
-                                </li>
+                                <li><a class="dropdown-item" href="#" data-export="pdf"><i
+                                            class="fa fa-file-pdf-o me-2"></i> PDF</a></li>
+                                <li><a class="dropdown-item" href="#" data-export="print"><i
+                                            class="fa fa-print me-2"></i> Print</a></li>
                             </ul>
                         </div>
                         <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"

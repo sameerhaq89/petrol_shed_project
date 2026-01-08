@@ -1,10 +1,4 @@
 @extends('admin.layouts.app')
-<style>
-    .dropdown-item:hover,
-    .dropdown-item {
-        color: gray !important;
-    }
-</style>
 @section('content')
 <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
@@ -22,7 +16,7 @@
                         <!-- Right side buttons -->
                         <div class="d-flex align-items-center gap-2 ms-auto">
 
-                            <div class="dropdown">
+                            <div class="dropdown export-dropdown">
                                 <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
                                     data-bs-toggle="dropdown" aria-expanded="false" title="Export Options">
                                     <i class="fa fa-download"></i> Export
