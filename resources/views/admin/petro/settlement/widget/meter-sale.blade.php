@@ -136,17 +136,17 @@
             },
             persist: false,
         });
-        new TomSelect(".meter-sale-widget .product-select", {
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            plugins: {
-                'clear_button': {
-                    'title': 'Remove all selected options',
-                }
-            },
-            persist: false,
-        });
+        // new TomSelect(".meter-sale-widget .product-select", {
+        //     sortField: {
+        //         field: "text",
+        //         direction: "asc"
+        //     },
+        //     plugins: {
+        //         'clear_button': {
+        //             'title': 'Remove all selected options',
+        //         }
+        //     },
+        //     persist: false,
+        // });
 </script>
 @endpush

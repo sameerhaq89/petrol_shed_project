@@ -26,7 +26,7 @@ class PumpController extends Controller
         $pumps = [
             [
                 'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 08:30',
+                'transaction_date' => '2026-01-07',
                 'pump_no' => 'LP1',
                 'name' => 'LP1',
                 'start_meter' => '912,500.50',
@@ -36,7 +36,7 @@ class PumpController extends Controller
             ],
             [
                 'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 09:15',
+                'transaction_date' => '2026-01-07',
                 'pump_no' => 'LP2',
                 'name' => 'LP2',
                 'start_meter' => '500,000.00',
@@ -46,7 +46,7 @@ class PumpController extends Controller
             ],
             [
                 'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 10:45',
+                'transaction_date' => '2026-01-07',
                 'pump_no' => 'LP3',
                 'name' => 'LP3',
                 'start_meter' => '120,000.00',
@@ -56,7 +56,7 @@ class PumpController extends Controller
             ],
             [
                 'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 11:30',
+                'transaction_date' => '2026-01-07',
                 'pump_no' => 'LP4',
                 'name' => 'LP4',
                 'start_meter' => '800,000.00',
@@ -68,7 +68,7 @@ class PumpController extends Controller
 
         $testing_details = [
             [
-                'transaction_date' => '2026-01-07 08:30',
+                'transaction_date' => '2026-01-07',
                 'location' => 'Colombo Station 1',
                 'settlement_no' => 'S001',
                 'pump_no' => 'LP1',
@@ -78,7 +78,7 @@ class PumpController extends Controller
                 'testing_sale_value' => '148,648.50'
             ],
             [
-                'transaction_date' => '2026-01-07 09:15',
+                'transaction_date' => '2026-01-07',
                 'location' => 'Colombo Station 2',
                 'settlement_no' => 'S002',
                 'pump_no' => 'LP2',
@@ -88,7 +88,7 @@ class PumpController extends Controller
                 'testing_sale_value' => '180,000.00'
             ],
             [
-                'transaction_date' => '2026-01-07 10:45',
+                'transaction_date' => '2026-01-07',
                 'location' => 'Colombo Station 3',
                 'settlement_no' => 'S003',
                 'pump_no' => 'LP3',
@@ -98,7 +98,7 @@ class PumpController extends Controller
                 'testing_sale_value' => '139,397.50'
             ],
             [
-                'transaction_date' => '2026-01-07 11:30',
+                'transaction_date' => '2026-01-07',
                 'location' => 'Colombo Station 4',
                 'settlement_no' => 'S004',
                 'pump_no' => 'LP4',

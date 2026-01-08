@@ -45,8 +45,8 @@
                                 <th>Start Meter</th>
                                 <th>Current Meter</th>
                                 <th>Product Name</th>
-                                <th>Fuel Tank</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Tank</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -61,6 +61,22 @@
                                 <td data-label="Current Meter">{{ $pump['close_meter'] }}</td>
                                 <td data-label="Product Name">{{ $pump['product_name'] }}</td>
                                 <td data-label="Fuel Tank">{{ $pump['fuel_tanks'] ?? 'Tank A' }}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <button
+                                            class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view">
+                                            <i class="mdi mdi-eye-arrow-right-outline"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
+                                            <i class="mdi mdi-delete"></i>
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
