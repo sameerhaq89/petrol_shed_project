@@ -40,8 +40,8 @@
 
     .meter-sale-widget .pump-select+button,
     .meter-sale-widget .product-select+button {
-        position: absolute;
-        z-index: 1050;
+        /* position: absolute; */
+        z-index: 100;
     }
 </style>
 

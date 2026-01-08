@@ -38,7 +38,7 @@
     </table>
 </div> --}}
 
-<div class="row">
+<div class="row mt-3">
     <div class="col-12 mb-4 stretch-card">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
@@ -58,7 +58,7 @@
                                 <th>Dip Reading</th>
                                 <th>Qty (L)</th>
                                 <th>Note</th>
-                                <th>Action</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,16 +70,19 @@
                                 <td>700.00</td>
                                 <td>4,199.00</td>
                                 <td>OK</td>
-                                <td>
+                                <td data-label="Action" class="text-center">
                                     <div class="btn-group">
-                                        <button class="btn btn-sm btn-gradient-primary">
+                                        <button
+                                            class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit">
                                             <i class="mdi mdi-pencil"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-gradient-danger">
+                                        <button
+                                            class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
                                             <i class="mdi mdi-delete"></i>
                                         </button>
                                     </div>
                                 </td>
+
                             </tr>
                             <tr>
                                 <td>127</td>
@@ -89,12 +92,14 @@
                                 <td>700.00</td>
                                 <td>4,199.00</td>
                                 <td>OK</td>
-                                <td>
+                                <td data-label="Action" class="text-center">
                                     <div class="btn-group">
-                                        <button class="btn btn-sm btn-gradient-primary">
+                                        <button
+                                            class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit">
                                             <i class="mdi mdi-pencil"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-gradient-danger">
+                                        <button
+                                            class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
                                             <i class="mdi mdi-delete"></i>
                                         </button>
                                     </div>

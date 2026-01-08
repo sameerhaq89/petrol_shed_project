@@ -32,9 +32,8 @@
 </div>
 @endsection
 
-@section('styles')
+{{-- @section('styles')
 <link rel="stylesheet" href="{{ asset('assets/css/dip-management.css') }}">
-    {{-- DataTables CSS (CDN) --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 @endsection
@@ -44,4 +43,4 @@
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <script src="{{ asset('assets/js/dip-management.js') }}"></script>
-@endsection
+@endsection --}}

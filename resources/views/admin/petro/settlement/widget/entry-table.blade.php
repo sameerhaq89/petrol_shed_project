@@ -2,7 +2,7 @@
     <div class="col-12 mb-4 stretch-card">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
-                <div class="d-flex align-items-center mb-3 flex-wrap">
+                <div class="d-flex align-items-center  flex-wrap">
                     <h3 class="page-title mb-3">Entry</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"
