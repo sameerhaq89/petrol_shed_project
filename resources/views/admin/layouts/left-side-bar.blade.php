@@ -52,14 +52,17 @@
             </a>
             <div class="collapse" id="petro">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
+                    <li class="nav-item {{ Request::is('/tanks') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/tanks') }}">Tank Management</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {{ Request::is('/settlement') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
                         <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
                         <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
                         <a class="nav-link" href="{{ url('/pump-management') }}">Pump Management</a>
+                    </li>
+                    <li class="nav-item {{ Request::is('/dip-management') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">p2</a>

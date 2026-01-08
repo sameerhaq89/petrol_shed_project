@@ -6,6 +6,23 @@ use Illuminate\Http\Request;
 
 class TankController extends Controller
 {
+    protected array $pageHeader;
+
+    public function __construct()
+    {
+        $this->pageHeader = [
+            'title' => 'Fuel Tank Overview',
+            'icon'  => 'mdi mdi-gas-station',
+            'showButton' => true,
+            'buttonText' => 'Record New Dip',
+            'buttonId' => 'addTankBtn',
+            'buttonClass' => 'btn btn-sm btn-gradient-primary',
+            'buttonIcon' => 'mdi mdi-plus',
+        ];
+
+        view()->share('pageHeader', $this->pageHeader);
+    }
+
     public function index()
     {
         // Sample tank data - replace with database queries later

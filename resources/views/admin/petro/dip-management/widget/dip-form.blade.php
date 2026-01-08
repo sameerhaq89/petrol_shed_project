@@ -1,22 +1,22 @@
 <form id="dipForm" class="dip-management-form">
     <div class="row g-2">
         <div class="col-md-3">
-            <label class="form-label">Reference No:</label>
+            <label class="text-muted small mb-1">Reference No:</label>
             <input type="text" class="form-control form-control-sm" name="reference" value="{{ $reference ?? '' }}">
         </div>
         <div class="col-md-3">
-            <label class="form-label">Date & Time:</label>
+            <label class="text-muted small mb-1">Date & Time:</label>
             <input type="datetime-local" class="form-control form-control-sm" name="datetime"
                 value="{{ now()->format('Y-m-d\TH:i') }}">
         </div>
         <div class="col-md-3">
-            <label class="form-label">Daily Report Date:</label>
+            <label class="text-muted small mb-1">Daily Report Date:</label>
             <input type="date" class="form-control form-control-sm" name="report_date"
                 value="{{ now()->toDateString() }}">
         </div>
         <div class="col-md-3">
-            <label class="form-label">Location:</label>
-            <select class="form-select form-select-sm" style="padding-bottom:12px;" name="location">
+            <label class="text-muted small mb-1">Location:</label>
+            <select class="form-control form-control-sm" style="padding-bottom:12px;" name="location">
                 <option>S.H.M Jafris Lanka Filling Station</option>
             </select>
         </div>
@@ -26,23 +26,23 @@
 
     <div class="row g-2 align-items-end mt-3">
         <div class="col-md-3">
-            <label class="form-label">Tanks:</label>
-            <select class="form-select form-select-sm" style="padding-top:12px;" id="tankSelect">
+            <label class="text-muted small mb-1">Tanks:</label>
+            <select class="form-control form-control-sm" style="padding-top:12px;" id="tankSelect">
                 <option value="LP92-1">LP92-1</option>
                 <option value="LP92-2">LP92-2</option>
                 <option value="LAD-1">LAD-1</option>
             </select>
         </div>
         <div class="col-md-3">
-            <label class="form-label">Dip Reading:</label>
+            <label class="text-muted small mb-1">Dip Reading:</label>
             <input type="number" class="form-control form-control-sm" id="dipReading" placeholder="e.g. 1290">
         </div>
         <div class="col-md-3">
-            <label class="form-label">Dip Value (L):</label>
+            <label class="text-muted small mb-1">Dip Value (L):</label>
             <input type="number" class="form-control form-control-sm" id="dipValue" placeholder="Litres">
         </div>
         <div class="col-md-2 d-flex flex-column">
-            <label class="form-label">Current Qty:</label>
+            <label class="text-muted small mb-1">Current Qty:</label>
             <input type="text" class="form-control form-control-sm" id="currentQty" readonly value="0.00">
         </div>
         <div class="col-md-1 d-flex align-items-center justify-content-end">
