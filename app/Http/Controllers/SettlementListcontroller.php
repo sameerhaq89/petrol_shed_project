@@ -21,8 +21,29 @@ class SettlementListcontroller extends Controller
 
     public function index()
     {
-        $settelementLists = $this->getDummyData();
-        return view('admin.petro.settlement-list.index', compact('settelementLists'));
+
+        $dataTables = [
+            'Entry' => [
+                'title'   => 'Entry',
+                'id' => 'pumpWidget',
+                'class' => ['active'],
+                'columns' => [
+                    'settlement ID',
+                    'Settlement Date',
+                    'Pump Operator',
+                    'Pumps',
+                    'location',
+                    'Shift',
+                    'Total Amount',
+                    'Added User',
+                    'Status',
+                    'Action'
+                ],
+                'Actions' =>
+                ['view','delete']
+            ]
+        ];
+        return view('admin.petro.settlement-list.index', compact('dataTables'));
     }
 
     // Add this method to return data as JSON
@@ -40,7 +61,7 @@ class SettlementListcontroller extends Controller
                 'settlement_date' => '31/01/2025',
                 'settlement_id' => 'ST135',
                 'shift_id' => '1',
-                'pump_operator_name' => 'URA_UPG,DRI, LDSI',
+                'pump_operator_name' => 'URA_UPG',
                 'pumps' => '5 R.M Litres, Lande Pump, 2.14',
                 'location' => 'puttalam',
                 'shift' => 'Day Shift',
@@ -54,7 +75,7 @@ class SettlementListcontroller extends Controller
                 'settlement_date' => '30/01/2025',
                 'settlement_id' => 'ST134',
                 'shift_id' => '2',
-                'pump_operator_name' => 'JOHN_OPE, TRU, MSDS',
+                'pump_operator_name' => 'JOHN_OPER',
                 'pumps' => '3 R.M Litres, BP Pump, 1.85',
                 'location' => 'puttalam',
                 'shift' => 'Night Shift',
@@ -68,7 +89,7 @@ class SettlementListcontroller extends Controller
                 'settlement_date' => '29/01/2025',
                 'settlement_id' => 'ST133',
                 'shift_id' => '1',
-                'pump_operator_name' => 'SARA_OPT, FRI, LDDI',
+                'pump_operator_name' => 'SARA_OPT',
                 'pumps' => '4 R.M Litres, Shell Pump, 2.05',
                 'location' => 'colombo',
                 'shift' => 'Day Shift',
@@ -82,7 +103,7 @@ class SettlementListcontroller extends Controller
                 'settlement_date' => '28/01/2025',
                 'settlement_id' => 'ST132',
                 'shift_id' => '2',
-                'pump_operator_name' => 'MIKE_OPR, GHI, PQRS',
+                'pump_operator_name' => 'MIKE_OPR',
                 'pumps' => '6 R.M Litres, Mobil Pump, 2.35',
                 'location' => 'colombo',
                 'shift' => 'Night Shift',
@@ -96,7 +117,7 @@ class SettlementListcontroller extends Controller
                 'settlement_date' => '27/01/2025',
                 'settlement_id' => 'ST131',
                 'shift_id' => '1',
-                'pump_operator_name' => 'ROSE_OPS, JKL, TUVW',
+                'pump_operator_name' => 'ROSE_OPS',
                 'pumps' => '5 R.M Litres, Total Pump, 2.15',
                 'location' => 'kandy',
                 'shift' => 'Day Shift',
@@ -110,7 +131,7 @@ class SettlementListcontroller extends Controller
                 'settlement_date' => '26/01/2025',
                 'settlement_id' => 'ST130',
                 'shift_id' => '2',
-                'pump_operator_name' => 'ALEX_OPU, MNO, XYZA',
+                'pump_operator_name' => 'ALEX_OPU',
                 'pumps' => '3 R.M Litres, Chevron Pump, 1.95',
                 'location' => 'kandy',
                 'shift' => 'Night Shift',

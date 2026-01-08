@@ -1,26 +1,3 @@
-let settlementTable;
-let allSettlementsData = [];
-
-function initSettlementTable() {
-    if (settlementTable) {
-        settlementTable.destroy();
-    }
-
-    settlementTable = new DataTable('#entryTable', {
-        responsive: true,
-        pageLength: 10,
-        pagingType: 'simple_numbers',
-        language: {
-            search: '',
-            searchPlaceholder: 'Search…',
-            paginate: {
-                previous: '‹',
-                next: '›'
-            }
-        }
-    });
-}
-
 // Populate filter options from settlement data
 function populateFilterOptions(settlements) {
     const operators = new Set();
@@ -84,96 +61,71 @@ function populateFilterOptions(settlements) {
         reinitializeSelect2();
     }
 }
-
 async function fetchSettlements(filter = {}) {
-    let url = '/settlement-data';
+    const res = await fetch('/settlement-data');
+    const settlements = await res.json();
 
-    try {
-        const res = await fetch(url);
-        const settlements = await res.json();
+    const table = $('.data-table').DataTable();
+    table.clear();
 
-        // Store all settlements for filter options
-        allSettlementsData = settlements;
+    settlements.forEach(settlement => {
+        table.row.add([
+            settlement.settlement_id,
+            settlement.settlement_date,
+            `<strong>${settlement.pump_operator_name}</strong>`,
+            settlement.pumps,
+            settlement.location,
+            settlement.shift,
+            `<strong>${settlement.total_amount}</strong>`,
+            settlement.added_user,
+            `<span class="badge badge-${settlement.status === 'Completed' ? 'success' : 'warning'}">
+                ${settlement.status}
+            </span>`,
+            `
+            <div class="btn-group">
+                <button class="btn btn-sm btn-outline-success btn-icon view-settlement-details"
+                    data-id="${settlement.id}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#viewSettlementDetailsModal">
+                    <i class="mdi mdi-eye-arrow-right-outline"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger btn-icon delete-settlement"
+                    data-id="${settlement.id}">
+                    <i class="mdi mdi-delete"></i>
+                </button>
+            </div>
+            `
+        ]);
+    });
 
-        // Populate filter dropdowns on first load
-        populateFilterOptions(settlements);
-
-        // Apply filters if provided
-        let filteredSettlements = settlements;
-        if (Object.keys(filter).length > 0 && Object.values(filter).some(v => v)) {
-            filteredSettlements = settlements.filter(settlement => {
-                if (filter.settlementId && !settlement.settlement_id.toLowerCase().includes(filter.settlementId.toLowerCase())) return false;
-                if (filter.settlementDate && settlement.settlement_date !== filter.settlementDate) return false;
-                if (filter.operator && settlement.pump_operator_name !== filter.operator) return false;
-                if (filter.location && settlement.location !== filter.location) return false;
-                if (filter.shift && settlement.shift !== filter.shift) return false;
-                if (filter.status && settlement.status !== filter.status) return false;
-                if (filter.addedUser && settlement.added_user !== filter.addedUser) return false;
-                return true;
+    table.draw(false);
+    
+    // After drawing, add data-label attributes to each td
+    setTimeout(() => {
+        $('.data-table tbody tr').each(function() {
+            const $row = $(this);
+            $row.find('td').each(function(index) {
+                const labels = [
+                    "Settlement ID",
+                    "Settlement Date", 
+                    "Pump Operator",
+                    "Pumps",
+                    "Location",
+                    "Shift",
+                    "Total Amount",
+                    "Added User",
+                    "Status",
+                    "Action"
+                ];
+                if (labels[index]) {
+                    $(this).attr('data-label', labels[index]);
+                }
             });
-
-            console.log('Total Records:', settlements.length);
-            console.log('Filtered Records:', filteredSettlements.length);
-        }
-
-        const tbody = document.querySelector('#entryTable tbody');
-        tbody.innerHTML = '';
-
-        filteredSettlements.forEach(settlement => {
-            const statusBadgeClass = settlement.status === 'Completed'
-                ? 'badge-success'
-                : 'badge-warning';
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${settlement.settlement_id}</td>
-                <td>${settlement.settlement_date}</td>
-                <td><strong>${settlement.pump_operator_name}</strong></td>
-                <td>${settlement.pumps}</td>
-                <td>${settlement.location}</td>
-                <td>${settlement.shift}</td>
-                <td><strong>${settlement.total_amount}</strong></td>
-                <td>${settlement.added_user}</td>
-                <td>
-                    <span class="badge ${statusBadgeClass}">${settlement.status}</span>
-                </td>
-                <td class="text-center">
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-settlement-details"
-                            data-id="${settlement.id}"
-                            data-status="${settlement.status}"
-                            data-date="${settlement.settlement_date}"
-                            data-settlement-id="${settlement.settlement_id}"
-                            data-shift-id="${settlement.shift_id}"
-                            data-operator="${settlement.pump_operator_name}"
-                            data-pumps="${settlement.pumps}"
-                            data-location="${settlement.location}"
-                            data-shift="${settlement.shift}"
-                            data-note="${settlement.note}"
-                            data-amount="${settlement.total_amount}"
-                            data-added-user="${settlement.added_user}"
-                            data-bs-toggle="modal"
-                            data-bs-target="#viewSettlementDetailsModal"
-                            title="View Details">
-                            <i class="mdi mdi-eye-arrow-right-outline"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete-settlement"
-                            data-id="${settlement.id}"
-                            title="Delete Settlement">
-                            <i class="mdi mdi-delete"></i>
-                        </button>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(row);
         });
-
-        initSettlementTable();
-    } catch (error) {
-        console.error('Error fetching settlements:', error);
-        alert('Error loading settlements. Please try again.');
-    }
+    }, 100);
 }
+
+
 
 // View settlement details handler
 document.addEventListener('click', function (e) {
