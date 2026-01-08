@@ -28,6 +28,7 @@
     @include('admin.petro.pump-management.widget.pump-table')
     @include('admin.petro.pump-management.widget.testing-details-table')
     @include('admin.petro.pump-management.widget.meter-readings-table')
+    @include('admin.petro.settlement.widget.modals.create-pump-modal')
 </div>
 @endsection
 <script src="{{ asset('assets/js/pump-management.js') }}"></script>

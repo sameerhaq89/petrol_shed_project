@@ -1,23 +1,4 @@
 <style>
-    .filter-location,
-    .filter-operator,
-    .filter-pumps,
-    .filter-products {
-        min-width: 180px;
-        max-width: 220px;
-        flex: 1 1 180px;
-    }
-
-    .filter-settlement {
-        width: 110px;
-        flex-shrink: 0;
-    }
-
-    .filter-date {
-        width: 130px;
-        flex-shrink: 0;
-    }
-
     @media (max-width: 768px) {
         #testingDetailsFilterDiv .d-flex.flex-nowrap {
             flex-wrap: wrap !important;
@@ -27,33 +8,28 @@
             overflow: visible !important;
         }
 
-        .filter-location,
-        .filter-operator,
-        .filter-settlement,
-        .filter-pumps,
-        .filter-products,
-        .filter-date {
+        #testingDetailsFilterDiv>.d-flex>div {
             width: 100% !important;
             max-width: 100% !important;
             min-width: 100% !important;
             margin-bottom: 0.5rem;
         }
 
-        .filter-products,
-        .filter-date {
+        #testingDetailsFilterDiv>.d-flex>div:nth-child(5),
+        #testingDetailsFilterDiv>.d-flex>div:nth-child(6) {
             width: calc(50% - 4px) !important;
             max-width: calc(50% - 4px) !important;
             min-width: calc(50% - 4px) !important;
         }
 
-        .filter-products {
+        #testingDetailsFilterDiv>.d-flex>div:nth-child(5) {
             margin-right: 8px;
         }
     }
 </style>
 <div class="collapse" id="testingDetailsFilterDiv">
-    <div class="d-flex flex-nowrap align-items-end gap-2 py-1">
-        <div class="d-flex flex-column filter-location">
+    <div class="d-flex flex-nowrap align-items-end gap-2 py-1 overflow-auto">
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 180px; max-width: 210px;">
             <label class="text-muted small mb-1">Business Location</label>
             <select class="form-control form-control-sm py-1">
                 <option>Main Station - Negombo</option>
@@ -61,7 +37,7 @@
                 <option>Highway Station - Gampaha</option>
             </select>
         </div>
-        <div class="d-flex flex-column filter-operator">
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 180px; max-width: 210px;">
             <label class="text-muted small mb-1">Pump Operator</label>
             <select class="form-control form-control-sm py-1">
                 <option>All Operators</option>
@@ -70,7 +46,7 @@
                 <option>Kasun Fernando</option>
             </select>
         </div>
-        <div class="d-flex flex-column filter-settlement">
+        <div class="d-flex flex-column flex-shrink-0" style="width: 100px;">
             <label class="text-muted small mb-1">Settlement No</label>
             <select class="form-control form-control-sm py-1">
                 <option>All</option>
@@ -79,25 +55,24 @@
                 <option>STL-003</option>
             </select>
         </div>
-        <div class="d-flex flex-column filter-pumps">
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 180px; max-width: 210px;">
             <label class="text-muted small mb-1">Pumps</label>
             <select class="form-control form-control-sm py-1">
                 <option>All Pumps</option>
-                <option>Pump 1 - Diesel</option>
-                <option>Pump 2 - Petrol 92</option>
-                <option>Pump 3 - Petrol 95</option>
+                <option>Pump 1</option>
+                <option>Pump 2</option>
+                <option>Pump 3</option>
             </select>
         </div>
-        <div class="d-flex flex-column filter-products">
+        <div class="d-flex flex-column flex-grow-1" style="min-width: 150px; max-width: 210px;">
             <label class="text-muted small mb-1">Products</label>
             <select class="form-control form-control-sm py-1">
                 <option>All Products</option>
                 <option>Diesel</option>
-                <option>Petrol 92 Octane</option>
-                <option>Petrol 95 Octane</option>
+                <option>Petrol</option>
             </select>
         </div>
-        <div class="d-flex flex-column filter-date">
+        <div class="d-flex flex-column flex-shrink-0" style="width: 130px;">
             <label class="text-muted small mb-1">Date Range</label>
             <input type="date" class="form-control form-control-sm py-1" value="2025-01-07">
         </div>

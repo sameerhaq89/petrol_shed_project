@@ -1,9 +1,9 @@
-<div class="row" id="pumpWidget">
+<div class="row">
     <div class="col-12 mb-4 stretch-card">
-        <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
+        <div class=" card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
                 <div class="d-flex align-items-center mb-3 flex-wrap">
-                    <h3 class="page-title mb-3 table-name">All Your Pumps</h3>
+                    <h3 class="page-title mb-3 table-name">Summary Table</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <div class="dropdown export-dropdown">
                             <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
@@ -28,41 +28,31 @@
                             data-bs-target="#importModal" title="Import">
                             <i class="fa fa-upload"></i> Import
                         </button>
-                        <button class="btn btn-sm btn-gradient-primary" data-bs-toggle="modal"
-                            data-bs-target="#addPumpModal">
-                            <i class="mdi mdi-plus"></i> Add
+                        <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#metaFilterBody">
+                            <i class="mdi mdi-filter"></i>
+                            <span id="tableFilterBtnText">Show Filter</span>
                         </button>
                     </div>
                 </div>
+                @include('admin.petro.settlement-list.widget.filter')
                 <div class="table-responsive">
-                    <table class="data-table dt-export table table-hover table-bordered w-100">
+                    <table class="data-table table table-hover table-bordered w-100">
                         <thead class="bg-light">
                             <tr>
-                                <th>Date</th>
-                                <th>Transaction Date</th>
-                                <th>Pump No</th>
-                                <th>Pump Name</th>
-                                <th>Start Meter</th>
-                                <th>Current Meter</th>
-                                <th>Product Name</th>
-                                <th>Fuel Tank</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Settlement ID</th>
+                                <th>Settlement Date</th>
+                                <th>Pump Operator</th>
+                                <th>Pumps</th>
+                                <th>Location</th>
+                                <th>Shift</th>
+                                <th>Total Amount</th>
+                                <th>Added User</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pumps as $pump)
-                            <tr>
-                                <td data-label="Date">{{ $pump['date'] ?? '2026-01-07' }}</td>
-                                <td data-label="Transaction Date">{{ $pump['transaction_date'] ?? '2026-01-07 08:00' }}
-                                </td>
-                                <td data-label="Pump No">{{ $pump['pump_no'] }}</td>
-                                <td data-label="Pump Name">{{ $pump['name'] ?? 'Dummy Name' }}</td>
-                                <td data-label="Start Meter">{{ $pump['start_meter'] }}</td>
-                                <td data-label="Current Meter">{{ $pump['close_meter'] }}</td>
-                                <td data-label="Product Name">{{ $pump['product_name'] }}</td>
-                                <td data-label="Fuel Tank">{{ $pump['fuel_tanks'] ?? 'Tank A' }}</td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -78,7 +78,7 @@
                         </select>
                         <button type="button"
                             class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2"
-                            data-bs-toggle="modal" data-bs-target="#recordDipModal">
+                            data-bs-toggle="modal" data-bs-target="#addPumpModal">
                             <i class="mdi mdi-plus"></i>
                         </button>
                     </div>
