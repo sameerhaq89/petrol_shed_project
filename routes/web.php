@@ -7,6 +7,7 @@ use App\Http\Controllers\SettlementController;
 use App\Http\Controllers\DipManagementController;
 use App\Http\Controllers\SettlementListcontroller;
 use App\Http\Controllers\PumpController;
+use App\Http\Controllers\PumperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,5 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::get('/pump-management', [PumpController::class, 'index']);
     Route::resource('settlement-list', SettlementListcontroller::class);
     Route::get('/settlement-data', [SettlementListcontroller::class, 'getData']);
+    Route::resource('pumper-management', PumperController::class);
 });
