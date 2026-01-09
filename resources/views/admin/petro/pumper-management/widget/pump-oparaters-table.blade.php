@@ -45,7 +45,6 @@
                                 <th>Location</th>
                                 <th>Sold Fuel Qty(lts)</th>
                                 <th>Sale Amount Fuel</th>
-                                <th>Excess Amount</th>
                                 <th>Short Amount</th>
                                 <th>Current Balance</th>
                                 <th>Action</th>
