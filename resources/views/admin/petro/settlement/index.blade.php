@@ -52,7 +52,8 @@
         </div>
     </div>
     @include('admin.petro.settlement.widget.modals.create-pump-modal')
-    @include('admin.petro.settlement.widget.modals.view-details-modal')
+    @include('admin.petro.settlement.widget.modals.entry-view-details-modal')
+    @include('admin.petro.settlement.widget.modals.edit-entry-modal')
 </div>
 @endsection
 <script src="{{ asset('assets/js/settlement.js') }}"></script>

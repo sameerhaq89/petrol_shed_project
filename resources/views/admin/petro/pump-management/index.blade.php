@@ -29,6 +29,11 @@
     @include('admin.petro.pump-management.widget.testing-details-table')
     @include('admin.petro.pump-management.widget.meter-readings-table')
     @include('admin.petro.settlement.widget.modals.create-pump-modal')
+
+    {{-- Modals --}}
+    @include('admin.petro.pump-management.widget.modal.pump-view-details-modal')
+    @include('admin.petro.pump-management.widget.modal.test-view-details-modal')
+    @include('admin.petro.pump-management.widget.modal.meter-view-details-modal')
 </div>
 @endsection
 <script src="{{ asset('assets/js/pump-management.js') }}"></script>

@@ -51,7 +51,9 @@
         </div>
         <div class="col-md-3">
             <label class="text-muted small mb-1">Location:</label>
-            <select class="form-control form-control-sm" style="padding-bottom:12px;" name="location">
+            <select class="form-control form-control-sm tom-select" style="padding-bottom:12px;" name="location"
+                autocomplete="off">
+                <option value="">Select Location</option>
                 <option>S.H.M Jafris Lanka Filling Station</option>
             </select>
         </div>
@@ -63,7 +65,7 @@
     <div class="row g-2 align-items-end mt-3">
         <div class="col-md-3">
             <label class="text-muted small mb-1">Tanks:</label>
-            <select class="form-control form-control-sm tank-select" style="padding-top:12px;" id="tankSelect"
+            <select class="form-control form-control-sm tom-select" style="padding-top:12px;" id="tankSelect"
                 autocomplete="off">
                 <option value="">Select Tank</option>
                 <option value="LP92-1">LP92-1</option>
@@ -119,7 +121,8 @@
 </form>
 @push('js')
 <script>
-    new TomSelect(".tank-select", {
+    document.querySelectorAll('.tom-select').forEach(el => {
+    new TomSelect(el, {
             sortField: {
                 field: "text",
                 direction: "asc"
@@ -131,5 +134,6 @@
             },
             persist: false,
         });
+    })
 </script>
 @endpush

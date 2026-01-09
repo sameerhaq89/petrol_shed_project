@@ -2,7 +2,7 @@
     <div class="col-12 mb-4 stretch-card">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
-                <div class="d-flex align-items-center mb-3 flex-wrap">
+                <div class="d-flex align-items-center mb-2 flex-wrap">
                     <h3 class="page-title mb-3 table-name">All Your Pumps</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <div class="dropdown export-dropdown">
@@ -61,10 +61,11 @@
                                 <td data-label="Current Meter">{{ $pump['close_meter'] }}</td>
                                 <td data-label="Product Name">{{ $pump['product_name'] }}</td>
                                 <td data-label="Fuel Tank">{{ $pump['fuel_tanks'] ?? 'Tank A' }}</td>
-                                <td class="text-center">
+                                <td data-label="Action" class="text-center">
                                     <div class="btn-group">
                                         <button
-                                            class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view">
+                                            class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view"
+                                            data-bs-toggle="modal" data-bs-target="#pumpViewDetailsModal">
                                             <i class="mdi mdi-eye-arrow-right-outline"></i>
                                         </button>
                                         <button
