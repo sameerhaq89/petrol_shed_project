@@ -5,7 +5,7 @@
 </style>
 <!-- View Entry Details Modal -->
 <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 780px;">
         <div class="modal-content">
             <div class="modal-header bg-gradient-success text-white">
                 <h5 class="modal-title d-flex align-items-center" id="viewDetailsModalLabel">
@@ -38,7 +38,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="col-12 col-md-6 d-flex">
                         <div class="card flex-fill">
                             <div class="card-body py-3">

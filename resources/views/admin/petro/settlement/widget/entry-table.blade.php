@@ -5,6 +5,10 @@
                 <div class="d-flex align-items-center  flex-wrap">
                     <h3 class="page-title mb-3">Entry</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
+                        <button type="button" class="btn btn-sm btn-outline-secondary ms-auto d-none"
+                            id="resetEntryFilterBtn">
+                            <i class="mdi mdi-refresh"></i>
+                        </button>
                         <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary float-end" type="button"
                             data-bs-toggle="collapse" data-bs-target="#metaFilterBodyEntry">
                             <i class="mdi mdi-filter"></i>

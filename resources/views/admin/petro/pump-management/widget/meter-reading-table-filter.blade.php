@@ -46,7 +46,7 @@
                 <option>Kasun Fernando</option>
             </select>
         </div>
-        <div class="d-flex flex-column flex-shrink-0" style="width: 110px;">
+        <div class="d-flex flex-column flex-shrink-0" style="width: 100px;">
             <label class="text-muted small mb-1">Settlement No</label>
             <select class="form-control form-control-sm py-1">
                 <option>All</option>

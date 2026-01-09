@@ -46,11 +46,13 @@ async function fetchEntries(filter = {}) {
                     data-discount="${entry.discount_value}"
                     data-before="${entry.before_discount}"
                     data-after="${netAmount.toFixed(2)}"
+                    data-discount-type="${entry.discount_type}"
                     data-bs-toggle="modal"
                     data-bs-target="#viewDetailsModal">
                     <i class="mdi mdi-eye-arrow-right-outline"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit" data-id="${entry.id}">
+                <button class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit" data-id="${entry.id}"
+                data-bs-toggle="modal" data-bs-target="#editEntryModal">
                     <i class="mdi mdi-pencil"></i>
                 </button>
                 <button class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete" data-id="${entry.id}">
@@ -90,30 +92,88 @@ function addDataLabels() {
     });
 }
 
+function initCollapseWatcher() {
+    const collapseDiv = document.getElementById('metaFilterBodyEntry');
+    const resetBtn = document.getElementById('resetEntryFilterBtn');
+
+    const updateButton = () => {
+        if (collapseDiv.classList.contains('show')) {
+            resetBtn.classList.remove('d-none');
+        } else {
+            resetBtn.classList.add('d-none');
+        }
+    };
+    updateButton();
+    collapseDiv.addEventListener('hidden.bs.collapse', updateButton);
+    collapseDiv.addEventListener('shown.bs.collapse', updateButton);
+}
+
 document.addEventListener('click', function (e) {
-    const btn = e.target.closest('.view-details');
-    if (!btn) return;
+    const viewBtn = e.target.closest('.view-details');
+    if (viewBtn) {
+        document.getElementById('modalCode').innerText = viewBtn.dataset.code;
+        document.getElementById('modalProducts').innerText = viewBtn.dataset.products;
+        document.getElementById('modalPump').innerText = viewBtn.dataset.pump;
 
-    document.getElementById('modalCode').innerText = btn.dataset.code;
-    document.getElementById('modalProducts').innerText = btn.dataset.products;
-    document.getElementById('modalPump').innerText = btn.dataset.pump;
+        document.getElementById('modalStart').innerText = viewBtn.dataset.start;
+        document.getElementById('modalClose').innerText = viewBtn.dataset.close;
+        document.getElementById('modalSold').innerText = viewBtn.dataset.sold;
 
-    document.getElementById('modalStart').innerText = btn.dataset.start;
-    document.getElementById('modalClose').innerText = btn.dataset.close;
-    document.getElementById('modalSold').innerText = btn.dataset.sold;
+        document.getElementById('modalPrice').innerText = viewBtn.dataset.price;
+        document.getElementById('modalTotal').innerText = viewBtn.dataset.total;
 
-    document.getElementById('modalPrice').innerText = btn.dataset.price;
-    document.getElementById('modalTotal').innerText = btn.dataset.total;
+        document.getElementById('modalDiscount').innerText = viewBtn.dataset.discount + '%';
+        document.getElementById('modalBefore').innerText = viewBtn.dataset.before;
+        document.getElementById('modalAfter').innerText =
+            parseFloat(viewBtn.dataset.after).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
-    document.getElementById('modalDiscount').innerText = btn.dataset.discount + '%';
-    document.getElementById('modalBefore').innerText = btn.dataset.before;
-    document.getElementById('modalAfter').innerText =
-        parseFloat(btn.dataset.after).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const editBtn = e.target.closest('.edit');
+    if (editBtn) {
+        const num = v => v ? v.replace(/,/g, '') : '';
+        const row = editBtn.closest('tr');
+        const viewBtnInRow = row.querySelector('.view-details');
+        if (!viewBtnInRow) return;
+        document.getElementById('editCode').value = viewBtnInRow.dataset.code;
+        document.getElementById('editProduct').value = viewBtnInRow.dataset.products;
+        document.getElementById('editPump').value = viewBtnInRow.dataset.pump;
+
+        document.getElementById('editStart').value = num(viewBtnInRow.dataset.start);
+        document.getElementById('editClose').value = num(viewBtnInRow.dataset.close);
+        document.getElementById('editSold').value = num(viewBtnInRow.dataset.sold);
+
+        document.getElementById('editPrice').value = num(viewBtnInRow.dataset.price);
+        document.getElementById('editTotal').value = num(viewBtnInRow.dataset.total);
+
+        document.getElementById('editDiscountType').value = viewBtnInRow.dataset.discountType || '';
+        document.getElementById('editDiscount').value = num(viewBtnInRow.dataset.discount);
+        document.getElementById('editBefore').value = num(viewBtnInRow.dataset.before);
+        document.getElementById('editAfter').value = num(viewBtnInRow.dataset.after);
+    }
 });
+
+function initTomSelect() {
+    document.querySelectorAll('.tom-select').forEach(el => {
+        new TomSelect(el, {
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            plugins: {
+                'clear_button': {
+                    'title': 'Remove all selected options',
+                }
+            },
+            persist: false,
+        })
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     fetchEntries().then(() => {
         addDataLabels();
+        initCollapseWatcher();
+        initTomSelect()
 
         $('.data-table').on('draw.dt', function () {
             addDataLabels();
