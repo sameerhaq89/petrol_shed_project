@@ -8,8 +8,8 @@ async function fetchPumpOperators(filter = {}) {
 
         // Get the table element in the active pump-operators section
         const pumpSection = document.getElementById('pump-operators');
-        if (!pumpSection || !pumpSection.classList.contains('active')) {
-            console.log('Pump operators section is not active, skipping initialization');
+        if (!pumpSection) {
+            console.log('Pump operators section not found');
             return;
         }
         
@@ -34,18 +34,18 @@ async function fetchPumpOperators(filter = {}) {
                 pageLength: 25,
                 order: [[0, 'asc']],
                 columnDefs: [
-                    { orderable: false, targets: [7] }, // Action column (8th column, index 7)
+                    { orderable: false, targets: [7] }, 
                     { 
                         type: 'num', 
-                        targets: [2, 3, 4, 5, 6] // Numeric columns: Sold Fuel, Sale Amount, Excess, Short, Balance
+                        targets: [2, 3, 4, 5, 6] 
                     },
                     {
-                        targets: [3], // Sale Amount column
+                        targets: [3], 
                         render: function(data, type, row) {
                             if (type === 'display' || type === 'filter') {
-                                return data; // Return HTML as is for display
+                                return data; 
                             }
-                            // For sorting, extract the numeric value
+                           
                             const num = parseFloat(data.replace(/[^\d.-]/g, ''));
                             return isNaN(num) ? 0 : num;
                         }
@@ -80,7 +80,6 @@ async function fetchPumpOperators(filter = {}) {
                 op.location || '-',            // Column 1  
                 op.sold_fuel_qty_lb || '0',    // Column 2
                 `<strong>${saleAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>`, // Column 3
-                op.excess_amount || '0.00',    // Column 4
                 op.short_amount || '0.00',     // Column 5
                 `<strong>${op.current_balance || '0.00'}</strong>`, // Column 6
                 `
@@ -345,14 +344,54 @@ function applyFilters() {
     applyDataTableFilters(filters);
 }
 
+// =============== TAB SYSTEM ===============
+// Function to handle tab switching
+function loadTabContent(tabId) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show the selected tab's content
+    const targetSection = document.getElementById(tabId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
+    
+    // If switching to Pump Operators tab, load the table data
+    if (tabId === 'pump-operators') {
+        // Wait a bit for the section to become visible
+        setTimeout(() => {
+            fetchPumpOperators();
+        }, 100);
+    }
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize tab switching
+    const cards = document.querySelectorAll('.pumper-card');
+    const sections = document.querySelectorAll('.content-section');
+
+    cards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove active class from all cards
+            cards.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked card
+            this.classList.add('active');
+            
+            // Get which tab was clicked
+            const targetId = this.getAttribute('data-target');
+            
+            // Load content for this tab
+            loadTabContent(targetId);
+        });
+    });
+    
     // Initialize filters
     initializeFilters();
     
-    // Initialize pump operators table if the section is active
-    const pumpOperatorsSection = document.getElementById('pump-operators');
-    if (pumpOperatorsSection && pumpOperatorsSection.classList.contains('active')) {
-        fetchPumpOperators();
-    }
+    // Load initial content (Pump Operators tab is active by default)
+    loadTabContent('pump-operators');
 });

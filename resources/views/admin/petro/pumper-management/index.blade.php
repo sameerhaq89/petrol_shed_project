@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+<link rel="stylesheet" href="{{ asset('assets/css/data-table.css') }}">
 <style>
     .pumper-grid {
         display: grid;
@@ -48,7 +49,7 @@
 @section('content')
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
         @include('admin.command.widgets.page-header', $pageHeader)
-        
+
         <!-- Pumper Cards Navigation -->
         <div class="pumper-grid">
             <button class="pumper-card active" data-target="pump-operators">
@@ -112,12 +113,7 @@
 
             <!-- Excess & Shortage Section -->
             <div id="excess-shortage" class="content-section">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Excess & Shortage</h4>
-                        <p>Content for Excess & Shortage will go here...</p>
-                    </div>
-                </div>
+                @include('admin.petro.pumper-management.widget.execess-shortage-table')
             </div>
 
             <!-- Day Entries Section -->
@@ -134,34 +130,6 @@
         </div>
     </div>
 
-    @include('admin.petro.pumper-management.models.view-details')
+    @include('admin.petro.pumper-management.widget.models.view-details')
 @endsection
 <script src="{{ asset('assets/js/pumper.js') }}"></script>
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const cards = document.querySelectorAll('.pumper-card');
-        const sections = document.querySelectorAll('.content-section');
-
-        cards.forEach(card => {
-            card.addEventListener('click', function() {
-                // Remove active class from all cards
-                cards.forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked card
-                this.classList.add('active');
-                
-                // Hide all sections
-                sections.forEach(section => section.classList.remove('active'));
-                
-                // Show target section
-                const targetId = this.getAttribute('data-target');
-                const targetSection = document.getElementById(targetId);
-                if (targetSection) {
-                    targetSection.classList.add('active');
-                }
-            });
-        });
-    });
-</script>
-@endpush

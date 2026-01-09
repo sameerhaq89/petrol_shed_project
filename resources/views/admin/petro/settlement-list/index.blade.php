@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+<link rel="stylesheet" href="{{ asset('assets/css/data-table.css') }}">
 @section('content')
 <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
