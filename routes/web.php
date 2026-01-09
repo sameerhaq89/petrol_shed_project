@@ -34,4 +34,5 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::resource('settlement-list', SettlementListcontroller::class);
     Route::get('/settlement-data', [SettlementListcontroller::class, 'getData']);
     Route::resource('pumper-management', PumperController::class);
+    Route::get('/pump-operator-data', [PumperController::class, 'getData']);
 });

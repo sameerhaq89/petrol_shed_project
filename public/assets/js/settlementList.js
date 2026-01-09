@@ -19,7 +19,14 @@ async function fetchSettlements(filter = {}) {
             s.location,
             s.shift,
             `<strong>${totalAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>`,
-            `<span class="badge badge-outline-primary">${s.status}</span>`,  
+            `<span class="badge ${s.status === 'Completed'
+                ? 'badge-outline-success'
+                : s.status === 'Pending'
+                    ? 'badge-outline-danger'
+                    : 'badge-outline-primary'
+            }">
+    ${s.status}
+</span>`,
             `
     <div class="btn-group">
         <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-settlement-details"
