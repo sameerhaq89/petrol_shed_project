@@ -2,134 +2,171 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTankRequest;
+use App\Http\Requests\UpdateTankRequest;
+use App\Http\Requests\AdjustTankStockRequest;
+use App\Services\TankService;
+use App\Services\PumpService; // Added PumpService
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class TankController extends Controller
 {
-    protected array $pageHeader;
+    protected $tankService;
+    protected $pumpService;
 
-    public function __construct()
+    // Inject both TankService and PumpService
+    public function __construct(TankService $tankService, PumpService $pumpService)
     {
-        $this->pageHeader = [
-            'title' => 'Fuel Tank Overview',
-            'icon'  => 'mdi mdi-gas-station',
-            'showButton' => true,
-            'buttonText' => 'Record New Dip',
-            'buttonId' => 'addTankBtn',
-            'buttonClass' => 'btn btn-sm btn-gradient-primary',
-            'buttonIcon' => 'mdi mdi-plus',
-        ];
-
-        view()->share('pageHeader', $this->pageHeader);
+        $this->tankService = $tankService;
+        $this->pumpService = $pumpService;
     }
 
-    public function index()
+    /**
+     * Display the Dashboard with Tanks and Pumps.
+     */
+    public function index(Request $request): View
     {
-        // Sample tank data - replace with database queries later
-        $tanks = [
-            [
-                'tankName' => 'Tank 01 - Petrol 95',
-                'percentage' => 70,
-                'capacity' => '8,000L',
-                'lastDip' => '10 mins ago',
-                'color' => 'blue',
-                'alertStatus' => null
-            ],
-            [
-                'tankName' => 'Tank 02 - 80009',
-                'percentage' => 10,
-                'capacity' => '8,000L',
-                'lastDip' => '10 mins ago',
-                'color' => 'orange',
-                'alertStatus' => 'low-stock'
-            ],
-            [
-                'tankName' => 'Tank 02 - 8000L',
-                'percentage' => 55,
-                'capacity' => 'N/A',
-                'lastDip' => null,
-                'color' => 'green',
-                'alertStatus' => 'low-stock'
-            ],
-            [
-                'tankName' => 'Super Petrol',
-                'percentage' => 30,
-                'capacity' => '3,000L',
-                'lastDip' => '10 mins ago',
-                'color' => 'red',
-                'alertStatus' => null
+        // 1. Get raw tanks from DB
+        $rawTanks = $this->tankService->getAllTanks($request->all());
+
+        // 2. Transform Tank Models into Widget Arrays for Blade
+        $tanks = $rawTanks->map(function ($tank) {
+            $percentage = $tank->capacity > 0 
+                ? ($tank->current_stock / $tank->capacity) * 100 
+                : 0;
+
+            return [
+                'id'          => $tank->id,
+                // FIX: Use 'tank_name' based on your DB schema
+                'tankName'    => $tank->tank_name, 
+                'capacity'    => number_format($tank->capacity) . ' L',
+                'current'     => number_format($tank->current_stock) . ' L',
+                'percentage'  => round($percentage, 0),
+                'color'       => $this->getFuelColor($tank->fuel_type_id), // Adjusted to check ID or join table
+                'lastDip'     => $tank->updated_at->diffForHumans(),
+                'alertStatus' => $percentage < 15 ? 'low-stock' : 'normal',
+            ];
+        });
+
+        // 3. Get Real Pumps from PumpService
+        $pumps = $this->pumpService->getPumpsForDashboard();
+
+        // 4. Page Header Configuration
+        $pageHeader = [
+            'title' => 'Tank & Pump Management',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => url('/')],
+                ['name' => 'Tanks', 'url' => '#']
             ]
         ];
 
-        // Sample pump distribution data
-        $pumps = [
-            [
-                'pumpName' => 'Pump 01',
-                'pumpType' => 'Tump 01 (Petrol 95)',
-                'linkStatus' => 'Liimed Active',
-                'currentMeter' => '128450.20 L',
-                'isActive' => true,
-                'statusIcon' => null,
-                'actionButton' => [
-                    'type' => 'default',
-                    'label' => 'Update Expenses',
-                    'icon' => 'file-document'
-                ]
-            ],
-            [
-                'pumpName' => 'Pump 05',
-                'pumpType' => 'Tump 01 (Petrol 92)',
-                'linkStatus' => 'Linked Active',
-                'currentMeter' => '128450.20 L',
-                'isActive' => true,
-                'statusIcon' => 'error',
-                'actionButton' => [
-                    'type' => 'primary',
-                    'label' => 'Sodatise',
-                    'icon' => 'update'
-                ]
-            ],
-            [
-                'pumpName' => 'Pump 03',
-                'pumpType' => 'Tump 01 (Petrol 92)',
-                'linkStatus' => 'Liimed Actier',
-                'currentMeter' => '128465.20 L',
-                'isActive' => true,
-                'statusIcon' => null,
-                'actionButton' => [
-                    'type' => 'default',
-                    'label' => 'Update Price',
-                    'icon' => 'cash'
-                ]
-            ],
-            [
-                'pumpName' => 'Pump 05',
-                'pumpType' => 'Tump 07 (Petrol 92)',
-                'linkStatus' => 'Linked Active',
-                'currentMeter' => '128765.20 L',
-                'isActive' => true,
-                'statusIcon' => 'error',
-                'actionButton' => [
-                    'type' => 'default',
-                    'label' => 'Log Maintenance',
-                    'icon' => 'wrench'
-                ]
-            ],
-            [
-                'pumpName' => 'Pump 06',
-                'pumpType' => 'Tump 01 (Petrol 92)',
-                'linkStatus' => 'Linked Netter',
-                'currentMeter' => '128465.20 L',
-                'isActive' => true,
-                'statusIcon' => 'maintenance',
-                'actionButton' => [
-                    'type' => 'primary',
-                    'label' => 'Log ste Pie',
-                    'icon' => 'chart-line'
-                ]
-            ]
-        ];
+        return view('admin.petro.tank-management.index', [
+            'tanks'      => $tanks,
+            'pumps'      => $pumps,
+            'pageHeader' => $pageHeader
+        ]);
+    }
 
-        return view('admin.petro.tank-management.index', compact('tanks', 'pumps'));
+    /**
+     * Show form to create a new tank.
+     */
+    public function create(): View
+    {
+        return view('admin.petro.tank-management.create');
+    }
+
+    /**
+     * Store a new tank.
+     */
+    public function store(StoreTankRequest $request): RedirectResponse
+    {
+        try {
+            $this->tankService->createTank($request->validated());
+            return redirect()->route('tanks.index')->with('success', 'Tank created successfully.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error creating tank: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Show a specific tank.
+     */
+    public function show($id): View
+    {
+        $tank = $this->tankService->getTankById($id);
+        return view('admin.petro.tank-management.show', compact('tank'));
+    }
+
+    /**
+     * Show form to edit a tank.
+     */
+    public function edit($id): View
+    {
+        $tank = $this->tankService->getTankById($id);
+        return view('admin.petro.tank-management.edit', compact('tank'));
+    }
+
+    /**
+     * Update tank details.
+     */
+    public function update(UpdateTankRequest $request, $id): RedirectResponse
+    {
+        try {
+            $this->tankService->updateTank($id, $request->validated());
+            return redirect()->route('tanks.index')->with('success', 'Tank updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error updating tank.');
+        }
+    }
+
+    /**
+     * Delete a tank.
+     */
+    public function destroy($id): RedirectResponse
+    {
+        try {
+            $this->tankService->deleteTank($id);
+            return redirect()->route('tanks.index')->with('success', 'Tank deleted successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error deleting tank.');
+        }
+    }
+
+    /**
+     * Handle stock adjustments (Dip Readings/Refills).
+     */
+    public function adjustStock(AdjustTankStockRequest $request, $id): RedirectResponse
+    {
+        try {
+            $this->tankService->adjustStock(
+                $id,
+                $request->quantity,
+                $request->type,
+                $request->reason
+            );
+
+            return back()->with('success', 'Stock adjusted successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Helper to determine color based on fuel type ID or Name.
+     * You may need to adjust the logic depending on if you pass an ID or a string.
+     */
+    private function getFuelColor($type)
+    {
+        // Example: If $type is an ID, you might map IDs to colors
+        // Or if you join the table, check the name.
+        // Simple fallback logic:
+        return match ($type) {
+            1, 'Petrol', 'Gasoline' => 'orange',
+            2, 'Diesel'             => 'blue',
+            3, 'Kerosene'           => 'purple',
+            default                 => 'green', // Default for unknown
+        };
     }
 }

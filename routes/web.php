@@ -8,6 +8,8 @@ use App\Http\Controllers\DipManagementController;
 use App\Http\Controllers\SettlementListcontroller;
 use App\Http\Controllers\PumpController;
 
+
+use App\Http\Controllers\CashDropController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,7 +23,7 @@ use App\Http\Controllers\PumpController;
 
 Auth::routes();
 
-Route::middleware(['auth', 'is-admin'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/add-purchases', [App\Http\Controllers\AddPurchasesController::class, 'index'])->name('add-purchases');
     Route::get('/add-expenses', [App\Http\Controllers\AddExpensesController::class, 'index'])->name('add-expenses');
@@ -33,3 +35,13 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::resource('settlement-list', SettlementListcontroller::class);
     Route::get('/settlement-data', [SettlementListcontroller::class, 'getData']);
 });
+
+
+
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/shifts/{shiftId}/drops', [CashDropController::class, 'index'])->name('cash-drops.index');
+//     Route::get('/cash-drops/create', [CashDropController::class, 'create'])->name('cash-drops.create');
+//     Route::post('/cash-drops', [CashDropController::class, 'store'])->name('cash-drops.store');
+//     Route::post('/cash-drops/{id}/verify', [CashDropController::class, 'verify'])->name('cash-drops.verify');
+// });

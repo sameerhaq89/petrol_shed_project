@@ -2,167 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers;
-
+use App\Http\Requests\StorePumpRequest;
+use App\Http\Requests\UpdatePumpRequest;
+use App\Services\PumpService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PumpController extends Controller
 {
+    protected $pumpService;
 
-    protected array $pageHeader;
-
-    public function __construct()
+    public function __construct(PumpService $pumpService)
     {
-        $this->pageHeader = [
-            'title' => 'Pump Management',
-            'icon'  => 'mdi mdi-gas-station'
-        ];
-
-        view()->share('pageHeader', $this->pageHeader);
+        $this->pumpService = $pumpService;
     }
 
-    public function index()
+    public function index(): View
     {
-        $pumps = [
-            [
-                'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 08:30',
-                'pump_no' => 'LP1',
-                'name' => 'LP1',
-                'start_meter' => '912,500.50',
-                'close_meter' => '914,672.56',
-                'product_name' => 'Lanka Petrol 92',
-                'fuel_tanks' => 'Tank A'
+        // 1. Get formatted data for the "Pumps" tab table
+        $pumps = $this->pumpService->getPumpsForManagementTable();
+
+        // 2. Page Header Config
+        $pageHeader = [
+            'title' => 'Pump Management',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => url('/')],
+                ['name' => 'Pumps', 'url' => '#']
             ],
-            [
-                'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 09:15',
-                'pump_no' => 'LP2',
-                'name' => 'LP2',
-                'start_meter' => '500,000.00',
-                'close_meter' => '502,350.00',
-                'product_name' => 'Diesel 50',
-                'fuel_tanks' => 'Tank B'
-            ],
-            [
-                'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 10:45',
-                'pump_no' => 'LP3',
-                'name' => 'LP3',
-                'start_meter' => '120,000.00',
-                'close_meter' => '121,500.50',
-                'product_name' => 'Lanka Petrol 95',
-                'fuel_tanks' => 'Tank C'
-            ],
-            [
-                'date' => '2026-01-07',
-                'transaction_date' => '2026-01-07 11:30',
-                'pump_no' => 'LP4',
-                'name' => 'LP4',
-                'start_meter' => '800,000.00',
-                'close_meter' => '802,100.00',
-                'product_name' => 'Diesel 60',
-                'fuel_tanks' => 'Tank D'
+            'action_button' => [
+                'url' => '#', 
+                'label' => 'Add Pump', 
+                'icon' => 'plus',
+                'modal' => '#addPumpModal' 
             ]
         ];
 
-        $testing_details = [
-            [
-                'transaction_date' => '2026-01-07 08:30',
-                'location' => 'Colombo Station 1',
-                'settlement_no' => 'S001',
-                'pump_no' => 'LP1',
-                'product' => 'Lanka Petrol 92',
-                'operator' => 'John Doe',
-                'testing_ltr' => '500.50',
-                'testing_sale_value' => '148,648.50'
-            ],
-            [
-                'transaction_date' => '2026-01-07 09:15',
-                'location' => 'Colombo Station 2',
-                'settlement_no' => 'S002',
-                'pump_no' => 'LP2',
-                'product' => 'Diesel 50',
-                'operator' => 'Jane Smith',
-                'testing_ltr' => '600.00',
-                'testing_sale_value' => '180,000.00'
-            ],
-            [
-                'transaction_date' => '2026-01-07 10:45',
-                'location' => 'Colombo Station 3',
-                'settlement_no' => 'S003',
-                'pump_no' => 'LP3',
-                'product' => 'Lanka Petrol 95',
-                'operator' => 'Alex Brown',
-                'testing_ltr' => '450.50',
-                'testing_sale_value' => '139,397.50'
-            ],
-            [
-                'transaction_date' => '2026-01-07 11:30',
-                'location' => 'Colombo Station 4',
-                'settlement_no' => 'S004',
-                'pump_no' => 'LP4',
-                'product' => 'Diesel 60',
-                'operator' => 'Maria Green',
-                'testing_ltr' => '550.00',
-                'testing_sale_value' => '165,500.00'
-            ]
-        ];
+        // 3. FIX: Use strict snake_case names for ALL view variables
+        $testing_details = []; 
+        $meter_readings = [];  // Changed from $meterReadings to $meter_readings
 
-        $meterReadings = [
-            [
-                'transaction_date' => '2026-01-07 08:30',
-                'location' => 'Colombo Station 1',
-                'settlement_no' => 'S001',
-                'pump_no' => 'LP1',
-                'product' => 'Lanka Petrol 92',
-                'operator' => 'John Doe',
-                'sold_ltr' => '500.50',
-                'start_meter' => '912,500.50',
-                'close_meter' => '914,672.56',
-                'testing_qty' => '2,172.06',
-                'sale_amount' => '645,164.82'
-            ],
-            [
-                'transaction_date' => '2026-01-07 09:15',
-                'location' => 'Colombo Station 2',
-                'settlement_no' => 'S002',
-                'pump_no' => 'LP2',
-                'product' => 'Diesel 50',
-                'operator' => 'Jane Smith',
-                'sold_ltr' => '600.00',
-                'start_meter' => '500,000.00',
-                'close_meter' => '502,350.00',
-                'testing_qty' => '2,350.00',
-                'sale_amount' => '705,000.00'
-            ],
-            [
-                'transaction_date' => '2026-01-07 10:45',
-                'location' => 'Colombo Station 3',
-                'settlement_no' => 'S003',
-                'pump_no' => 'LP3',
-                'product' => 'Lanka Petrol 95',
-                'operator' => 'Alex Brown',
-                'sold_ltr' => '450.50',
-                'start_meter' => '120,000.00',
-                'close_meter' => '121,500.50',
-                'testing_qty' => '1,500.50',
-                'sale_amount' => '465,155.00'
-            ],
-            [
-                'transaction_date' => '2026-01-07 11:30',
-                'location' => 'Colombo Station 4',
-                'settlement_no' => 'S004',
-                'pump_no' => 'LP4',
-                'product' => 'Diesel 60',
-                'operator' => 'Maria Green',
-                'sold_ltr' => '550.00',
-                'start_meter' => '800,000.00',
-                'close_meter' => '802,100.00',
-                'testing_qty' => '2,100.00',
-                'sale_amount' => '640,500.00'
-            ]
-        ];
-        return view('admin.petro.pump-management.index', compact('pumps', 'testing_details', 'meterReadings'));
+        // 4. Pass them to the view
+        return view('admin.petro.pump-management.index', compact(
+            'pumps', 
+            'pageHeader', 
+            'testing_details', 
+            'meter_readings'   // Must match the variable name above
+        ));
+    }
+
+    public function store(StorePumpRequest $request): RedirectResponse
+    {
+        try {
+            $this->pumpService->createPump($request->validated());
+            return redirect()->back()->with('success', 'Pump added successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', 'Error adding pump: ' . $e->getMessage());
+        }
+    }
+
+    public function update(UpdatePumpRequest $request, $id): RedirectResponse
+    {
+        try {
+            $this->pumpService->updatePump($id, $request->validated());
+            return redirect()->back()->with('success', 'Pump updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error updating pump.');
+        }
+    }
+
+    public function destroy($id): RedirectResponse
+    {
+        try {
+            $this->pumpService->deletePump($id);
+            return redirect()->back()->with('success', 'Pump deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error deleting pump.');
+        }
     }
 }

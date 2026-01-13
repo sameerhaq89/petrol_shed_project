@@ -32,7 +32,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($meterReadings as $readings)
+                            @foreach($meter_readings as $reading)
                             <tr>
                                 <td data-label="Transaction Date">{{ $readings['transaction_date'] }}</td>
                                 <td data-label="Location">{{ $readings['location'] }}</td>
