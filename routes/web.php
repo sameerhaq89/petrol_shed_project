@@ -36,3 +36,6 @@ Route::middleware(['auth', 'is-admin'])->group(function () {
     Route::resource('pumper-management', PumperController::class);
     Route::get('/pump-operator-data', [PumperController::class, 'getData']);
 });
+
+// Super Admin Routes
+require __DIR__ . '/super-admin.php';
