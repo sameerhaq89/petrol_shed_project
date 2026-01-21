@@ -149,7 +149,7 @@ class AppServiceProvider extends ServiceProvider
                 ->pluck('user_id')
                 ->toArray();
 
-            $pumpers = User::where('role_id', 3)
+            $pumpers = User::where('role_id', 4) // Fixed: 4 is Pumper
                 ->where('is_active', 1)
                 ->whereNotIn('id', $busyPumperIds)
                 ->get();

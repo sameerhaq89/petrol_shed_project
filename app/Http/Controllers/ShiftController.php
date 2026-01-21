@@ -60,10 +60,14 @@ class ShiftController extends Controller
             ->where('status', 'active')
             ->get();
 
-        $pumpers = User::where('role_id', 3)->where('is_active', 1)->get();
+        // Fix: Use correct Role ID for Pumper (4), or lookup by slug
+        $pumperRole = \App\Models\Role::where('slug', 'pumper')->first();
+        $pumperRoleId = $pumperRole ? $pumperRole->id : 4;
+
+        $pumpers = User::where('role_id', $pumperRoleId)->where('is_active', 1)->get();
 
         $pageHeader = [
-            'title' => 'Shift Settlement: '.$shift->shift_number,
+            'title' => 'Shift Settlement: ' . $shift->shift_number,
             'breadcrumbs' => [
                 ['name' => 'Settlement List', 'url' => route('settlement-list.index')],
                 ['name' => 'Entry', 'url' => '#'],
@@ -80,7 +84,7 @@ class ShiftController extends Controller
 
             return back()->with('success', 'Reading added successfully.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: '.$e->getMessage());
+            return back()->with('error', 'Error: ' . $e->getMessage());
         }
     }
 
@@ -91,7 +95,7 @@ class ShiftController extends Controller
             ->where('status', 'open')
             ->latest()->first();
 
-        if (! $shift) {
+        if (!$shift) {
             return back()->with('error', 'No active shift found to close.');
         }
 
@@ -102,9 +106,9 @@ class ShiftController extends Controller
                 $request->closing_notes
             );
 
-            $msg = 'Shift settled. Variance: Rs. '.number_format($result->shift->cash_variance, 2);
+            $msg = 'Shift settled. Variance: Rs. ' . number_format($result->shift->cash_variance, 2);
             if ($result->unsettled_count > 0) {
-                $msg .= ' (Warning: '.$result->unsettled_count.' pumpers have unsettled shortages carried forward)';
+                $msg .= ' (Warning: ' . $result->unsettled_count . ' pumpers have unsettled shortages carried forward)';
 
                 return redirect()->route('settlement-list.index')->with('warning', $msg);
             }

@@ -28,7 +28,7 @@ class PumperRepository implements PumperRepositoryInterface
 
     public function getAvailablePumpers(array $busyIds)
     {
-        return User::where('role_id', 3)
+        return User::where('role_id', 4)
             ->where('is_active', 1)
             ->whereNotIn('id', $busyIds)
             ->get();

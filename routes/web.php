@@ -114,4 +114,5 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
-// Remove the extra blocks at the bottom to avoid conflicts!
+// Super Admin Routes
+require __DIR__ . '/super-admin.php';

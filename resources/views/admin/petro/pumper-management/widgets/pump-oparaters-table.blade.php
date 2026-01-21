@@ -53,6 +53,12 @@
                                 <a href="{{ route('pumper.ledger', $stat->pumper_id) }}" class="text-dark">
                                     {{ $stat->pumper_name }}
                                 </a>
+                                @php
+                                    $userRole = \App\Models\User::find($stat->pumper_id)->role_id;
+                                @endphp
+                                @if($userRole != 4)
+                                    <span class="badge badge-warning ml-2" style="font-size: 0.7rem;">Manager</span>
+                                @endif
                             </td>
                             <td><span class="badge badge-outline-primary">{{ $stat->pump_name }}</span></td>
                             <td>{{ number_format($stat->opening_reading, 2) }}</td>

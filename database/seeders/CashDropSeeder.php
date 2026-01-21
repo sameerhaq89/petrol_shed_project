@@ -12,7 +12,7 @@ class CashDropSeeder extends Seeder
     {
         CashDrop::create([
             'shift_id' => 1,
-            'user_id' => 3, // Pumper Anil
+            'user_id' => 4, // Pumper Anil
             'amount' => 5000.00,
             'dropped_at' => Carbon::now()->subMinutes(30),
             'status' => 'pending',

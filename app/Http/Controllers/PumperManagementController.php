@@ -8,6 +8,7 @@ use App\Http\Requests\SettleShortageRequest;
 use App\Models\PumpOperatorAssignment;
 use App\Services\PumperService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 class PumperManagementController extends Controller
 {
@@ -38,7 +39,7 @@ class PumperManagementController extends Controller
         try {
             $this->pumperService->assignPumper($request->validated());
 
-            return back()->with('success', 'Pumper Assigned. Float Given: Rs. ' . number_format($request->opening_cash, 2));
+            return back()->with('success', 'Pumper Assigned. Float Given: Rs. '.number_format($request->opening_cash, 2));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -53,7 +54,7 @@ class PumperManagementController extends Controller
         }
 
         $pageHeader = [
-            'title' => 'Close Duty: ' . $assignment->pumper->name,
+            'title' => 'Close Duty: '.$assignment->pumper->name,
             'breadcrumbs' => [
                 ['name' => 'Pumpers', 'url' => route('pumper.index')],
                 ['name' => 'Close Duty', 'url' => '#'],
@@ -72,9 +73,9 @@ class PumperManagementController extends Controller
                 $request->closing_cash_received
             );
 
-            return redirect()->route('pumper.index')->with('success', 'Duty closed. Status: ' . $status);
+            return redirect()->route('pumper.index')->with('success', 'Duty closed. Status: '.$status);
         } catch (\Exception $e) {
-            return back()->with('error', 'Error closing duty: ' . $e->getMessage());
+            return back()->with('error', 'Error closing duty: '.$e->getMessage());
         }
     }
 
@@ -90,9 +91,9 @@ class PumperManagementController extends Controller
         try {
             $amount = $this->pumperService->settleShortage($id, $request->settle_amount);
 
-            return back()->with('success', 'Ledger updated. Received Rs. ' . number_format($amount, 2));
+            return back()->with('success', 'Ledger updated. Received Rs. '.number_format($amount, 2));
         } catch (\Exception $e) {
-            return back()->with('error', 'Error settling shortage: ' . $e->getMessage());
+            return back()->with('error', 'Error settling shortage: '.$e->getMessage());
         }
     }
 
@@ -114,8 +115,8 @@ class PumperManagementController extends Controller
             ->with(['pump', 'pump.tank.fuelType.currentPrice'])
             ->first();
 
-        if (!$assignment) {
-            return redirect()->route('pumper.index')->with('error', 'You do not have an active shift assignment.');
+        if (! $assignment) {
+            return view('pumpers.no-assignment');
         }
 
         $pump = $assignment->pump;
@@ -125,13 +126,13 @@ class PumperManagementController extends Controller
         // But for safety, we might need to get the price directly via FuelType
         $fuelType = \App\Models\FuelType::find($pump->fuel_type_id);
 
-        if (!$fuelType) {
+        if (! $fuelType) {
             // Fallback if pump uses tank correlation
             $tank = \App\Models\Tank::find($pump->tank_id);
             $fuelType = $tank ? $tank->fuelType : null;
         }
 
-        if (!$fuelType) {
+        if (! $fuelType) {
             return back()->with('error', 'Configuration Error: Pump not linked to fuel type.');
         }
 
@@ -141,8 +142,8 @@ class PumperManagementController extends Controller
             ->latest('effective_from')
             ->first();
 
-        if (!$currentPrice) {
-            return back()->with('error', 'No active fuel price set for ' . $fuelType->name);
+        if (! $currentPrice) {
+            return back()->with('error', 'No active fuel price set for '.$fuelType->name);
         }
 
         $pageHeader = [
@@ -168,7 +169,7 @@ class PumperManagementController extends Controller
         ]);
 
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             $pump = \App\Models\Pump::findOrFail($request->pump_id);
             $price = \App\Models\FuelPrice::findOrFail($request->price_id);
@@ -189,7 +190,7 @@ class PumperManagementController extends Controller
             $endReading = $startReading + $quantity;
 
             $pump->update([
-                'current_reading' => $endReading
+                'current_reading' => $endReading,
             ]);
 
             // --- 2. Handle Tank Stock ---
@@ -202,7 +203,7 @@ class PumperManagementController extends Controller
             }
 
             // Generate Sale Number
-            $saleNumber = 'SALE-' . time() . '-' . rand(100, 999);
+            $saleNumber = 'SALE-'.time().'-'.rand(100, 999);
 
             // Create Sale Record
             $sale = \App\Models\Sale::create([
@@ -223,13 +224,14 @@ class PumperManagementController extends Controller
                 'created_by' => auth()->id(),
             ]);
 
-            \DB::commit();
+            DB::commit();
 
-            return redirect()->route('pumper.sales.entry')->with('success', 'Sale Recorded: ' . $quantity . ' Liters for Rs. ' . $amount);
+            return redirect()->route('pumper.sales.entry')->with('success', 'Sale Recorded: '.$quantity.' Liters for Rs. '.$amount);
 
         } catch (\Exception $e) {
-            \DB::rollBack();
-            return back()->with('error', 'Error recording sale: ' . $e->getMessage())->withInput();
+            DB::rollBack();
+
+            return back()->with('error', 'Error recording sale: '.$e->getMessage())->withInput();
         }
     }
 }

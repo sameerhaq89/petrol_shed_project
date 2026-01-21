@@ -18,7 +18,7 @@ class ShiftSeeder extends Seeder
             'station_id' => 1,
             'user_id' => 2, // Manager John
             'shift_date' => now()->toDateString(),
-            'start_time' => Carbon::now()->subHours(4), 
+            'start_time' => Carbon::now()->subHours(4),
             'status' => 'open',
             'opening_cash' => 5000.00, // Office Safe
             'total_sales' => 0.00
@@ -28,12 +28,12 @@ class ShiftSeeder extends Seeder
         PumpOperatorAssignment::create([
             'id' => 1,
             'shift_id' => $shift->id,
-            'user_id' => 3, // Pumper Anil
+            'user_id' => 4, // Pumper Anil
             'pump_id' => 1, // Pump 1
             'start_time' => Carbon::now()->subHours(4),
             'opening_reading' => 100000.00,
             'opening_cash' => 5000.00, // Float given to Anil
-            'status' => 'active' 
+            'status' => 'active'
         ]);
     }
 }

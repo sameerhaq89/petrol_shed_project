@@ -1,6 +1,6 @@
-{{-- 
-    FILE: resources/views/admin/common/quick-actions.blade.php 
-    PURPOSE: Floating Action Button + Quick Entry Modals
+{{--
+FILE: resources/views/admin/common/quick-actions.blade.php
+PURPOSE: Floating Action Button + Quick Entry Modals
 --}}
 
 <style>
@@ -17,8 +17,9 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: linear-gradient(to right, #da8cff, #9a55ff); /* Your Purple Theme */
-        box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+        background: linear-gradient(to right, #da8cff, #9a55ff);
+        /* Your Purple Theme */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -63,12 +64,12 @@
     .fab-label {
         padding: 5px 10px;
         border-radius: 4px;
-        background-color: rgba(0,0,0,0.8);
+        background-color: rgba(0, 0, 0, 0.8);
         color: white;
         margin-right: 10px;
         font-size: 14px;
         white-space: nowrap;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
 
     .fab-btn {
@@ -79,7 +80,7 @@
         align-items: center;
         justify-content: center;
         color: white;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         transition: transform 0.2s;
         border: none;
         outline: none;
@@ -89,9 +90,21 @@
         transform: scale(1.1);
     }
 
-    .btn-cash { background: #1bcfb4; } /* Green */
-    .btn-pump { background: #198ae3; } /* Blue */
-    .btn-dip  { background: #fe7c96; } /* Red/Orange */
+    .btn-cash {
+        background: #1bcfb4;
+    }
+
+    /* Green */
+    .btn-pump {
+        background: #198ae3;
+    }
+
+    /* Blue */
+    .btn-dip {
+        background: #fe7c96;
+    }
+
+    /* Red/Orange */
 </style>
 
 {{-- === THE FLOATING BUTTONS === --}}
@@ -141,16 +154,23 @@
                         <select name="user_id" class="form-select" required>
                             <option value="">-- Who is dropping cash? --</option>
                             @php
-                                $activePumpers = \App\Models\PumpOperatorAssignment::with('pumper')->where('status', 'active')->get();
+                                $activePumpers = \App\Models\PumpOperatorAssignment::with('pumper', 'pump')
+                                    ->where('status', 'active')
+                                    ->whereHas('pumper', function($q) {
+                                        $q->where('role_id', 4); // Only show Pumpers
+                                    })
+                                    ->get();
                             @endphp
                             @foreach($activePumpers as $assign)
-                                <option value="{{ $assign->user_id }}">{{ $assign->pumper->name }} ({{ $assign->pump->pump_name }})</option>
+                                <option value="{{ $assign->user_id }}">{{ $assign->pumper->name }}
+                                    ({{ $assign->pump->pump_name }})</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group mb-3">
                         <label>Amount (LKR)</label>
-                        <input type="number" name="amount" class="form-control form-control-lg" required placeholder="5000.00">
+                        <input type="number" name="amount" class="form-control form-control-lg" required
+                            placeholder="5000.00">
                     </div>
                     <div class="form-group mb-0">
                         <label>Notes</label>
@@ -173,12 +193,12 @@
                 <h5 class="modal-title"><i class="mdi mdi-ruler me-2"></i>Dip Reading Entry</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            
+
             {{-- 1. FIX: Use your existing route 'dip-management.store' --}}
             <form action="{{ route('dip-management.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    
+
                     {{-- 2. FIX: Add hidden date field required by your controller --}}
                     <input type="hidden" name="reading_date" value="{{ date('Y-m-d') }}">
 
@@ -187,7 +207,7 @@
                         {{-- Ensure \App\Models\Tank is imported or use full path --}}
                         <select name="tank_id" class="form-select" required>
                             <option value="">-- Select Tank --</option>
-                            @php $tanks = \App\Models\Tank::where('status','active')->get(); @endphp
+                            @php $tanks = \App\Models\Tank::where('status', 'active')->get(); @endphp
                             @foreach($tanks as $tank)
                                 <option value="{{ $tank->id }}">{{ $tank->tank_name }}</option>
                             @endforeach
@@ -198,17 +218,20 @@
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label>Dip Level (cm)</label>
-                            <input type="number" step="0.01" name="dip_level_cm" class="form-control" required placeholder="CM">
+                            <input type="number" step="0.01" name="dip_level_cm" class="form-control" required
+                                placeholder="CM">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label>Volume (Liters)</label>
-                            <input type="number" step="0.01" name="volume_liters" class="form-control" required placeholder="Liters">
+                            <input type="number" step="0.01" name="volume_liters" class="form-control" required
+                                placeholder="Liters">
                         </div>
                     </div>
 
                     <div class="form-group mb-0">
                         <label>Notes (Optional)</label>
-                        <textarea name="notes" class="form-control" rows="2" placeholder="Quick entry via Dashboard"></textarea>
+                        <textarea name="notes" class="form-control" rows="2"
+                            placeholder="Quick entry via Dashboard"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -222,7 +245,7 @@
 @include('admin.petro.pumper-management.modals.assign-pumper')
 
 {{-- === MODAL 3: ASSIGN PUMPER (Reuse your existing code) === --}}
-{{-- 
-    NOTE: Ensure your existing 'assignPumperModal' code is loaded on the page. 
-    If not, you can paste the full modal code here again.
+{{--
+NOTE: Ensure your existing 'assignPumperModal' code is loaded on the page.
+If not, you can paste the full modal code here again.
 --}}
