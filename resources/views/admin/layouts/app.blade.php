@@ -14,7 +14,7 @@
 
             <div class="main-panel">
                 @yield('content')
-
+               @include('admin.common.quick-actions')
                 @include('admin.layouts.footer')
             </div>
 
@@ -25,6 +25,7 @@
     <!-- js -->
     @include('admin.layouts.script')
     @stack('js')
+    @yield('scripts')
 </body>
 
 </html>

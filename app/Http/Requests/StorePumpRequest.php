@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePumpRequest extends FormRequest
 {
@@ -14,12 +15,16 @@ class StorePumpRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'pump_number' => [
+                'required',
+                'string', // Assuming pump numbers can be alphanumeric
+                'max:50',
+                Rule::unique('pumps')->whereNull('deleted_at')
+            ],
             'pump_name'          => 'required|string|max:255',
-            'pump_number'        => 'required|string|max:50|unique:pumps,pump_number',
             'tank_id'            => 'required|exists:tanks,id',
             'status'             => 'required|in:active,maintenance,offline',
-            'last_meter_reading' => 'nullable|numeric|min:0',
-            'notes'              => 'nullable|string|max:500',
+            'last_meter_reading' => 'nullable|numeric|min:0'
         ];
     }
 }

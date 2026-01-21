@@ -2,21 +2,26 @@
 
 namespace App\Repositories;
 
-use App\Models\Tank;
 use App\Interfaces\TankRepositoryInterface;
+use App\Models\Tank;
 
 class TankRepository implements TankRepositoryInterface
 {
     public function getAll(array $filters = [])
     {
-        $query = Tank::query();
+        $query = Tank::with(['fuelType', 'station']);
 
-        if (isset($filters['fuel_type'])) {
-            $query->where('fuel_type', $filters['fuel_type']);
+        // Filter by Fuel Type
+        if (isset($filters['fuel_type_id'])) {
+            $query->where('fuel_type_id', $filters['fuel_type_id']);
         }
 
-        // For Web, we usually want pagination instead of getting all records
-        return $query->latest()->paginate(22);
+        // Filter by Station
+        if (isset($filters['station_id'])) {
+            $query->where('station_id', $filters['station_id']);
+        }
+
+        return $query->latest()->get();
     }
 
     public function find(int $id)
@@ -31,21 +36,21 @@ class TankRepository implements TankRepositoryInterface
 
     public function update(int $id, array $data)
     {
-        $tank = $this->find($id);
+        $tank = Tank::findOrFail($id);
         $tank->update($data);
         return $tank;
     }
 
     public function delete(int $id)
     {
-        $tank = $this->find($id);
+        $tank = Tank::findOrFail($id);
         return $tank->delete();
     }
 
-    public function updateCurrentStock(int $id, float $newLevel)
+    public function updateCurrentStock(int $id, float $newStock)
     {
-        $tank = $this->find($id);
-        $tank->current_stock = $newLevel;
+        $tank = Tank::findOrFail($id);
+        $tank->current_stock = $newStock;
         $tank->save();
         return $tank;
     }

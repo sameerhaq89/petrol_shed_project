@@ -1,152 +1,103 @@
-<style>
-    .meter-sale-widget .ts-dropdown .option:hover,
-    .meter-sale-widget .ts-dropdown .active {
-        background-color: #7367f0 !important;
-        color: white !important;
-    }
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h4 class="card-title text-primary"><i class="mdi mdi-gas-station me-2"></i>Meter Sale Entry</h4>
+        
+        <form action="{{ route('settlement.save-reading') }}" method="POST">
+            @csrf
+            <input type="hidden" name="shift_id" value="{{ $shift->id ?? '' }}">
 
-    .meter-sale-widget .ts-dropdown .option.active {
-        background-color: #7367f0 !important;
-    }
-
-    .meter-sale-widget .ts-dropdown .option:hover {
-        background-color: #f3f2f7 !important;
-        color: #5e5873 !important;
-    }
-
-    .meter-sale-widget .ts-dropdown .option.selected {
-        background-color: #e7e7ff !important;
-        color: #7367f0 !important;
-    }
-
-    .meter-sale-widget .ts-control {
-        min-height: 31px !important;
-        height: 40px !important;
-        padding: 0.25rem 0.5rem !important;
-        font-size: 0.875rem !important;
-        line-height: 1.5;
-        box-shadow: none !important;
-    }
-
-    .meter-sale-widget .ts-control>input,
-    .meter-sale-widget .ts-control>.item {
-        line-height: 1.5 !important;
-    }
-
-    .meter-sale-widget .ts-wrapper.single .ts-control:after {
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .meter-sale-widget .pump-select+button,
-    .meter-sale-widget .product-select+button {
-        /* position: absolute; */
-        z-index: 100;
-    }
-</style>
-
-<div class="col-12 meter-sale-widget">
-    <div class="card mb-2">
-        <div class="card-body py-2">
-            <!-- Line 1 -->
-            <div class="row">
-                <!-- Product -->
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Product</label>
-                    <div class="position-relative">
-                        <select class="form-control form-control-sm mb-2 pe-5 product-select" autocomplete="off">
-                            <option value="">Please Select</option>
-                            <option value="1">Petrol</option>
-                            <option value="2">Diesel</option>
-                        </select>
-                        <button type="button"
-                            class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2">
-                            <i class="mdi mdi-plus"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Pump No -->
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Pump No</label>
-                    <div class="position-relative">
-                        <select class="form-control form-control-sm mb-3 pe-5 pump-select " autocomplete="off">
-                            <option value="">Select Pump</option>
-                            <option value="1">LP1</option>
-                            <option value="2">LP2</option>
-                            <option value="3">LP3</option>
-                        </select>
-                        <button type="button"
-                            class="btn btn-sm btn-light position-absolute top-50 end-0 translate-middle-y me-1 px-2"
-                            data-bs-toggle="modal" data-bs-target="#addPumpModal">
-                            <i class="mdi mdi-plus"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Starting Meter</label>
-                    <input class="form-control form-control-sm bg-light mb-2" readonly>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Closing Meter</label>
-                    <input class="form-control form-control-sm mb-2">
-                </div>
-            </div>
-
-            <!-- Line 2 -->
             <div class="row align-items-end">
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Sold Qty</label>
-                    <input class="form-control form-control-sm bg-light">
+                {{-- 1. SELECT PUMP (Searchable Dropdown) --}}
+                <div class="col-md-4 mb-3">
+                    <label class="form-label font-weight-bold">Select Pump</label>
+                    <select id="pumpSelect" name="pump_id" class="form-select form-control-lg" required>
+                        <option value="" selected disabled>-- Search & Select Pump --</option>
+                        @foreach($pumps as $pump)
+                            <option value="{{ $pump->id }}" 
+                                    data-start="{{ $pump->current_reading }}"
+                                    data-price="{{ $pump->fuelType->selling_price ?? 0 }}"
+                                    data-fuel="{{ $pump->fuelType->name ?? 'Fuel' }}">
+                                {{ $pump->pump_name ?? $pump->pump_number }} 
+                            </option>
+                        @endforeach
+                    </select>
+                    <small id="fuelTypeDisplay" class="text-muted"></small>
                 </div>
 
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Unit Price</label>
-                    <input class="form-control form-control-sm bg-light">
+                {{-- 2. OPENING READING (Auto-Filled) --}}
+                <div class="col-md-2 mb-3">
+                    <label class="form-label text-muted">Opening</label>
+                    <input type="number" step="0.01" id="startReading" name="start_reading" class="form-control bg-light" readonly>
                 </div>
 
-                <div class="col-md-3">
-                    <label class="text-muted small mb-1">Testing Qty</label>
-                    <input class="form-control form-control-sm">
+                {{-- 3. CLOSING READING (User Input) --}}
+                <div class="col-md-3 mb-3">
+                    <label class="form-label font-weight-bold text-dark">Closing Reading</label>
+                    <input type="number" step="0.01" id="endReading" name="end_reading" class="form-control border-primary" placeholder="Enter Value" required>
                 </div>
 
-                <div class="col-md-3 text-end">
-                    <button class="btn btn-gradient-primary btn-sm w-100">
-                        <i class="mdi mdi-plus"></i> Add
+                {{-- 4. VOLUME (Calculated) --}}
+                <div class="col-md-2 mb-3">
+                    <label class="form-label text-muted">Volume</label>
+                    <input type="text" id="volumeDisplay" class="form-control bg-light font-weight-bold text-primary" readonly value="0.00">
+                </div>
+
+                {{-- 5. SUBMIT BUTTON --}}
+                <div class="col-md-1 mb-3">
+                    <button type="submit" class="btn btn-gradient-success btn-icon-text w-100">
+                        <i class="mdi mdi-plus btn-icon-prepend"></i> Add
                     </button>
                 </div>
             </div>
-
-        </div>
+        </form>
     </div>
 </div>
+
+{{-- JAVASCRIPT FOR AUTO-POPULATION --}}
 @push('js')
 <script>
-    new TomSelect(".meter-sale-widget .pump-select", {
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            plugins: {
-                'clear_button': {
-                    'title': 'Remove all selected options',
-                }
-            },
-            persist: false,
+    document.addEventListener('DOMContentLoaded', function() {
+        const pumpSelect = document.getElementById('pumpSelect');
+        const startInput = document.getElementById('startReading');
+        const endInput = document.getElementById('endReading');
+        const volDisplay = document.getElementById('volumeDisplay');
+        const fuelDisplay = document.getElementById('fuelTypeDisplay');
+
+        // 1. When Pump is Selected -> Populate Opening Reading
+        pumpSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const startVal = selectedOption.getAttribute('data-start');
+            const fuelName = selectedOption.getAttribute('data-fuel');
+
+            startInput.value = startVal;
+            fuelDisplay.textContent = "Fuel: " + fuelName;
+            
+            // Reset calculation fields
+            endInput.value = '';
+            volDisplay.value = '0.00';
+            endInput.focus();
         });
-        new TomSelect(".meter-sale-widget .product-select", {
-            sortField: {
-                field: "text",
-                direction: "asc"
-            },
-            plugins: {
-                'clear_button': {
-                    'title': 'Remove all selected options',
-                }
-            },
-            persist: false,
+
+        // 2. When Closing Reading is Typed -> Calculate Volume
+        endInput.addEventListener('input', function() {
+            const start = parseFloat(startInput.value) || 0;
+            const end = parseFloat(this.value) || 0;
+            
+            let volume = 0;
+            if (end > start) {
+                volume = end - start;
+            }
+
+            volDisplay.value = volume.toFixed(2);
         });
+    });
+    // Initialize Searchable Dropdown
+new TomSelect("#pumpSelect",{
+    create: false,
+    sortField: {
+        field: "text",
+        direction: "asc"
+    }
+});
 </script>
 @endpush

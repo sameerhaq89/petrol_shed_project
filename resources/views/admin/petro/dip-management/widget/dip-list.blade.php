@@ -1,113 +1,81 @@
-{{-- <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-        <input class="form-control form-control-sm" id="searchDip" placeholder="Search..." style="min-width:180px;">
-    </div>
-</div>
-
-<div class="table-responsive">
-    <table class="table table-striped table-hover" id="dipListTable" style="width:100%">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Location</th>
-                <th>Tank</th>
-                <th>Dip Reading</th>
-                <th>Qty (L)</th>
-                <th>Note</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>127</td>
-                <td>12/01/2025 17:23</td>
-                <td>S.H.M Jafris Lanka</td>
-                <td>LP92-1</td>
-                <td>700.00</td>
-                <td>4,199.00</td>
-                <td>OK</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-outline-primary"><i class="mdi mdi-pencil"></i></button>
-                        <button class="btn btn-sm btn-outline-danger"><i class="mdi mdi-delete"></i></button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div> --}}
-
-<div class="row mt-3">
-    <div class="col-12 mb-4 stretch-card">
+<div class="row mt-4">
+    <div class="col-12">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
-
-                <div class="d-flex align-items-center mb-3 flex-wrap">
-                    <h3 class="page-title mb-3">Recent Dip Entries</h3>
-                </div>
-
+                <h5 class="card-title mb-3">Recent Dip Entries</h5>
                 <div class="table-responsive">
-                    <table class="data-table table table-hover table-bordered w-100" id="dipListTable">
-                        <thead class="bg-light">
+                    <table class="table table-hover table-bordered table-striped custom-table">
+                        <thead class="thead-light">
                             <tr>
-                                <th>#</th>
                                 <th>Date</th>
-                                <th>Location</th>
                                 <th>Tank</th>
-                                <th>Dip Reading</th>
-                                <th>Qty (L)</th>
-                                <th>Note</th>
-                                <th class="text-center">Action</th>
+                                <th>Product</th>
+                                <th class="text-end">Dip Level (cm)</th>
+                                <th class="text-end">Volume (L)</th>
+                                <th class="text-end">Temp (°C)</th>
+                                <th>Recorded By</th>
+                                <th>Notes</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>127</td>
-                                <td>12/01/2025 17:23</td>
-                                <td>S.H.M Jafris Lanka</td>
-                                <td>LP92-1</td>
-                                <td>700.00</td>
-                                <td>4,199.00</td>
-                                <td>OK</td>
-                                <td data-label="Action" class="text-center">
-                                    <div class="btn-group">
-                                        <button
-                                            class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </button>
-                                        <button
-                                            class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
-                                            <i class="mdi mdi-delete"></i>
-                                        </button>
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td>127</td>
-                                <td>12/01/2025 17:23</td>
-                                <td>S.H.M Jafris Lanka</td>
-                                <td>LP92-1</td>
-                                <td>700.00</td>
-                                <td>4,199.00</td>
-                                <td>OK</td>
-                                <td data-label="Action" class="text-center">
-                                    <div class="btn-group">
-                                        <button
-                                            class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit">
-                                            <i class="mdi mdi-pencil"></i>
-                                        </button>
-                                        <button
-                                            class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
-                                            <i class="mdi mdi-delete"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+    @forelse($dip_readings as $dip)
+        <tr>
+            <td>{{ $dip['date'] }}</td>
+            <td>
+                <strong>{{ $dip['tank_name'] }}</strong>
+            </td>
+            <td>
+                <span class="badge bg-inverse-info">{{ $dip['fuel_type'] }}</span>
+            </td>
+            <td class="text-end">{{ $dip['dip_level'] }}</td>
+            <td class="text-end font-weight-bold text-success">{{ $dip['volume'] }}</td>
+            <td class="text-end">{{ $dip['temperature'] }}</td>
+            <td>
+                <small class="text-muted">{{ $dip['recorded_by'] }}</small>
+            </td>
+            <td>{{ $dip['notes'] }}</td>
+            
+            {{-- NEW ACTION COLUMN --}}
+            <td class="text-center">
+                {{-- Edit Button --}}
+                <button type="button" 
+        class="btn btn-sm btn-outline-primary btn-icon edit-dip-btn"
+        data-bs-toggle="modal" 
+        data-bs-target="#editDipModal"
+        
+        data-id="{{ $dip['id'] }}"
+        data-date="{{ $dip['date'] }}"
+        
+        {{-- USE THE NEW KEYS HERE --}}
+        data-tank="{{ $dip['tank_id'] }}" 
+        data-level="{{ $dip['raw_level'] }}" 
+        data-volume="{{ $dip['raw_volume'] }}" 
+        data-temp="{{ $dip['raw_temp'] }}"
+        
+        data-notes="{{ $dip['notes'] }}">
+    <i class="mdi mdi-pencil"></i>
+</button>
+                {{-- Delete Button --}}
+                <form action="{{ route('dip-management.destroy', $dip['id']) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this entry?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-outline-danger btn-icon">
+                        <i class="mdi mdi-delete"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    @empty
+        <tr>
+            <td colspan="9" class="text-center text-muted py-4">
+                <i class="mdi mdi-alert-circle-outline me-1"></i> No dip readings found.
+            </td>
+        </tr>
+    @endforelse
+</tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     </div>

@@ -1,0 +1,36 @@
+﻿Checking Permissions...
+
+User: imara (Super) (Email: super@imara.com, ID: 1)
+Role: Super Admin (ID: 1)
+Can view.admin.sidebar? YES
+Has Permission (method): YES
+--------------------------------------------------
+User: Station Owner (Mr. Perera) (Email: owner@purple.com, ID: 2)
+Role: Station Admin (ID: 2)
+Can view.admin.sidebar? NO
+Has Permission (method): NO
+--------------------------------------------------
+User: Manager John (Email: manager@purple.com, ID: 3)
+Role: Manager (ID: 3)
+Can view.admin.sidebar? NO
+Has Permission (method): NO
+--------------------------------------------------
+User: Pumper Anil (Email: anil@purple.com, ID: 4)
+Role: Pumper (ID: 4)
+Can view.admin.sidebar? NO
+Has Permission (method): NO
+--------------------------------------------------
+
+Checking Role Definitions:
+Role: Super Admin (ID: 1)
+Permissions: 
+--------------------------------------------------
+Role: Station Admin (ID: 2)
+Permissions: View Users (users.view), Create Users (users.create), Update Users (users.update), Delete Users (users.delete), View Roles (roles.view), View Fuel_types (fuel_types.view), Create Fuel_types (fuel_types.create), Update Fuel_types (fuel_types.update), Delete Fuel_types (fuel_types.delete), View Fuel_prices (fuel_prices.view), Create Fuel_prices (fuel_prices.create), Update Fuel_prices (fuel_prices.update), Delete Fuel_prices (fuel_prices.delete), View Tanks (tanks.view), Create Tanks (tanks.create), Update Tanks (tanks.update), Delete Tanks (tanks.delete), View Pumps (pumps.view), Create Pumps (pumps.create), Update Pumps (pumps.update), Delete Pumps (pumps.delete), View Shifts (shifts.view), Create Shifts (shifts.create), Update Shifts (shifts.update), Delete Shifts (shifts.delete), View Pumpers (pumpers.view), Create Pumpers (pumpers.create), Update Pumpers (pumpers.update), Delete Pumpers (pumpers.delete), View Sales (sales.view), Create Sales (sales.create), Update Sales (sales.update), Delete Sales (sales.delete), View Settlements (settlements.view), Create Settlements (settlements.create), Update Settlements (settlements.update), Delete Settlements (settlements.delete)
+--------------------------------------------------
+Role: Manager (ID: 3)
+Permissions: 
+--------------------------------------------------
+Role: Pumper (ID: 4)
+Permissions: Create Sales (sales.create), Update Sales (sales.update)
+--------------------------------------------------

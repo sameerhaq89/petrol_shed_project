@@ -29,6 +29,23 @@ class LoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(\Illuminate\Http\Request $request, $user)
+    {
+        // Check permission instead of role directly
+        if ($user->can('sales.entry.access') && !$user->can('view.admin.sidebar')) {
+            return redirect()->route('pumper.sales.entry');
+        }
+
+        return redirect()->intended($this->redirectTo);
+    }
+
+    /**
      * Create a new controller instance.
      *
      * @return void

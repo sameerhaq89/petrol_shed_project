@@ -44,7 +44,21 @@ class SaleService
         // Update Shift Totals
         $this->updateShiftTotals($data['shift_id'], $data['final_amount'], $data['payment_mode']);
 
+        // Update Tank Level
+        $this->updateTankLevel($data['pump_id'], $data['quantity']);
+
         return $sale;
+    }
+
+    protected function updateTankLevel($pumpId, $quantity)
+    {
+        $pump = \App\Models\Pump::find($pumpId);
+        if ($pump && $pump->tank) {
+            $pump->tank->decrement('current_level', $quantity);
+        } elseif ($pump && $pump->tank_id) {
+            // Fallback if relation is not loaded or issue with relation definition
+            \App\Models\Tank::where('id', $pump->tank_id)->decrement('current_level', $quantity);
+        }
     }
 
     protected function updateShiftTotals($shiftId, $amount, $paymentMode)

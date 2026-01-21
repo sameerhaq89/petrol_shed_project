@@ -2,65 +2,60 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fuelPrice;
-use App\Http\Requests\StorefuelPriceRequest;
-use App\Http\Requests\UpdatefuelPriceRequest;
+use App\Http\Requests\StoreFuelPriceRequest; // Import the Request
+use App\Services\FuelPriceService;
+use App\Models\FuelType;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class FuelPriceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $fuelPriceService;
+
+    public function __construct(FuelPriceService $fuelPriceService)
     {
-        //
+        $this->fuelPriceService = $fuelPriceService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(): View
     {
-        //
+        $data = $this->fuelPriceService->getDashboardData();
+        $fuelTypes = FuelType::where('is_active', true)->get();
+
+        $pageHeader = [
+            'title' => 'Fuel Price Management',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => route('home')],
+                ['name' => 'Fuel Prices', 'url' => '#']
+            ]
+        ];
+
+        return view('admin.petro.fuel-price.index', [
+            'currentPrices' => $data['current'],
+            'history'       => $data['history'],
+            'fuelTypes'     => $fuelTypes,
+            'pageHeader'    => $pageHeader
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorefuelPriceRequest $request)
+
+    public function store(StoreFuelPriceRequest $request): RedirectResponse
     {
-        //
+        try {
+            $this->fuelPriceService->createPrice($request->validated());
+            return back()->with('success', 'Fuel price updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error updating price: ' . $e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(fuelPrice $fuelPrice)
+    public function destroy($id): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(fuelPrice $fuelPrice)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatefuelPriceRequest $request, fuelPrice $fuelPrice)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(fuelPrice $fuelPrice)
-    {
-        //
+        try {
+            $this->fuelPriceService->deletePrice($id);
+            return back()->with('success', 'Price record deleted.');
+        } catch (\Exception $e) {
+             return back()->with('error', 'Error deleting price.');
+        }
     }
 }

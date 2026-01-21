@@ -1,64 +1,64 @@
 <?php
+
 namespace App\Repositories;
 
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
-use App\Repositories\Interfaces\UserRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
-
+use Illuminate\Support\Facades\Hash;
+                
 class UserRepository implements UserRepositoryInterface
 {
-    /**
-     * Get all users.
-     *
-     * @return Collection
-     */
-    public function getAll(): Collection
+    public function getAll()
     {
-        return User::all();
+        return User::with(['role', 'station'])->latest()->paginate(10);
     }
 
-    public function create(array $data): User
+    public function find(int $id)
     {
-        return User::create($data);
+        return User::findOrFail($id);
     }
 
-    public function findById(int $id): ?User
+    public function create(array $data)
     {
-        return User::find($id);
+        return User::create([
+            'name'       => $data['name'],
+            'email'      => $data['email'],
+            'phone'      => $data['phone'] ?? null,
+            'role_id'    => $data['role_id'],
+            'station_id' => $data['role_id'] == 1 ? null : ($data['station_id'] ?? null),
+            'password'   => Hash::make($data['password']),
+            'is_active'  => true,
+        ]);
     }
 
-    public function findByPhone(string $phone): ?User
+    public function update(int $id, array $data)
     {
-        return User::where('phone', $phone)->first();
+        $user = User::findOrFail($id);
+
+        $updateData = [
+            'name'       => $data['name'],
+            'email'      => $data['email'],
+            'phone'      => $data['phone'] ?? null,
+            'role_id'    => $data['role_id'],
+            'station_id' => $data['role_id'] == 1 ? null : ($data['station_id'] ?? null),
+        ];
+
+        if (!empty($data['password'])) {
+            $updateData['password'] = Hash::make($data['password']);
+        }
+
+        $user->update($updateData);
+        return $user;
     }
 
-    public function findByEmail(string $email): ?User
+    public function delete(int $id)
+    {
+        $user = User::findOrFail($id);
+        return $user->delete();
+    }
+
+    public function findByEmail(string $email)
     {
         return User::where('email', $email)->first();
-    }
-
-    public function update(int $id, array $data): ?User
-    {
-        $user = $this->findById($id);
-        if ($user) {
-            $user->update($data);
-            return $user->fresh();
-        }
-        return null;
-    }
-
-    public function updatePassword(int $id, string $password): bool
-    {
-        return User::where('id', $id)->update(['password' => $password]);
-    }
-
-    public function findByPasswordResetToken(string $token): ?User
-    {
-        return User::where('password_reset_token', $token)->first();
-    }
-
-    public function setPasswordResetToken(int $id, ?string $token): bool
-    {
-        return (bool) User::where('id', $id)->update(['password_reset_token' => $token]);
     }
 }

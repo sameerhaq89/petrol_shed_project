@@ -4,31 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes; // Optional, if you use soft deletes
 
 class Pump extends Model
 {
-    use HasFactory; 
-    // use SoftDeletes; // Uncomment if your table has deleted_at
+    use HasFactory;
 
-    protected $table = 'pumps';
-
-    // Ensure all your fillable fields are listed here
     protected $fillable = [
-        'pump_name',
         'pump_number',
-        'tank_id',
+        'pump_name',
+        'station_id',
+        'tank_id',       // Ensure this exists if linking to tank
+        'fuel_type_id',  // Ensure this exists if linking directly to fuel
+        'current_reading',
         'status',
-        'last_meter_reading',
-        'notes'
+        'description'
     ];
 
     /**
-     * Relationship: A Pump belongs to one Tank.
+     * Relationship: A Pump belongs to a Station.
      */
-    public function tank()
+    public function station()
     {
-        // This assumes your pumps table has a 'tank_id' column
+        return $this->belongsTo(Station::class);
+    }
+
+    /**
+     * Relationship: A Pump belongs to a Tank.
+     */
+   public function tank()
+    {
         return $this->belongsTo(Tank::class, 'tank_id');
+    }
+
+    // Optional: Helper to get fuel type easily
+    public function fuelType()
+    {
+        return $this->hasOneThrough(FuelType::class, Tank::class, 'id', 'id', 'tank_id', 'fuel_type_id');
     }
 }

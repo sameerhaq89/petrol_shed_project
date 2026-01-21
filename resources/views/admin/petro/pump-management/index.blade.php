@@ -4,6 +4,7 @@
 <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
     @include('admin.command.widgets.page-header', $pageHeader)
     {{-- 1. Module Tabs --}}
+    
     <div class="row mb-3">
         <div class="col-12">
             <div class="btn-group w-100 shadow-sm d-flex flex-wrap" role="group">
@@ -29,6 +30,13 @@
     @include('admin.petro.pump-management.widget.testing-details-table')
     @include('admin.petro.pump-management.widget.meter-readings-table')
     @include('admin.petro.settlement.widget.modals.create-pump-modal')
+    @include('admin.petro.pump-management.widget.modal.create-pump-modal') 
+    @include('admin.petro.pump-management.widget.modal.edit-pump-modal')
+
+    {{-- Modals --}}
+    @include('admin.petro.pump-management.widget.modal.pump-view-details-modal')
+    @include('admin.petro.pump-management.widget.modal.test-view-details-modal')
+    @include('admin.petro.pump-management.widget.modal.meter-view-details-modal')
 </div>
 @endsection
 <script src="{{ asset('assets/js/pump-management.js') }}"></script>

@@ -2,65 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\dipreading;
-use App\Http\Requests\StoredipreadingRequest;
-use App\Http\Requests\UpdatedipreadingRequest;
+use App\Services\DipReadingService;
+use App\Services\TankService;
+use Illuminate\Http\Request;
 
-class DipreadingController extends Controller
+class DipReadingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    protected $dipService;
+    protected $tankService;
+
+    public function __construct(DipReadingService $dipService, TankService $tankService)
+    {
+        $this->dipService = $dipService;
+        $this->tankService = $tankService;
+    }
+
     public function index()
     {
-        //
+        // 1. Get List of Readings
+        $dip_readings = $this->dipService->getReadingsForTable();
+        
+        // 2. GET TANKS (Required for the Dropdown)
+        $tanks = $this->tankService->getAllTanks([]);
+
+        $pageHeader = [
+            'title' => 'Dip Management',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => route('home')],
+                ['name' => 'Dip Readings', 'url' => '#']
+            ]
+        ];
+
+        // 3. DEBUG CHECK (Optional): Uncomment the line below to test if data exists
+        // dd($tanks); 
+
+        // 4. PASS '$tanks' TO THE VIEW
+        return view('admin.petro.dip-management.index', compact('dip_readings', 'tanks', 'pageHeader'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'tank_id'       => 'required|exists:tanks,id',
+            'reading_date'  => 'required|date',
+            'dip_level_cm'  => 'required|numeric',
+            'volume_liters' => 'required|numeric',
+            'temperature'   => 'nullable|numeric',
+            'notes'         => 'nullable|string'
+        ]);
+
+        $this->dipService->createDipReading($request->all());
+
+        return back()->with('success', 'Dip reading recorded successfully.');
+    }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'tank_id'       => 'required|exists:tanks,id',
+            'reading_date'  => 'required|date',
+            'dip_level_cm'  => 'required|numeric',
+            'volume_liters' => 'required|numeric',
+            'temperature'   => 'nullable|numeric',
+            'notes'         => 'nullable|string'
+        ]);
+
+        $this->dipService->updateDipReading($id, $request->all());
+
+        return back()->with('success', 'Dip reading updated successfully.');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoredipreadingRequest $request)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(dipreading $dipreading)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(dipreading $dipreading)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatedipreadingRequest $request, dipreading $dipreading)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(dipreading $dipreading)
-    {
-        //
+        $this->dipService->deleteDipReading($id);
+        return back()->with('success', 'Dip reading deleted successfully.');
     }
 }

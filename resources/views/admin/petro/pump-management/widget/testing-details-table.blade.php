@@ -2,7 +2,7 @@
     <div class="col-12 mb-4 stretch-card">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
-                <div class="d-flex align-items-center mb-3 flex-wrap">
+                <div class="d-flex align-items-center mb-2 flex-wrap">
                     <h3 class="page-title mb-3 table-name">All Filling Station Tests</h3>
                     <div class="d-flex align-items-center gap-2 ms-auto">
                         <div class="dropdown export-dropdown">
@@ -38,12 +38,12 @@
                             <tr>
                                 <th>Transaction Date</th>
                                 <th>Location</th>
-                                <th>Settlement No</th>
+                                <th>Settlement</th>
                                 <th>Pump No</th>
                                 <th>Product</th>
                                 <th>Operator</th>
-                                <th>Testing Ltr</th>
-                                <th>Testing Sale Value</th>
+                                <th>Leter</th>
+                                <th>Sale Value</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -61,8 +61,17 @@
                                 <td data-label="Action" class="text-center">
                                     <div class="btn-group">
                                         <button
-                                            class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view-details">
+                                            class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view"
+                                            data-bs-toggle="modal" data-bs-target="#testViewDetailsModal">
                                             <i class="mdi mdi-eye-arrow-right-outline"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </button>
+                                        <button
+                                            class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
+                                            <i class="mdi mdi-delete"></i>
                                         </button>
                                     </div>
                                 </td>

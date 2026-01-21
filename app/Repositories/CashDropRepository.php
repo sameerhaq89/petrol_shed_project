@@ -3,13 +3,14 @@
 namespace App\Repositories;
 
 use App\Models\CashDrop;
-use App\Repositories\Interfaces\CashDropRepositoryInterface;
+use App\Interfaces\CashDropRepositoryInterface;
 
 class CashDropRepository implements CashDropRepositoryInterface
 {
     public function getByShift(int $shiftId)
     {
-        return CashDrop::where('shift_id', $shiftId)
+        return CashDrop::with(['user', 'receiver'])
+            ->where('shift_id', $shiftId)
             ->latest()
             ->get();
     }
@@ -24,10 +25,20 @@ class CashDropRepository implements CashDropRepositoryInterface
         return CashDrop::findOrFail($id);
     }
 
-    public function markAsVerified(int $id)
+    public function verify(int $id, int $receiverId)
     {
         $drop = $this->find($id);
-        $drop->update(['verified_at' => now()]);
+        $drop->update([
+            'status' => 'verified',
+            'received_by' => $receiverId,
+            // 'verified_at' => now(), // Column does not exist
+        ]);
         return $drop;
+    }
+
+    public function delete(int $id)
+    {
+        $drop = $this->find($id);
+        return $drop->delete();
     }
 }

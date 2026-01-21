@@ -21,6 +21,10 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Implicitly grant "Super Admin" role all permissions
+        // or check permissions via the User model
+        \Illuminate\Support\Facades\Gate::before(function ($user, $ability) {
+            return $user->hasPermission($ability) ?: null;
+        });
     }
 }

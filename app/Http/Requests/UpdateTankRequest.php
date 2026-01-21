@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateTankRequest extends FormRequest
 {
@@ -13,20 +14,29 @@ class UpdateTankRequest extends FormRequest
 
     public function rules(): array
     {
-        // Get the ID of the tank being updated to ignore it in unique checks
-        $tankId = $this->route('tank') ? $this->route('tank') : $this->route('id');
+        // Get the tank ID from the route to ignore it during unique check
+        $tankId = $this->route('tank') ?? $this->route('id');
 
         return [
-            'tank_name'       => 'required|string|max:255',
-            // Unique check ignores the current tank's ID
-            'tank_number'     => 'required|string|max:50|unique:tanks,tank_number,' . $tankId, 
-            'station_id'      => 'required|exists:stations,id',
-            'fuel_type_id'    => 'required|integer',
-            'capacity'        => 'required|numeric|min:0',
-            'reorder_level'   => 'nullable|numeric|min:0',
-            'minimum_level'   => 'nullable|numeric|min:0',
-            'maximum_level'   => 'nullable|numeric|min:0',
-            'status'          => 'required|in:active,inactive,maintenance',
+            'tank_name'     => 'required|string|max:255',
+            'tank_number'   => [
+                'required',
+                'string',
+                'max:50',
+                // Check unique but ignore THIS tank's ID
+                Rule::unique('tanks')->ignore($tankId)->whereNull('deleted_at')
+            ],
+            'station_id'    => 'nullable|exists:stations,id',
+            'fuel_type_id'  => 'required|exists:fuel_types,id',
+            'capacity'      => 'required|numeric|min:0',
+            
+            // Stock is usually updated via AdjustStock, but if allowed here:
+            'current_stock' => 'nullable|numeric|min:0|lte:capacity',
+            
+            'reorder_level' => 'nullable|numeric|min:0',
+            'minimum_level' => 'nullable|numeric|min:0',
+            'maximum_level' => 'nullable|numeric|min:0',
+            'status'        => 'required|in:active,inactive,maintenance,offline',
         ];
     }
 }

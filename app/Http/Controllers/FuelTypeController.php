@@ -2,65 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fuelType;
-use App\Http\Requests\StorefuelTypeRequest;
-use App\Http\Requests\UpdatefuelTypeRequest;
+use App\Http\Requests\StoreFuelTypeRequest;
+use App\Http\Requests\UpdateFuelTypeRequest;
+use App\Services\FuelTypeService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class FuelTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $fuelTypeService;
+
+    public function __construct(FuelTypeService $fuelTypeService)
     {
-        //
+        $this->fuelTypeService = $fuelTypeService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(): View
     {
-        //
+        $fuelTypes = $this->fuelTypeService->getAllFuelTypes();
+
+        $pageHeader = [
+            'title' => 'Fuel Types',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => route('home')],
+                ['name' => 'Settings', 'url' => '#'],
+                ['name' => 'Fuel Types', 'url' => '#'],
+            ],
+        ];
+
+        return view('admin.petro.fuel-type.index', compact('fuelTypes', 'pageHeader'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorefuelTypeRequest $request)
+    public function store(StoreFuelTypeRequest $request): RedirectResponse
     {
-        //
+        try {
+            $this->fuelTypeService->createFuelType($request->validated());
+
+            return back()->with('success', 'New fuel type added successfully.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error creating fuel type: '.$e->getMessage());
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(fuelType $fuelType)
+    public function update(UpdateFuelTypeRequest $request, $id): RedirectResponse
     {
-        //
+        try {
+            $this->fuelTypeService->updateFuelType($id, $request->validated());
+
+            return back()->with('success', 'Fuel type updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error updating fuel type: '.$e->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(fuelType $fuelType)
+    public function destroy($id): RedirectResponse
     {
-        //
-    }
+        try {
+            $this->fuelTypeService->deleteFuelType($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatefuelTypeRequest $request, fuelType $fuelType)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(fuelType $fuelType)
-    {
-        //
+            return back()->with('success', 'Fuel type deleted.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error deleting fuel type.');
+        }
     }
 }

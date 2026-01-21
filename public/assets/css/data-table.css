@@ -95,11 +95,11 @@
             .tom-select .ts-control>.item {
                 line-height: 1.5 !important;
             }
-
+/* 
             .tom-select .ts-wrapper.single .ts-control:after {
                 top: 50%;
                 transform: translateY(-50%);
-            }
+            } */
 
             .tom-select+button {
                 position: absolute;

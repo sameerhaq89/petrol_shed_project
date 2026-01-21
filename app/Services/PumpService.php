@@ -13,18 +13,48 @@ class PumpService
         $this->repository = $repository;
     }
 
-    /* --------------------------------------------------------------------------
-     * CORE CRUD METHODS
-     * -------------------------------------------------------------------------- */
-
-    public function getAllPumps()
+    public function getPumpsForDashboard()
     {
-        return $this->repository->getAll();
+        $pumps = $this->repository->getAll();
+
+        return $pumps->map(function ($pump) {
+            $statusData = $this->getStatusDetails($pump->status);
+
+            return [
+                'id' => $pump->id,
+                'pumpName' => $pump->pump_name ?? $pump->pump_number,
+                'pumpType' => $pump->tank ? $pump->tank->tank_name : 'No Tank',
+                'currentMeter' => number_format($pump->current_reading ?? 0, 2).' L',
+                'statusIcon' => $statusData['icon'],
+                'statusColor' => $statusData['color'],
+                'isActive' => $pump->status === 'active',
+                'linkStatus' => $pump->tank ? 'Linked to '.$pump->tank->tank_name : 'Unlinked',
+            ];
+        });
     }
 
-    public function getPumpById(int $id)
+    public function getPumpsForManagementTable()
     {
-        return $this->repository->find($id);
+        $pumps = $this->repository->getAll();
+
+        return $pumps->map(function ($pump) {
+            $productName = $pump->tank && $pump->tank->fuelType ? $pump->tank->fuelType->name : 'N/A';
+            $tankName = $pump->tank ? $pump->tank->tank_name : 'Unassigned';
+
+            return [
+                'id' => $pump->id,
+                'date' => $pump->created_at->format('Y-m-d'),
+                'transaction_date' => $pump->updated_at->format('Y-m-d H:i'),
+                'pump_no' => $pump->pump_number,
+                'name' => $pump->pump_name,
+                'start_meter' => number_format($pump->opening_reading, 2),
+                'close_meter' => number_format($pump->current_reading, 2),
+                'product_name' => $productName,
+                'fuel_tanks' => $tankName,
+                'tank_id' => $pump->tank_id,
+                'status' => $pump->status,
+            ];
+        });
     }
 
     public function createPump(array $data)
@@ -42,80 +72,18 @@ class PumpService
         return $this->repository->delete($id);
     }
 
-    /* --------------------------------------------------------------------------
-     * DATA TRANSFORMATION METHODS (FIX FOR YOUR ERROR)
-     * -------------------------------------------------------------------------- */
-
-    /**
-     * Format 1: For Tank Dashboard (Cards)
-     * Used by: TankController
-     */
-    public function getPumpsForDashboard()
+    public function getPumpById(int $id)
     {
-        $pumps = $this->repository->getAll();
-
-        return $pumps->map(function ($pump) {
-            return [
-                'id'           => $pump->id,
-                'pumpName'     => $pump->pump_name, 
-                // Assumes relationship: $pump->tank->fuel_type exists or is an ID
-                'pumpType'     => $pump->tank ? $pump->tank->tank_name : 'No Tank', 
-                'currentMeter' => number_format($pump->last_meter_reading, 2) . ' L',
-                'statusIcon'   => $this->getStatusIcon($pump->status),
-                'isActive'     => $pump->status === 'active',
-                'linkStatus'   => 'Linked to ' . ($pump->tank ? $pump->tank->tank_name : 'No Tank'),
-                'actionButton' => [
-                    'type'  => 'primary',
-                    'icon'  => 'pencil',
-                    'label' => 'Edit Pump'
-                ]
-            ];
-        });
+        return $this->repository->find($id);
     }
 
-    /**
-     * Format 2: For Pump Management Page (Table)
-     * Used by: PumpController
-     */
-    public function getPumpsForManagementTable()
-    {
-        $pumps = $this->repository->getAll();
-
-        return $pumps->map(function ($pump) {
-            
-            // Safe check for fuel type
-            $productName = 'N/A';
-            if ($pump->tank) {
-                // If your tank model has a relationship to 'fuel_type', use that name.
-                // Otherwise, use the ID or raw column.
-                $productName = $pump->tank->fuel_type_id ?? 'Unknown'; 
-            }
-
-            return [
-                'id'               => $pump->id,
-                'date'             => $pump->created_at->format('Y-m-d'),
-                'transaction_date' => $pump->updated_at->format('Y-m-d H:i'),
-                'pump_no'          => $pump->pump_number,
-                'name'             => $pump->pump_name,
-                'start_meter'      => number_format($pump->last_meter_reading, 2),
-                'close_meter'      => number_format($pump->last_meter_reading, 2), // Logic for close meter needed later
-                'product_name'     => $productName,
-                'fuel_tanks'       => $pump->tank ? $pump->tank->tank_name : 'Unassigned',
-            ];
-        });
-    }
-
-    /* --------------------------------------------------------------------------
-     * HELPERS
-     * -------------------------------------------------------------------------- */
-
-    private function getStatusIcon($status)
+    private function getStatusDetails($status)
     {
         return match ($status) {
-            'active'      => 'success',     // Green
-            'maintenance' => 'maintenance', // Wrench
-            'offline'     => 'error',       // Red
-            default       => 'warning',
+            'active' => ['icon' => 'check-circle', 'color' => 'success'],
+            'maintenance' => ['icon' => 'wrench',       'color' => 'warning'],
+            'offline' => ['icon' => 'power-off',    'color' => 'danger'],
+            default => ['icon' => 'help-circle',  'color' => 'secondary'],
         };
     }
 }

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,7 +12,17 @@ return new class extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tank_id')->constrained('tanks')->onDelete('cascade');
+            $table->enum('type', ['purchase', 'sales', 'adjustment', 'evaporation', 'testing']);
+            $table->decimal('quantity', 10, 2);
+            $table->decimal('balance_after', 10, 2);
+            $table->string('reference_type')->nullable(); // e.g., 'shift', 'invoice'
+            $table->unsignedBigInteger('reference_id')->nullable();
+            $table->string('reference_number')->nullable();
+            $table->timestamp('recorded_at')->useCurrent();
             $table->timestamps();
+
+            $table->index(['tank_id', 'recorded_at']);
         });
     }
 

@@ -3,8 +3,9 @@
 namespace App\Services;
 
 use App\Interfaces\TankRepositoryInterface;
-use Exception;
-use Illuminate\Support\Facades\DB;
+use App\Models\Station;
+use App\Models\Tank;
+use Illuminate\Support\Facades\Auth;
 
 class TankService
 {
@@ -15,10 +16,18 @@ class TankService
         $this->repository = $repository;
     }
 
-    public function getAllTanks(array $filters)
-    {
-        return $this->repository->getAll($filters);
+    public function getAllTanks(array $filters = [])
+{
+    $query = Tank::with(['fuelType', 'station']);
+
+    // LOGIC UPDATE:
+    // If I am NOT a Super Admin (Role 1), restrict me to my station.
+    if (Auth::check() && Auth::user()->role_id !== 1) {
+        $query->where('station_id', Auth::user()->station_id);
     }
+
+    return $query->latest()->get();
+}
 
     public function getTankById(int $id)
     {
@@ -27,6 +36,23 @@ class TankService
 
     public function createTank(array $data)
     {
+        // Auto-assign station ID
+        $stationId = Auth::user()->station_id;
+
+        // Fallback for Super Admin
+        if (!$stationId && Auth::user()->role_id == 1) {
+            $stationId = $data['station_id'] ?? Station::first()->id ?? 1;
+        }
+
+        // Prepare data for repository
+        $data['station_id'] = $stationId;
+        $data['current_stock'] = $data['current_stock'] ?? 0;
+        
+        // If status wasn't passed, default to active
+        if (!isset($data['status'])) {
+            $data['status'] = 'active';
+        }
+
         return $this->repository->create($data);
     }
 
@@ -40,39 +66,18 @@ class TankService
         return $this->repository->delete($id);
     }
 
-    /**
-     * Handle business logic for stock adjustment
-     */
-    public function adjustStock(int $id, float $quantity, string $type, string $reason)
+    public function adjustStock($tankId, $quantity, $type, $reason = null)
     {
-        return DB::transaction(function () use ($id, $quantity, $type, $reason) {
-            $tank = $this->repository->find($id);
-            
-            $newStock = $tank->current_stock;
+        $tank = $this->repository->find($tankId);
 
-            if ($type === 'add') {
-                $newStock += $quantity;
-            } elseif ($type === 'subtract') {
-                $newStock -= $quantity;
-            }
+        if ($type === 'refill') {
+            $tank->current_stock += $quantity;
+        } else {
+            // Dip or Correction overrides the value
+            $tank->current_stock = $quantity;
+        }
 
-            // Prevent negative stock
-            if ($newStock < 0) {
-                throw new Exception("Stock cannot be negative.");
-            }
-
-            // Prevent exceeding capacity
-            if ($newStock > $tank->capacity) {
-                throw new Exception("Adjustment exceeds tank capacity.");
-            }
-
-            // 1. Update the tank
-            $updatedTank = $this->repository->updateCurrentStock($id, $newStock);
-
-            // 2. Here you would logically create a log entry in a History table
-            // StockHistory::create([...]); 
-
-            return $updatedTank;
-        });
+        $tank->save();
+        return $tank;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +21,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        // ADD THESE LINES:
+        'role_id',
+        'station_id',
+        'phone',
+        'is_active',
     ];
 
     /**
@@ -41,5 +46,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_active' => 'boolean', // Good practice to cast this
     ];
+
+    // ... your existing relationships (role, station) ...
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
+
+    public function hasPermission($permissionSlug)
+    {
+        if ($this->role_id === 1)
+            return true;
+        if (!$this->role)
+            return false;
+        return $this->role->permissions->contains('slug', $permissionSlug);
+    }
+
+    public function hasRole($roleSlug)
+    {
+        return $this->role && $this->role->slug === $roleSlug;
+    }
 }

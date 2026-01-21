@@ -2,65 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\role;
-use App\Http\Requests\StoreroleRequest;
-use App\Http\Requests\UpdateroleRequest;
+use App\Http\Requests\UpdateRolePermissionsRequest;
+use App\Services\RoleService;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $roleService;
+
+    public function __construct(RoleService $roleService)
     {
-        //
+        $this->roleService = $roleService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function index(): View
     {
-        //
+        $roles = $this->roleService->getManageableRoles();
+        
+        $pageHeader = [
+            'title' => 'Role Management',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => route('home')],
+                ['name' => 'Roles', 'url' => '#']
+            ]
+        ];
+
+        return view('admin.roles.index', compact('roles', 'pageHeader'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreroleRequest $request)
+    public function edit($id): View
     {
-        //
+        $role = $this->roleService->getRoleById($id);
+        $permissions = $this->roleService->getGroupedPermissions();
+        
+        $pageHeader = [
+            'title' => 'Edit Permissions: ' . $role->name,
+            'breadcrumbs' => [
+                ['name' => 'Roles', 'url' => route('roles.index')],
+                ['name' => 'Edit', 'url' => '#']
+            ]
+        ];
+
+        return view('admin.roles.edit', compact('role', 'permissions', 'pageHeader'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(role $role)
+    public function update(UpdateRolePermissionsRequest $request, $id): RedirectResponse
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(role $role)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateroleRequest $request, role $role)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(role $role)
-    {
-        //
+        try {
+            $this->roleService->syncRolePermissions($id, $request->permissions ?? []);
+            return redirect()->route('roles.index')->with('success', 'Permissions updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

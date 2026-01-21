@@ -1,62 +1,83 @@
 <div class="row">
-    <div class="col-12 mb-4 stretch-card">
-        <div class=" card border-primary shadow-sm" style="border-top: 3px solid;">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
             <div class="card-body">
-                <div class="d-flex align-items-center mb-3 flex-wrap">
-                    <h3 class="page-title mb-3 table-name">Summary Table</h3>
-                    <div class="d-flex align-items-center gap-2 ms-auto">
-                        <div class="dropdown export-dropdown">
-                            <button type="button" class="btn btn-sm btn-gradient-primary dropdown-toggle"
-                                data-bs-toggle="dropdown" aria-expanded="false" title="Export Options">
-                                <i class="fa fa-download"></i> Export
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="exportDropdown">
-                                <li><a class="dropdown-item" href="#" data-export="copy"><i class="fa fa-copy me-2"></i>
-                                        Copy</a></li>
-                                <li><a class="dropdown-item" href="#" data-export="csv"><i
-                                            class="fa fa-file-text-o me-2"></i> CSV</a></li>
-                                <li><a class="dropdown-item" href="#" data-export="excel"><i
-                                            class="fa fa-file-excel-o text me-2"></i> Excel</a>
-                                </li>
-                                <li><a class="dropdown-item" href="#" data-export="pdf"><i
-                                            class="fa fa-file-pdf-o me-2"></i> PDF</a></li>
-                                <li><a class="dropdown-item" href="#" data-export="print"><i
-                                            class="fa fa-print me-2"></i> Print</a></li>
-                            </ul>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-gradient-primary" data-bs-toggle="modal"
-                            data-bs-target="#importModal" title="Import">
-                            <i class="fa fa-upload"></i> Import
-                        </button>
-                        <button id="tableFilterBtn" class="btn btn-sm btn-outline-secondary" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#metaFilterBody">
-                            <i class="mdi mdi-filter"></i>
-                            <span id="tableFilterBtnText">Show Filter</span>
-                        </button>
-                    </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">Settlement History</h4>
+                    {{-- Optional: Add Filter/Export buttons here --}}
                 </div>
-                @include('admin.petro.settlement-list.widget.filter')
+
                 <div class="table-responsive">
-                    <table class="data-table table table-hover table-bordered w-100">
-                        <thead class="bg-light">
-                            <tr>
-                                <th>Settlement ID</th>
-                                <th>Settlement Date</th>
-                                <th>Pump Operator</th>
-                                <th>Pumps</th>
-                                <th>Location</th>
-                                <th>Shift</th>
-                                <th>Total Amount</th>
-                                <th>Added User</th>
+                    <table class="table table-hover" id="settlementTable">
+                        <thead>
+                            <tr class="bg-light">
+                                <th># Settlement ID</th>
+                                <th>Date</th>
+                                <th>Station</th>
+                                <th>Total Sales</th>
+                                <th>Cash Collected</th>
+                                <th>Variance</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($settlements as $settlement)
+                            <tr>
+                                <td class="font-weight-bold text-primary">
+                                    {{ $settlement->shift_number }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($settlement->shift_date)->format('d M Y') }}</td>
+                                <td>{{ $settlement->station->name ?? 'N/A' }}</td>
+                                <td class="font-weight-bold">
+                                    {{ number_format($settlement->total_sales, 2) }}
+                                </td>
+                                <td>
+                                    {{ number_format($settlement->closing_cash, 2) }}
+                                </td>
+                                <td class="{{ $settlement->cash_variance < 0 ? 'text-danger' : 'text-success' }}">
+                                    {{ number_format($settlement->cash_variance, 2) }}
+                                </td>
+                                <td>
+                                    <span class="badge badge-outline-success">Settled</span>
+                                </td>
+                                <td>
+                                    {{-- View Details Button --}}
+                                    <button type="button" 
+                                            class="btn btn-sm btn-inverse-info btn-icon"
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#viewDetailsModal"
+                                            onclick="loadSettlementDetails({{ $settlement->id }})">
+                                        <i class="mdi mdi-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="8" class="text-center py-5 text-muted">
+                                    <i class="mdi mdi-file-document-outline" style="font-size: 30px;"></i><br>
+                                    No settlement records found.
+                                </td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
+                
+                {{-- Pagination (if you use paginate() in controller later) --}}
+                {{-- <div class="mt-3">
+                    {{ $settlements->links() }}
+                </div> --}}
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Simple script to handle loading details if you aren't using a separate page
+    function loadSettlementDetails(id) {
+        // You can fetch details via AJAX or redirect
+        // For now, let's just redirect to the shift show page
+        window.location.href = "/settlement/" + id; 
+    }
+</script>

@@ -1,34 +1,43 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Purple Admin') }}</title>
 
+    {{-- 1. FIXED ASSET PATHS (Removed ../..) --}}
     <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendors/ti-icons/css/themify-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('../../assets/vendors/css/vendor.bundle.base.css') }}">
-    <link rel="stylesheet" href="{{ asset('../../assets/vendors/font-awesome/css/font-awesome.min.css') }}">
-    <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('../../assets/css/style.css') }}">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" href="{{ asset('../../assets/images/favicon.png') }}" />
-
+    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
+    
+    {{-- Layout styles --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    
+    {{-- Stack for specific page CSS --}}
+    @stack('css')
 </head>
 
 <body>
-    @yield('content')
+    <div class="container-scroller">
+        {{-- 2. YIELD CONTENT --}}
+        @yield('content')
+    </div>
+
+    {{-- 3. INCLUDE QUICK ACTIONS --}}
+    {{-- Ensure this file exists at: resources/views/admin/common/quick-actions.blade.php --}}
+   
+
+    {{-- 4. CORE SCRIPTS --}}
     <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
+    <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
     <script src="{{ asset('assets/js/misc.js') }}"></script>
-    <script src="{{ asset('assets/js/settings.js') }}"></script>
-    <script src="{{ asset('assets/js/todolist.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.cookie.js') }}"></script>
-</body>
+    
+    {{-- Stack for specific page JS --}}
+    @stack('js')
 
+</body>
 </html>

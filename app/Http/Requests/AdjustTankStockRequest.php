@@ -14,9 +14,9 @@ class AdjustTankStockRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantity' => 'required|numeric|min:0.01',
-            'type'     => 'required|in:add,subtract', // Strict type checking
-            'reason'   => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:0',
+            'type'     => 'required|in:refill,dip,correction',
+            'reason'   => 'nullable|string|max:255'
         ];
     }
 }

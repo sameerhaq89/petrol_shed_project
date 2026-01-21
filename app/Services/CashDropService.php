@@ -2,51 +2,55 @@
 
 namespace App\Services;
 
-use App\Models\CashDrop;
+use App\Interfaces\CashDropRepositoryInterface;
 use App\Models\Shift;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class CashDropService
 {
-    public function getDropsByShift($shiftId)
+    protected $cashDropRepo;
+
+    public function __construct(CashDropRepositoryInterface $cashDropRepo)
     {
-        return CashDrop::with(['user', 'receiver'])
-            ->where('shift_id', $shiftId)
-            ->latest()
-            ->get();
+        $this->cashDropRepo = $cashDropRepo;
     }
 
+    /**
+     * Handle the logic of finding the active shift and saving the drop.
+     */
     public function createDrop(array $data)
     {
-        $shift = Shift::where('station_id', $data['station_id'])
-            ->where('status', 'open')
-            ->first();
+        // 1. Find the Active Shift (Business Logic)
+        $activeShift = Shift::where('status', 'open')->latest()->first();
 
-        if (!$shift) {
-            throw new \Exception("No active shift found");
+        if (!$activeShift) {
+            throw new Exception("No active shift found. Please open a shift first.");
         }
 
-        return CashDrop::create([
-            'shift_id' => $shift->id,
-            'user_id' => auth()->id() ?? 1,
+        // 2. Prepare Data for Repository
+        $dropData = [
+            'shift_id' => $activeShift->id,
+            // 'station_id' => $activeShift->station_id ?? 1, // field does not exist in migration
+            'user_id' => $data['user_id'],
             'amount' => $data['amount'],
+            'notes' => $data['notes'] ?? null,
             'dropped_at' => now(),
             'status' => 'pending',
-            'notes' => $data['notes'] ?? null
-        ]);
+        ];
+
+        // 3. Call Repository
+        return $this->cashDropRepo->create($dropData);
     }
 
     public function verifyDrop($id)
     {
-        $drop = CashDrop::find($id);
-        if (!$drop) {
-            throw new \Exception("Drop not found");
-        }
+        // Pass the current logged-in user as the 'receiver'
+        return $this->cashDropRepo->verify($id, Auth::id());
+    }
 
-        $drop->update([
-            'status' => 'verified',
-            'received_by' => auth()->id()
-        ]);
-
-        return $drop;
+    public function deleteDrop($id)
+    {
+        return $this->cashDropRepo->delete($id);
     }
 }

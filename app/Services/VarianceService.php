@@ -2,80 +2,74 @@
 
 namespace App\Services;
 
+use App\Interfaces\VarianceRepositoryInterface;
 use App\Models\Shift;
-use App\Models\ShiftVariance;
-use App\Models\Tank;
 
 class VarianceService
 {
+    protected $repository;
+
+    public function __construct(VarianceRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function calculateVariance(int $shiftId)
     {
         $shift = Shift::find($shiftId);
-        if (!$shift)
-            throw new \Exception("Shift not found");
+        if (! $shift) {
+            throw new \Exception('Shift not found');
+        }
 
-        // 1. Cash Variance
-        // Expected = Opening + Cash Sales
-        // Actual = Cash Collected (from closing)
-        $expectedCash = $shift->opening_cash + $shift->cash_sales;
+        $expectedCash = $shift->opening_cash + $shift->total_sales;
+
         $actualCash = $shift->closing_cash;
         $cashVariance = $actualCash - $expectedCash;
+
         $percentage = $expectedCash > 0 ? ($cashVariance / $expectedCash) * 100 : 0;
 
-        // Save Cash Variance
-        ShiftVariance::updateOrCreate(
-            ['shift_id' => $shiftId, 'variance_type' => 'cash'],
-            [
-                'expected_amount' => $expectedCash,
-                'actual_amount' => $actualCash,
-                'variance_amount' => $cashVariance,
-                'variance_percentage' => $percentage,
-                'status' => abs($cashVariance) > 100 ? 'review' : 'acceptable' // tolerance 100
-            ]
-        );
+        $status = abs($cashVariance) > 100 ? 'review' : 'acceptable';
+
+        $this->repository->updateOrCreate($shiftId, 'cash', [
+            'expected_amount' => $expectedCash,
+            'actual_amount' => $actualCash,
+            'variance_amount' => $cashVariance,
+            'variance_percentage' => $percentage,
+            'status' => $status,
+        ]);
 
         return [
-            'cash_variance' => $cashVariance,
-            'status' => abs($cashVariance) > 100 ? 'Review Needed' : 'OK'
+            'variance' => number_format($cashVariance, 2),
+            'status' => $status,
         ];
     }
 
-    public function explainVariance(int $shiftId, string $explanation, ?string $type = 'cash')
+    public function explainVariance(int $shiftId, string $explanation, string $type = 'cash')
     {
-        $variance = ShiftVariance::where('shift_id', $shiftId)
-            ->where('variance_type', $type)
-            ->first();
+        $variance = $this->repository->findByShift($shiftId, $type);
 
-        if (!$variance) {
-            // Create if not exists (though calculate usually runs first)
-            // For now throw error or create empty
-            throw new \Exception("Variance record not found. Please calculate first.");
+        if (! $variance) {
+            throw new \Exception('Variance record not found. Please calculate first.');
         }
 
-        $variance->update([
+        return $this->repository->update($variance->id, [
             'explanation' => $explanation,
-            'status' => 'review'
+            'status' => 'review',
         ]);
-
-        return $variance;
     }
 
-    public function approveVariance(int $shiftId, int $userId, ?string $type = 'cash')
+    public function approveVariance(int $shiftId, int $userId, string $type = 'cash')
     {
-        $variance = ShiftVariance::where('shift_id', $shiftId)
-            ->where('variance_type', $type)
-            ->first();
+        $variance = $this->repository->findByShift($shiftId, $type);
 
-        if (!$variance) {
-            throw new \Exception("Variance record not found.");
+        if (! $variance) {
+            throw new \Exception('Variance record not found.');
         }
 
-        $variance->update([
+        return $this->repository->update($variance->id, [
             'status' => 'approved',
             'reviewed_by' => $userId,
-            'approved_at' => now()
+            'approved_at' => now(),
         ]);
-
-        return $variance;
     }
 }

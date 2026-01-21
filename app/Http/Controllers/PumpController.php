@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePumpRequest;
 use App\Http\Requests\UpdatePumpRequest;
 use App\Services\PumpService;
+use App\Services\TankService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,41 +14,35 @@ class PumpController extends Controller
 {
     protected $pumpService;
 
-    public function __construct(PumpService $pumpService)
+    protected $tankService;
+
+    public function __construct(PumpService $pumpService, TankService $tankService)
     {
         $this->pumpService = $pumpService;
+        $this->tankService = $tankService;
     }
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        // 1. Get formatted data for the "Pumps" tab table
         $pumps = $this->pumpService->getPumpsForManagementTable();
+        $tanks = $this->tankService->getAllTanks([]);
+        $testing_details = [];
+        $meter_readings = [];
 
-        // 2. Page Header Config
         $pageHeader = [
             'title' => 'Pump Management',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Pumps', 'url' => '#']
+                ['name' => 'Dashboard', 'url' => route('home')],
+                ['name' => 'Pumps', 'url' => '#'],
             ],
-            'action_button' => [
-                'url' => '#', 
-                'label' => 'Add Pump', 
-                'icon' => 'plus',
-                'modal' => '#addPumpModal' 
-            ]
         ];
 
-        // 3. FIX: Use strict snake_case names for ALL view variables
-        $testing_details = []; 
-        $meter_readings = [];  // Changed from $meterReadings to $meter_readings
-
-        // 4. Pass them to the view
         return view('admin.petro.pump-management.index', compact(
-            'pumps', 
-            'pageHeader', 
-            'testing_details', 
-            'meter_readings'   // Must match the variable name above
+            'pumps',
+            'tanks',
+            'testing_details',
+            'meter_readings',
+            'pageHeader'
         ));
     }
 
@@ -55,9 +50,10 @@ class PumpController extends Controller
     {
         try {
             $this->pumpService->createPump($request->validated());
-            return redirect()->back()->with('success', 'Pump added successfully.');
+
+            return back()->with('success', 'Pump added successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->withInput()->with('error', 'Error adding pump: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Error adding pump: '.$e->getMessage());
         }
     }
 
@@ -65,9 +61,10 @@ class PumpController extends Controller
     {
         try {
             $this->pumpService->updatePump($id, $request->validated());
-            return redirect()->back()->with('success', 'Pump updated successfully.');
+
+            return back()->with('success', 'Pump updated successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error updating pump.');
+            return back()->withInput()->with('error', 'Error updating pump: '.$e->getMessage());
         }
     }
 
@@ -75,9 +72,10 @@ class PumpController extends Controller
     {
         try {
             $this->pumpService->deletePump($id);
-            return redirect()->back()->with('success', 'Pump deleted successfully.');
+
+            return back()->with('success', 'Pump deleted successfully.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error deleting pump.');
+            return back()->with('error', 'Error deleting pump: '.$e->getMessage());
         }
     }
 }

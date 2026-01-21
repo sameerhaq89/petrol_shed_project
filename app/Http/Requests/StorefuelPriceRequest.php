@@ -4,25 +4,20 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorefuelPriceRequest extends FormRequest
+class StoreFuelPriceRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'fuel_type_id'   => 'required|exists:fuel_types,id',
+            'purchase_price' => 'required|numeric|min:0',
+            'selling_price'  => 'required|numeric|min:0',
+            'effective_from' => 'required|date', // You might want 'after_or_equal:today' depending on rules
         ];
     }
 }

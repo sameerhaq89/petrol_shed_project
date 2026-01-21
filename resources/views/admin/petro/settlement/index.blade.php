@@ -37,9 +37,19 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12 mb-4 stretch-card">
+            <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
+                <div class="mt-4">
+    @include('admin.petro.settlement.widget.cash-drop')
+</div>
+            </div>
+        </div>
+    </div>
     
     {{-- 3. Table --}}
     @include('admin.petro.settlement.widget.entry-table')
+    
 
     {{-- 4. Summary Widget --}}
     <div class="row">
@@ -52,7 +62,22 @@
         </div>
     </div>
     @include('admin.petro.settlement.widget.modals.create-pump-modal')
-    @include('admin.petro.settlement.widget.modals.view-details-modal')
+    @include('admin.petro.settlement.widget.modals.entry-view-details-modal')
+    @include('admin.petro.settlement.widget.modals.edit-entry-modal')
 </div>
 @endsection
-<script src="{{ asset('assets/js/settlement.js') }}"></script>
+<script src="{{ asset('assets/js/settlement.js') }}">
+@push('js')
+<script>
+    $(document).ready(function() {
+        // Initialize DataTable on your specific ID
+        $('#entryTable').DataTable({
+            "order": [[ 0, "desc" ]], // Sort by first column (Code) descending
+            "paging": true,
+            "searching": true,
+            "info": true,
+            "lengthChange": true
+        });
+    });
+</script>
+@endpush</script>

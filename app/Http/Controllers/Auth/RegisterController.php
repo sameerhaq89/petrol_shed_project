@@ -63,11 +63,18 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-    }
+{
+    return User::create([
+        'name' => $data['name'],
+        'email' => $data['email'],
+        'password' => Hash::make($data['password']),
+        
+        // FIX: Assign a default role automatically (e.g., 2 = Admin)
+        'role_id' => 2, 
+        
+        // Optional: If they need a station, you might need to leave it null or assign a default
+        'station_id' => null, 
+        'is_active' => true,
+    ]);
+}
 }
