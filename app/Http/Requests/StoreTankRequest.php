@@ -9,30 +9,44 @@ class StoreTankRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; 
+        return true;
     }
 
     public function rules(): array
     {
         return [
-            'tank_name'     => 'required|string|max:255',
-            'tank_number'   => [
-                'required', 
-                'string', 
-                'max:50', 
+            'tank_name' => 'required|string|max:255',
+            'tank_number' => [
+                'required',
+                'string',
+                'max:50',
                 // Ensure uniqueness but ignore deleted records
                 Rule::unique('tanks')->whereNull('deleted_at')
             ],
-            'station_id'    => 'nullable|exists:stations,id', // Service handles auto-assignment if null
-            'fuel_type_id'  => 'required|exists:fuel_types,id',
-            'capacity'      => 'required|numeric|min:0',
+            // 'station_id' is auto-assigned by Service/Controller logic, no need to validate generic user input.
+            'fuel_type_id' => 'required|exists:fuel_types,id',
+            'capacity' => 'required|numeric|min:0',
             'current_stock' => 'nullable|numeric|min:0|lte:capacity',
-            
-            // Added from your old file
-            'reorder_level' => 'nullable|numeric|min:0',
-            'minimum_level' => 'nullable|numeric|min:0',
-            'maximum_level' => 'nullable|numeric|min:0',
-            'status'        => 'required|in:active,inactive,maintenance,offline',
+
+            // Stock Control
+            'reorder_level' => 'nullable|numeric|min:0|lte:capacity',
+            'minimum_level' => 'nullable|numeric|min:0|lte:capacity',
+            'maximum_level' => 'nullable|numeric|min:0|lte:capacity',
+
+            // Technical Details
+            'tank_type' => 'nullable|string|in:underground,aboveground',
+            'manufacturer' => 'nullable|string|max:255',
+            'material' => 'nullable|string|max:255',
+
+            // Dates
+            'installation_date' => 'nullable|date|before_or_equal:today',
+            'last_cleaned_date' => 'nullable|date|before_or_equal:today',
+
+            // Other
+            'notes' => 'nullable|string|max:1000',
+
+
+
         ];
     }
 }

@@ -20,24 +20,34 @@
                 <tbody>
                     @foreach ($pumperStats as $stat)
                         @php
-                            // 1. Get Sales for this specific pumper in this shift
+                            $assignmentModel = \App\Models\PumpOperatorAssignment::find($stat->assignment_id);
+
+                            // 1. Get Sales for this specific assignment time range
                             $sales = \App\Models\Sale::where('shift_id', $activeShift->id)
                                 ->where('pump_id', $stat->pump_id)
                                 ->where('created_by', $stat->pumper_id)
+                                ->where('created_at', '>=', $assignmentModel->start_time)
+                                ->when($assignmentModel->end_time, function ($q) use ($assignmentModel) {
+                                    return $q->where('created_at', '<=', $assignmentModel->end_time);
+                                })
                                 ->sum('amount');
 
-                            // 2. Get TOTAL Cash Drops (Mid-shift + Final Handover)
+                            // 2. Get Cash Drops for this specific assignment time range
                             $totalDrops = \App\Models\CashDrop::where('shift_id', $activeShift->id)
                                 ->where('user_id', $stat->pumper_id)
+                                ->where('created_at', '>=', $assignmentModel->start_time)
+                                ->when($assignmentModel->end_time, function ($q) use ($assignmentModel) {
+                                    return $q->where('created_at', '<=', $assignmentModel->end_time);
+                                })
                                 ->sum('amount');
-                            $assignmentModel = \App\Models\PumpOperatorAssignment::find($stat->assignment_id);
-                            // 3. Opening Cash (The float/change money)
+
+                            // 3. Opening Cash
                             $openingCash = $assignmentModel->opening_cash ?? 0;
 
-                            // 4. Expected Total = Sales + Opening Cash
+                            // 4. Expected Total
                             $expectedTotal = $sales + $openingCash;
 
-                            // 5. Variance = Received - Expected
+                            // 5. Variance
                             $variance = $totalDrops - $expectedTotal;
                         @endphp
                         <tr>

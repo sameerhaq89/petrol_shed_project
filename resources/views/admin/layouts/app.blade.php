@@ -13,8 +13,11 @@
             @include('admin.layouts.left-side-bar')
 
             <div class="main-panel">
+                <div class="container-fluid mt-3">
+                    @include('admin.common.alerts')
+                </div>
                 @yield('content')
-               @include('admin.common.quick-actions')
+                @include('admin.common.quick-actions')
                 @include('admin.layouts.footer')
             </div>
 

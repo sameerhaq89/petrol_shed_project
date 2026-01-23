@@ -33,18 +33,18 @@ class TankController extends Controller
         $rawTanks = $this->tankService->getAllTanks($request->all());
 
         $tanks = $rawTanks->map(function ($tank) {
-            $percentage = $tank->capacity > 0 
-                ? ($tank->current_stock / $tank->capacity) * 100 
+            $percentage = $tank->capacity > 0
+                ? ($tank->current_stock / $tank->capacity) * 100
                 : 0;
 
             return [
-                'id'          => $tank->id,
-                'tankName'    => $tank->tank_name, 
-                'capacity'    => number_format($tank->capacity) . ' L',
-                'current'     => number_format($tank->current_stock) . ' L',
-                'percentage'  => round($percentage, 0), 
-                'color'       => $this->getFuelColor($tank->fuel_type_id),
-                'lastDip'     => $tank->updated_at->diffForHumans(),
+                'id' => $tank->id,
+                'tankName' => $tank->tank_name,
+                'capacity' => number_format($tank->capacity) . ' L',
+                'current' => number_format($tank->current_stock) . ' L',
+                'percentage' => round($percentage, 0),
+                'color' => $this->getFuelColor($tank->fuel_type_id),
+                'lastDip' => $tank->updated_at->diffForHumans(),
                 'alertStatus' => $percentage < 15 ? 'low-stock' : 'normal',
             ];
         });
@@ -60,15 +60,15 @@ class TankController extends Controller
             ],
             'action_button' => [
                 'label' => 'Add New Tank',
-                'icon'  => 'plus',
+                'icon' => 'plus',
                 'modal' => '#addTankModal', // Triggers the modal widget
-                'url'   => '#' 
+                'url' => '#'
             ]
         ];
 
         return view('admin.petro.tank-management.index', [
-            'tanks'      => $tanks,
-            'pumps'      => $pumps,
+            'tanks' => $tanks,
+            'pumps' => $pumps,
             'pageHeader' => $pageHeader,
             'fuel_types' => $fuel_types
         ]);
@@ -143,9 +143,9 @@ class TankController extends Controller
     {
         return match ($type) {
             1, 'Petrol', 'Gasoline' => 'blue',
-            2, 'Diesel'             => 'green',
-            3, 'Super Petrol'       => 'orange',
-            default                 => 'blue',
+            2, 'Diesel' => 'green',
+            3, 'Super Petrol' => 'orange',
+            default => 'blue',
         };
     }
 }
