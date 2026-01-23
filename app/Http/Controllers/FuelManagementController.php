@@ -11,6 +11,22 @@ class FuelManagementController extends Controller
 {
     public function index()
     {
+        $pageHeader = [
+            'title' => 'Fuel Management',
+            'icon' => 'mdi mdi-fuel',
+            'breadcrumbs' => [
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Fuel Management',
+                    'url'   => null, // active item
+                ],
+            ],
+        ];
+
         // Data for Tab 1 (Prices)
         $currentPrices = FuelPrice::with('fuelType')
             ->whereNull('effective_to')
@@ -27,7 +43,8 @@ class FuelManagementController extends Controller
         return view('admin.petro.fuel-management.index', compact(
             'currentPrices',
             'history',
-            'fuelTypes'
+            'fuelTypes',
+            'pageHeader'
         ));
     }
 }

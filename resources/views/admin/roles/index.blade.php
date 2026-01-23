@@ -1,22 +1,14 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="content-wrapper">
-    <div class="page-header">
-        <h3 class="page-title"> Role Management </h3>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Roles</li>
-            </ol>
-        </nav>
-    </div>
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
+    @include('admin.command.widgets.page-header', $pageHeader)
 
-    <div class="card">
+    <div class="card border-primary shadow-sm mt-2" style="border-top: 3px solid;">
         <div class="card-body">
             <h4 class="card-title">System Roles</h4>
             <p class="card-description"> Manage permissions for each role below. </p>
-            
+
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -38,7 +30,7 @@
                             </td>
                             <td>{{ $role->description ?? 'No description' }}</td>
                             <td>
-                                <span class="badge badge-info">
+                                <span class="badge badge-gradient-info">
                                     {{ $role->permissions->count() }} Permissions
                                 </span>
                             </td>

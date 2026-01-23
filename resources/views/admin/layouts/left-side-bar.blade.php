@@ -109,7 +109,7 @@
             </li>
         @endcan
 
-        @can('view.admin.sidebar')
+        {{-- @can('view.admin.sidebar')
             <li class="nav-item {{ Request::is('/add-purchases') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#purchases" aria-expanded="false"
                     aria-controls="ui-basic">
@@ -137,42 +137,7 @@
                     </ul>
                 </div>
             </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#purchases" aria-expanded="false"
-                    aria-controls="ui-basic">
-                    <span class="menu-title">Stock Transfers</span>
-                    <i class="menu-arrow"></i>
-                    <i class="mdi mdi-truck-delivery menu-icon"></i>
-                </a>
-                <div class="collapse" id="purchases">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">st0</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">st1</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
-            {{-- <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#purchases" aria-expanded="false"
-                    aria-controls="ui-basic">
-                    <span class="menu-title">Stock Adjustment</span>
-                    <i class="menu-arrow"></i>
-                    <i class="mdi mdi-database menu-icon"></i>
-                </a>
-                <div class="collapse" id="purchases">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">sa0</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">sa1</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
+
             <li class="nav-item {{ Request::is('/add-expenses') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#expenses" aria-expanded="false"
                     aria-controls="ui-basic">
@@ -197,24 +162,6 @@
                     </ul>
                 </div>
             </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="collapse" href="#purchases" aria-expanded="false"
-                    aria-controls="ui-basic">
-                    <span class="menu-title">Accounting Module</span>
-                    <i class="menu-arrow"></i>
-                    <i class="mdi mdi-deskphone menu-icon"></i>
-                </a>
-                <div class="collapse" id="purchases">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">sa0</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">sa1</a>
-                        </li>
-                    </ul>
-                </div>
-            </li> --}}
-        @endcan
+        @endcan --}}
     </ul>
 </nav>

@@ -1,4 +1,4 @@
-<div class="row mt-4">
+<div class="row mt-3">
     <div class="col-12">
         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
             <div class="card-body">
@@ -34,24 +34,24 @@
                 <small class="text-muted">{{ $dip['recorded_by'] }}</small>
             </td>
             <td>{{ $dip['notes'] }}</td>
-            
+
             {{-- NEW ACTION COLUMN --}}
             <td class="text-center">
                 {{-- Edit Button --}}
-                <button type="button" 
+                <button type="button"
         class="btn btn-sm btn-outline-primary btn-icon edit-dip-btn"
-        data-bs-toggle="modal" 
+        data-bs-toggle="modal"
         data-bs-target="#editDipModal"
-        
+
         data-id="{{ $dip['id'] }}"
         data-date="{{ $dip['date'] }}"
-        
+
         {{-- USE THE NEW KEYS HERE --}}
-        data-tank="{{ $dip['tank_id'] }}" 
-        data-level="{{ $dip['raw_level'] }}" 
-        data-volume="{{ $dip['raw_volume'] }}" 
+        data-tank="{{ $dip['tank_id'] }}"
+        data-level="{{ $dip['raw_level'] }}"
+        data-volume="{{ $dip['raw_volume'] }}"
         data-temp="{{ $dip['raw_temp'] }}"
-        
+
         data-notes="{{ $dip['notes'] }}">
     <i class="mdi mdi-pencil"></i>
 </button>

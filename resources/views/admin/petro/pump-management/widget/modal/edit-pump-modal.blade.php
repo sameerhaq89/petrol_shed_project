@@ -1,7 +1,7 @@
 <div class="modal fade" id="editPumpModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title"><i class="mdi mdi-pencil me-1"></i> Edit Pump</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -11,7 +11,7 @@
                 @method('PUT')
                 <div class="modal-body">
                     <input type="hidden" id="edit_pump_id">
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Pump Number</label>
@@ -48,8 +48,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Pump</button>
+                    <button type="button" class="btn btn-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gradient-primary">Update Pump</button>
                 </div>
             </form>
         </div>

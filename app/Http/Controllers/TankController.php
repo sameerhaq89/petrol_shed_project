@@ -33,16 +33,16 @@ class TankController extends Controller
         $rawTanks = $this->tankService->getAllTanks($request->all());
 
         $tanks = $rawTanks->map(function ($tank) {
-            $percentage = $tank->capacity > 0 
-                ? ($tank->current_stock / $tank->capacity) * 100 
+            $percentage = $tank->capacity > 0
+                ? ($tank->current_stock / $tank->capacity) * 100
                 : 0;
 
             return [
                 'id'          => $tank->id,
-                'tankName'    => $tank->tank_name, 
+                'tankName'    => $tank->tank_name,
                 'capacity'    => number_format($tank->capacity) . ' L',
                 'current'     => number_format($tank->current_stock) . ' L',
-                'percentage'  => round($percentage, 0), 
+                'percentage'  => round($percentage, 0),
                 'color'       => $this->getFuelColor($tank->fuel_type_id),
                 'lastDip'     => $tank->updated_at->diffForHumans(),
                 'alertStatus' => $percentage < 15 ? 'low-stock' : 'normal',
@@ -54,16 +54,14 @@ class TankController extends Controller
 
         $pageHeader = [
             'title' => 'Tank & Pump Management',
-            'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Tanks', 'url' => '#']
-            ],
-            'action_button' => [
-                'label' => 'Add New Tank',
-                'icon'  => 'plus',
-                'modal' => '#addTankModal', // Triggers the modal widget
-                'url'   => '#' 
-            ]
+            'icon' => 'mdi mdi-gas-station',
+            'showButton' => true,
+            'buttonText' => 'Add New Tank',
+            'buttonClass' => 'btn btn-gradient-primary btn-icon-text',
+            'buttonIcon' => 'mdi mdi-plus btn-icon-prepend',
+            'buttonId' => 'addNewTankBtn',
+            'dataBsToggle' => 'modal',
+            'dataBsTarget' => '#addTankModal',
         ];
 
         return view('admin.petro.tank-management.index', [
@@ -95,13 +93,43 @@ class TankController extends Controller
     public function show($id)
     {
         $tank = Tank::with('fuelType', 'station')->findOrFail($id);
-        return view('admin.petro.tank-management.show', compact('tank'));
+        $pageHeader = [
+            'title' => 'Tank Details',
+            'icon' => 'mdi mdi-gas-station',
+            'breadcrumbs' => [
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Tanks',
+                    'url'   => route('tanks.index'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => $tank->tank_name,
+                    'url'   => null, // active breadcrumb
+                ],
+            ],
+        ];
+
+        return view('admin.petro.tank-management.show', compact('tank', 'pageHeader'));
     }
 
     public function edit($id): View
     {
+        $pageHeader = [
+            'title' => 'Edit Tank',
+            'icon' => 'mdi mdi-gas-station',
+            'breadcrumbs' => [
+                ['label' => 'Tanks', 'url' => route('tanks.index')],
+                ['label' => 'Edit']
+            ]
+        ];
+
         $tank = $this->tankService->getTankById($id);
-        return view('admin.petro.tank-management.edit', compact('tank'));
+        return view('admin.petro.tank-management.edit', compact('tank', 'pageHeader'));
     }
 
     public function update(UpdateTankRequest $request, $id): RedirectResponse

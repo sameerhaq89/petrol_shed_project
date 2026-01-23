@@ -14,10 +14,10 @@
 
             <div class="main-panel">
                 @yield('content')
-               @include('admin.common.quick-actions')
+                @include('admin.common.quick-actions')
                 @include('admin.layouts.footer')
             </div>
-
+            
         </div>
 
     </div>

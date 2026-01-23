@@ -1,13 +1,13 @@
 <div class="modal fade" id="addTankModal" tabindex="-1" aria-labelledby="addTankModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title" id="addTankModalLabel">
                     <i class="mdi mdi-gas-station me-1"></i> Add New Tank
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
+
             <form action="{{ route('tanks.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-gradient-primary">Save Tank</button>

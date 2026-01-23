@@ -1,4 +1,4 @@
-<div class="card shadow-sm border-0">
+<div class="card border-primary shadow-sm" style="border-top: 3px solid;">
     <div class="card-body">
         <h4 class="card-title mb-4">Current Duty Assignments</h4>
         <div class="table-responsive">
@@ -31,7 +31,7 @@
     // 3. Opening Cash Logic
     // Only add opening cash if it wasn't already settled in a previous assignment
    $pOpening = $assignmentModel->opening_cash ?? 0;
-    
+
     // If this is a second assignment in the same shift, you might want to set opening cash to 0
     // dependent on whether you gave them another 5000 note.
     // For now, let's assume they kept the float:
@@ -71,11 +71,11 @@
 
                             <td class="text-center">
                                 @if ($stat->status == 'active')
-                                    <label class="badge badge-success">On Duty</label>
+                                    <label class="badge badge-gradient-success">On Duty</label>
                                 @elseif($stat->status == 'pending_settlement')
-                                    <span class="badge badge-danger shadow-sm">Settlement Pending</span>
+                                    <span class="badge badge-gradient-danger shadow-sm">Settlement Pending</span>
                                 @else
-                                    <span class="badge badge-info shadow-sm">Duty Closed</span>
+                                    <span class="badge badge-gradient-info shadow-sm">Duty Closed</span>
                                 @endif
                             </td>
                             <td class="text-center">
@@ -83,14 +83,14 @@
                                     {{-- ACTION 1: CLOSE DUTY (Only if Active) --}}
                                     @if ($stat->status == 'active')
                                         <a href="{{ route('pumper.close.form', $stat->assignment_id) }}"
-                                            class="btn btn-danger btn-sm shadow-sm d-flex align-items-center">
+                                            class="btn btn-gradient-danger btn-sm shadow-sm d-flex align-items-center">
                                             <i class="fas fa-door-closed me-1"></i> Close Duty
                                         </a>
 
                                         {{-- ACTION 2: SETTLE (Only if Pending) --}}
                                     @elseif($stat->status == 'pending_settlement')
                                         <button type="button"
-                                            class="btn btn-warning btn-sm d-flex align-items-center shadow-sm"
+                                            class="btn btn-gradient-warning btn-sm d-flex align-items-center shadow-sm"
                                             data-bs-toggle="modal" {{-- Added -bs- --}}
                                             data-bs-target="#settle-modal{{ $stat->assignment_id }}">
                                             {{-- Added -bs- --}}
@@ -107,7 +107,7 @@
                                     {{-- ACTION 3: REPORT (Available for any Closed Duty) --}}
                                     @if ($stat->status != 'active')
                                         <a href="{{ route('pumper.report', $stat->assignment_id) }}"
-                                            class="btn btn-primary btn-sm d-flex align-items-center shadow-sm">
+                                            class="btn btn-gradient-primary btn-sm d-flex align-items-center shadow-sm">
                                             <i class="fas fa-file-invoice me-1"></i> Report
                                         </a>
                                     @endif

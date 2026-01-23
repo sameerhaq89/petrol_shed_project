@@ -99,8 +99,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
+            <div class="modal-footer bg-light d-flex justify-content-end">
+                <button type="button" class="btn btn-gradient-secondary btn-sm me-1" data-bs-dismiss="modal">
                     <i class="mdi mdi-close"></i> Close
                 </button>
                 <button type="button" class="btn btn-gradient-primary btn-sm" id="printOperatorBtn">
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Get balance for badge styling
         const currentBalance = parseFloat(btn.dataset.currentBalance) || 0;
         const balanceBadge = document.getElementById('modalCurrentBalanceBadge');
-        
+
         // Apply badge class based on balance
         if (currentBalance > 20) {
             balanceBadge.className = 'badge bg-success';
@@ -144,22 +144,22 @@ document.addEventListener('DOMContentLoaded', function() {
         setText('modalPumpOperator', btn.dataset.pumpOperator);
         setText('modalLocation', btn.dataset.location);
         setText('modalSoldFuel', `${btn.dataset.soldFuel} lb`);
-        
+
         const saleAmount = Number(btn.dataset.saleAmount || 0);
         setText('modalSaleAmount', `LKR ${saleAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
-        
+
         setText('modalCommissionType', btn.dataset.commissionType);
         setText('modalCommissionRate', `${btn.dataset.commissionRate}%`);
-        
+
         const commissionAmount = Number(btn.dataset.commissionAmount || 0);
         setText('modalCommissionAmount', `LKR ${commissionAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
-        
+
         const excessAmount = Number(btn.dataset.excessAmount || 0);
         setText('modalExcessAmount', `LKR ${excessAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
-        
+
         const shortAmount = Number(btn.dataset.shortAmount || 0);
         setText('modalShortAmount', `LKR ${shortAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
-        
+
 
         document.getElementById('printOperatorBtn').dataset.operatorId = btn.dataset.operatorId;
     });

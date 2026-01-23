@@ -9,14 +9,14 @@
                 @csrf
                 <div class="modal-body p-4">
                     <div class="alert alert-info border-0 small mb-4">
-                        <i class="mdi mdi-information-outline me-1"></i> 
+                        <i class="mdi mdi-information-outline me-1"></i>
                         Assigning a pumper will automatically record the current pump meter reading.
                     </div>
 
                     {{-- 1. Select Pumper --}}
                     <div class="form-group mb-3">
                         <label class="font-weight-bold mb-1">Select Pumper</label>
-                        <select name="user_id" class="form-select border-primary" required>
+                        <select name="user_id" class="form-select form-control-sm" required>
                             <option value="">-- Select Employee --</option>
                             @foreach($pumpers as $pumper)
                                 <option value="{{ $pumper->id }}">{{ $pumper->name }}</option>
@@ -27,7 +27,7 @@
                     {{-- 2. Select Pump --}}
                     <div class="form-group mb-3">
                         <label class="font-weight-bold mb-1">Select Pump / Nozzle</label>
-                        <select name="pump_id" class="form-select border-primary" required>
+                        <select name="pump_id" class="form-select form-control-sm" required>
                             <option value="">-- Select Available Pump --</option>
                             @foreach($availablePumps as $pump)
                                 <option value="{{ $pump->id }}">
@@ -41,21 +41,21 @@
                     <div class="form-group mb-0">
                         <label class="font-weight-bold mb-1">Opening Cash (Float)</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-primary">Rs.</span>
-                            <input type="number" 
-                                   name="opening_cash" 
-                                   class="form-control border-primary" 
-                                   placeholder="0.00" 
-                                   min="0" 
-                                   step="0.01" 
+                            <span class="input-group-text bg-light">Rs.</span>
+                            <input type="number"
+                                   name="opening_cash"
+                                   class="form-control from-control-sm"
+                                   placeholder="0.00"
+                                   min="0"
+                                   step="0.01"
                                    value="0"> {{-- Default to 0 --}}
                         </div>
                         <small class="text-muted">Cash handed to pumper for change.</small>
                     </div>
 
                 </div>
-                <div class="modal-footer bg-light border-0">
-                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                <div class="modal-footer bg-light border-0 d-flex justify-content-end">
+                    <button type="button" class="btn btn-gradient-secondary px-4 me-1" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-gradient-primary px-4 font-weight-bold">
                         <i class="mdi mdi-play-circle-outline me-1"></i> Start Duty
                     </button>

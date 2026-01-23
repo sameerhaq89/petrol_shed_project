@@ -33,9 +33,25 @@ class UserController extends Controller
 
         $pageHeader = [
             'title' => 'User Management',
+            'icon' => 'mdi mdi-account-multiple',
+            'showButton' => true,
+            'buttonText'  => 'Add New User',
+            'buttonIcon'  => 'mdi mdi-plus',
+            'buttonClass' => 'btn btn-gradient-primary btn-fw',
+            'link' => [
+                'url' => route('users.create'),
+                'can' => 'create-user',
+            ],
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Users', 'url' => '#'],
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Users',
+                    'url'   => null, // active item
+                ],
             ],
         ];
 
@@ -44,10 +60,30 @@ class UserController extends Controller
 
     public function create(): View
     {
+        $pageHeader = [
+            'title' => 'Create New User',
+            'icon' => 'mdi mdi-account-plus',
+            'breadcrumbs' => [
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Users',
+                    'url'   => route('users.index'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Create',
+                    'url'   => null, // active item
+                ],
+            ],
+        ];
         $roles = $this->roleService->getManageableRoles();
         $stations = Station::all();
 
-        return view('admin.users.create', compact('roles', 'stations'));
+        return view('admin.users.create', compact('roles', 'stations', 'pageHeader'));
     }
 
     public function store(StoreUserRequest $request): RedirectResponse
@@ -57,17 +93,37 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User created successfully.');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error creating user: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Error creating user: ' . $e->getMessage());
         }
     }
 
     public function edit($id): View
     {
+        $pageHeader = [
+            'title' => 'Edit User',
+            'icon' => 'mdi mdi-account-plus',
+            'breadcrumbs' => [
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Users',
+                    'url'   => route('users.index'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Edit',
+                    'url'   => null, // active item
+                ],
+            ],
+        ];
         $user = $this->userService->getUserById($id);
         $roles = $this->roleService->getManageableRoles();
         $stations = Station::all();
 
-        return view('admin.users.edit', compact('user', 'roles', 'stations'));
+        return view('admin.users.edit', compact('user', 'roles', 'stations', 'pageHeader'));
     }
 
     public function update(UpdateUserRequest $request, $id): RedirectResponse
@@ -77,7 +133,7 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'User updated successfully.');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error updating user: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Error updating user: ' . $e->getMessage());
         }
     }
 

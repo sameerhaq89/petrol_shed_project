@@ -1,7 +1,7 @@
 <div class="modal fade" id="createPumpModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title"><i class="mdi mdi-plus-circle me-1"></i> Add New Pump</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -47,8 +47,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Pump</button>
+                    <button type="button" class="btn btn-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gradient-primary">Save Pump</button>
                 </div>
             </form>
         </div>

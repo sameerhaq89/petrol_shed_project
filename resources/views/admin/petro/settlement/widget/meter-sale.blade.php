@@ -1,7 +1,7 @@
 <div class="card shadow-sm border-0">
     <div class="card-body">
         <h4 class="card-title text-primary"><i class="mdi mdi-gas-station me-2"></i>Meter Sale Entry</h4>
-        
+
         <form action="{{ route('settlement.save-reading') }}" method="POST">
             @csrf
             <input type="hidden" name="shift_id" value="{{ $shift->id ?? '' }}">
@@ -10,14 +10,14 @@
                 {{-- 1. SELECT PUMP (Searchable Dropdown) --}}
                 <div class="col-md-4 mb-3">
                     <label class="form-label font-weight-bold">Select Pump</label>
-                    <select id="pumpSelect" name="pump_id" class="form-select form-control-lg" required>
+                    <select id="pumpSelect" name="pump_id" class="form-select form-control-sm" required>
                         <option value="" selected disabled>-- Search & Select Pump --</option>
                         @foreach($pumps as $pump)
-                            <option value="{{ $pump->id }}" 
+                            <option value="{{ $pump->id }}"
                                     data-start="{{ $pump->current_reading }}"
                                     data-price="{{ $pump->fuelType->selling_price ?? 0 }}"
                                     data-fuel="{{ $pump->fuelType->name ?? 'Fuel' }}">
-                                {{ $pump->pump_name ?? $pump->pump_number }} 
+                                {{ $pump->pump_name ?? $pump->pump_number }}
                             </option>
                         @endforeach
                     </select>
@@ -27,25 +27,26 @@
                 {{-- 2. OPENING READING (Auto-Filled) --}}
                 <div class="col-md-2 mb-3">
                     <label class="form-label text-muted">Opening</label>
-                    <input type="number" step="0.01" id="startReading" name="start_reading" class="form-control bg-light" readonly>
+                    <input type="number" step="0.01" id="startReading" name="start_reading" class="form-control form-control-sm bg-light" readonly>
                 </div>
 
                 {{-- 3. CLOSING READING (User Input) --}}
                 <div class="col-md-3 mb-3">
                     <label class="form-label font-weight-bold text-dark">Closing Reading</label>
-                    <input type="number" step="0.01" id="endReading" name="end_reading" class="form-control border-primary" placeholder="Enter Value" required>
+                    <input type="number" step="0.01" id="endReading" name="end_reading" class="form-control form-control-sm" placeholder="Enter Value" required>
                 </div>
 
                 {{-- 4. VOLUME (Calculated) --}}
                 <div class="col-md-2 mb-3">
                     <label class="form-label text-muted">Volume</label>
-                    <input type="text" id="volumeDisplay" class="form-control bg-light font-weight-bold text-primary" readonly value="0.00">
+                    <input type="text" id="volumeDisplay" class="form-control form-control-sm bg-light font-weight-bold text-primary" readonly value="0.00">
                 </div>
 
                 {{-- 5. SUBMIT BUTTON --}}
                 <div class="col-md-1 mb-3">
-                    <button type="submit" class="btn btn-gradient-success btn-icon-text w-100">
-                        <i class="mdi mdi-plus btn-icon-prepend"></i> Add
+                    <button type="submit" class="btn btn-gradient-success btn-sm w-100 btn-icon-text" style="border-left: dashed;">
+                        <i class="mdi mdi-plus"></i>
+                        {{-- Add --}}
                     </button>
                 </div>
             </div>
@@ -71,7 +72,7 @@
 
             startInput.value = startVal;
             fuelDisplay.textContent = "Fuel: " + fuelName;
-            
+
             // Reset calculation fields
             endInput.value = '';
             volDisplay.value = '0.00';
@@ -82,7 +83,7 @@
         endInput.addEventListener('input', function() {
             const start = parseFloat(startInput.value) || 0;
             const end = parseFloat(this.value) || 0;
-            
+
             let volume = 0;
             if (end > start) {
                 volume = end - start;

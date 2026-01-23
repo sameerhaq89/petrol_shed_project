@@ -1,11 +1,9 @@
 <div class="modal fade" id="settle-modal{{ $stat->assignment_id }}" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content border-0 shadow">
-            <div class="modal-header bg-warning text-white">
-                <div class="modal-header bg-warning text-white">
-                    <h5 class="modal-title">Settle Shortage: {{ $stat->pumper_name }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
+            <div class="modal-header bg-gradient-warning text-white">
+                <h5 class="modal-title">Settle Shortage: {{ $stat->pumper_name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('pumper.settle', $stat->assignment_id) }}" method="POST">
                 @csrf
@@ -25,9 +23,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-warning font-weight-bold">Confirm Settlement</button>
+                <div class="modal-footer bg-light d-flex justify-content-end">
+                    <button type="button" class="btn btn-gradient-secondary me-1"
+                        data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gradient-warning font-weight-bold">Confirm Settlement</button>
                 </div>
             </form>
         </div>

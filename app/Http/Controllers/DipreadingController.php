@@ -21,12 +21,13 @@ class DipReadingController extends Controller
     {
         // 1. Get List of Readings
         $dip_readings = $this->dipService->getReadingsForTable();
-        
+
         // 2. GET TANKS (Required for the Dropdown)
         $tanks = $this->tankService->getAllTanks([]);
 
         $pageHeader = [
             'title' => 'Dip Management',
+            'icon' => 'mdi mdi-water',
             'breadcrumbs' => [
                 ['name' => 'Dashboard', 'url' => route('home')],
                 ['name' => 'Dip Readings', 'url' => '#']
@@ -34,7 +35,7 @@ class DipReadingController extends Controller
         ];
 
         // 3. DEBUG CHECK (Optional): Uncomment the line below to test if data exists
-        // dd($tanks); 
+        // dd($tanks);
 
         // 4. PASS '$tanks' TO THE VIEW
         return view('admin.petro.dip-management.index', compact('dip_readings', 'tanks', 'pageHeader'));

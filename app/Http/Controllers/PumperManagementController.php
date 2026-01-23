@@ -21,17 +21,15 @@ class PumperManagementController extends Controller
 
     public function index()
     {
-        $data = $this->pumperService->getDashboardData();
+        // $data = $this->pumperService->getDashboardData();
 
         $pageHeader = [
             'title' => 'Pumper Management',
-            'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Pumpers', 'url' => '#'],
-            ],
+            'icon' => 'mdi mdi-account-hard-hat',
         ];
 
-        return view('admin.petro.pumper-management.index', array_merge($data, ['pageHeader' => $pageHeader]));
+        // return view('admin.petro.pumper-management.index', array_merge($data, ['pageHeader' => $pageHeader]));
+        return view('pumpers.dashboard', compact('pageHeader'));
     }
 
     public function assignPumper(AssignPumperRequest $request): RedirectResponse
@@ -148,10 +146,7 @@ class PumperManagementController extends Controller
 
         $pageHeader = [
             'title' => 'New Sale',
-            'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Sales Entry', 'url' => '#'],
-            ],
+            'icon' => 'mdi mdi-sale',
         ];
 
         return view('pumpers.sales-entry', compact('assignment', 'pump', 'fuelType', 'currentPrice', 'pageHeader'));

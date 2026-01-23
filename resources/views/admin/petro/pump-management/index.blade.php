@@ -4,25 +4,25 @@
 <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
     @include('admin.command.widgets.page-header', $pageHeader)
     {{-- 1. Module Tabs --}}
-    
-    <div class="row mb-3">
+
+    <div class="row mb-2 mt-4">
         <div class="col-12">
-            <div class="btn-group w-100 shadow-sm d-flex flex-wrap" role="group">
+            <div class="btn-group shadow-sm flex-wrap" role="group">
                 <button type="button" class="btn btn-outline-primary active" data-target="#pumpWidget">
                     <i class="mdi mdi-pump me-1"></i> Pumps
                 </button>
-                <button type="button" class="btn btn-outline-primary" data-target="#testingWidget">
+                {{-- <button type="button" class="btn btn-outline-primary" data-target="#testingWidget">
                     <i class="mdi mdi-filter me-1"></i> Testing Details
-                </button>
-                <button type="button" class="btn btn-outline-primary" data-target="#meterReadingWidget">
+                </button> --}}
+                {{-- <button type="button" class="btn btn-outline-primary" data-target="#meterReadingWidget">
                     <i class="mdi mdi-thermometer me-1"></i> Meter
-                </button>
-                <button type="button" class="btn btn-outline-primary">
+                </button> --}}
+                {{-- <button type="button" class="btn btn-outline-primary">
                     <i class="mdi mdi-gauge-full me-1"></i> Opening Meters
-                </button>
-                <button type="button" class="btn btn-outline-primary">
+                </button> --}}
+                {{-- <button type="button" class="btn btn-outline-primary">
                     <i class="mdi mdi-gauge me-1"></i> Pumper Opening Meters
-                </button>
+                </button> --}}
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
     @include('admin.petro.pump-management.widget.testing-details-table')
     @include('admin.petro.pump-management.widget.meter-readings-table')
     @include('admin.petro.settlement.widget.modals.create-pump-modal')
-    @include('admin.petro.pump-management.widget.modal.create-pump-modal') 
+    @include('admin.petro.pump-management.widget.modal.create-pump-modal')
     @include('admin.petro.pump-management.widget.modal.edit-pump-modal')
 
     {{-- Modals --}}

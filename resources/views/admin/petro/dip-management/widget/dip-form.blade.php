@@ -33,7 +33,7 @@
         line-height: 1.5 !important;
     }
 </style>
-<form action="{{ route('dip-management.store') }}" method="POST">
+<form action="{{ route('dip-management.store') }}" method="POST" class="dip-management-form">
     @csrf
     <div class="row">
         {{-- Tank Selection --}}
@@ -83,8 +83,9 @@
 
         {{-- Submit Button --}}
         <div class="col-md-2 mb-3">
-            <button type="submit" class="btn btn-gradient-primary w-100">
-                <i class="mdi mdi-check-circle me-1"></i> Save Dip
+            <button type="submit" class="btn btn-gradient-primary">
+                {{-- <i class="mdi mdi-check-circle"></i> Save Dip --}}
+                Save Dip
             </button>
         </div>
     </div>

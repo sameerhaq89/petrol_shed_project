@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-12 grid-margin stretch-card">
-        <div class="card">
+        <div class="card border-primary shadow-sm" style="border-left: 5px solid #b66dff;">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="card-title">Settlement History</h4>
@@ -43,9 +43,9 @@
                                 </td>
                                 <td>
                                     {{-- View Details Button --}}
-                                    <button type="button" 
-                                            class="btn btn-sm btn-inverse-info btn-icon"
-                                            data-bs-toggle="modal" 
+                                    <button type="button"
+                                            class="btn btn-sm btn-gradient-primary btn-icon"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#viewDetailsModal"
                                             onclick="loadSettlementDetails({{ $settlement->id }})">
                                         <i class="mdi mdi-eye"></i>
@@ -63,7 +63,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 {{-- Pagination (if you use paginate() in controller later) --}}
                 {{-- <div class="mt-3">
                     {{ $settlements->links() }}
@@ -78,6 +78,6 @@
     function loadSettlementDetails(id) {
         // You can fetch details via AJAX or redirect
         // For now, let's just redirect to the shift show page
-        window.location.href = "/settlement/" + id; 
+        window.location.href = "/settlement/" + id;
     }
 </script>
