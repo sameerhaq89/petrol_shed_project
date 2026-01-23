@@ -23,12 +23,12 @@
     </style>
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
         <div class="row" style="--bs-gutter-x: 20px !important;">
-                <div class="col-6">
+                <div class="col-md-6">
                     <button class="btn btn-gradient-success btn-block w-100" data-bs-toggle="modal" data-bs-target="#dropCashModal">
                         <i class="mdi mdi-cash-multiple"></i> DROP CASH
                     </button>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6">
                     <button class="btn btn-gradient-danger btn-block w-100" data-bs-toggle="modal" data-bs-target="#closeDutyModal">
                         <i class="mdi mdi-logout"></i> CLOSE DUTY
                     </button>
@@ -59,7 +59,7 @@
                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                     alt="circle-image" />
                                 <h4 class="font-weight-normal mb-3"><i class="mdi mdi-gas-station mdi-24px float-left"></i>
-                                    ON DUTY <span class="badge badge-gradient-danger"><strong>{{ Auth::user()->name }} 👋</strong></span></h4>
+                                    ON DUTY <span class="badge badge-gradient-primary"><strong>{{ Auth::user()->name }} 👋</strong></span></h4>
                                 <div class="mb-2">
                                     <strong>Assigned Pump:</strong> Island 1 - Petrol
                                 </div>
@@ -122,7 +122,7 @@
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <label class="badge badge-warning">Pending</label>
+                                            <label class="badge badge-gradient-warning">Pending</label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -133,7 +133,7 @@
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <label class="badge badge-success">Verified</label>
+                                            <label class="badge badge-gradient-success">Verified</label>
                                         </td>
                                     </tr>
                                 </tbody>

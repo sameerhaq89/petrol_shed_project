@@ -118,7 +118,7 @@
                                     Payment Method
                                 </label>
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <label class="card payment-method-card p-4 text-center mb-0 shadow-sm">
                                             <input type="radio" name="payment_method" value="card" class="d-none">
                                             <div class="payment-content">
@@ -127,7 +127,7 @@
                                             </div>
                                         </label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <label class="card payment-method-card p-4 text-center mb-0 shadow-sm">
                                             <input type="radio" name="payment_method" value="cash" class="d-none">
                                             <div class="payment-content">
@@ -136,7 +136,7 @@
                                             </div>
                                         </label>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-md-4">
                                         <label class="card payment-method-card p-4 text-center mb-0 shadow-sm">
                                             <input type="radio" name="payment_method" value="qr" class="d-none">
                                             <div class="payment-content">
@@ -151,11 +151,11 @@
                             <div class="row mt-3">
                                 <div class="col-12 d-flex justify-content-end">
                                     <a href="{{ url()->previous() }}"
-                                        class="btn btn-gradient-secondary">
+                                        class="btn btn-gradient-secondary me-2">
                                         <i class="mdi mdi-close-circle"></i> CLOSE
                                     </a>
                                     <button type="submit"
-                                        class="btn btn-gradient-primary me-2">
+                                        class="btn btn-gradient-primary">
                                         <i class="mdi mdi-check-circle"></i> SAVE SALE
                                     </button>
                                 </div>
