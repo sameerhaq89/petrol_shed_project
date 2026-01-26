@@ -3,21 +3,21 @@
 <div class="col-xl-3 col-md-6 col-sm-6 mb-4">
     <div class="card tank-card h-100">
         <div class="card-body text-center position-relative">
-            
+
             {{-- ACTION MENU (Added to your visual) --}}
             <div class="dropdown position-absolute" style="top: 10px; right: 10px; z-index: 10;">
                 <button class="btn btn-sm p-0" type="button" data-bs-toggle="dropdown">
                     <i class="mdi mdi-dots-horizontal text-muted" style="font-size: 20px;"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="{{ route('tanks.edit', $id) }}">
-                        <i class="mdi mdi-pencil text-primary me-2"></i> Edit
+                    <a class="dropdown-item btn-gradient-primary" href="{{ route('tanks.edit', $id) }}">
+                        <i class="mdi mdi-pencil text-white me-2"></i> Edit
                     </a>
-                    <a class="dropdown-item" href="{{ route('tanks.show', $id) }}">
-                        <i class="mdi mdi-eye text-info me-2"></i> Details
+                    <a class="dropdown-item btn-gradient-info" href="{{ route('tanks.show', $id) }}">
+                        <i class="mdi mdi-eye text-white me-2"></i> Details
                     </a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#adjustStockModal{{ $id }}">
-                        <i class="mdi mdi-water text-success me-2"></i> Dip / Refill
+                    <a class="dropdown-item btn-gradient-success" href="#" data-bs-toggle="modal" data-bs-target="#adjustStockModal{{ $id }}">
+                        <i class="mdi mdi-water text-white me-2"></i> Dip / Refill
                     </a>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                         <div class="tank-wave"></div>
                         <div class="tank-wave wave-2"></div>
                     </div>
-                    
+
                     {{-- Content floats above liquid --}}
                     <div class="position-absolute w-100" style="bottom: 10px; z-index: 5;">
                         <div class="percentage-display text-white" style="text-shadow: 0 2px 4px rgba(0,0,0,0.3);">

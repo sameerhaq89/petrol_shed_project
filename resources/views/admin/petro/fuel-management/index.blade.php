@@ -1,33 +1,20 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="content-wrapper">
-    {{-- Page Header --}}
-    <div class="page-header d-flex justify-content-between align-items-center">
-        <h3 class="page-title">
-            <span class="page-title-icon bg-gradient-primary text-white me-2">
-                <i class="mdi mdi-gas-station"></i>
-            </span> Fuel Management
-        </h3>
-        <nav aria-label="breadcrumb">
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Fuel Management</li>
-            </ul>
-        </nav>
-    </div>
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
+    @include('admin.command.widgets.page-header', $pageHeader)
 
     {{-- TABS NAVIGATION --}}
     <div class="row">
         <div class="col-12">
             <ul class="nav nav-pills nav-fill mb-4 bg-white p-2 rounded shadow-sm" id="fuelTab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active font-weight-bold" id="prices-tab" data-bs-toggle="tab" data-bs-target="#prices" type="button" role="tab" aria-selected="true">
+                    <button class="nav-link active font-weight-bold bg-gradient-success text-white me-1" id="prices-tab" data-bs-toggle="tab" data-bs-target="#prices" type="button" role="tab" aria-selected="true">
                         <i class="mdi mdi-currency-usd me-1"></i> Fuel Prices
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link font-weight-bold" id="types-tab" data-bs-toggle="tab" data-bs-target="#types" type="button" role="tab" aria-selected="false">
+                    <button class="nav-link font-weight-bold bg-gradient-primary text-white me-1" id="types-tab" data-bs-toggle="tab" data-bs-target="#types" type="button" role="tab" aria-selected="false">
                         <i class="mdi mdi-format-list-bulleted me-1"></i> Fuel Types (Products)
                     </button>
                 </li>
@@ -37,12 +24,12 @@
 
     {{-- TAB CONTENT AREA --}}
     <div class="tab-content" id="fuelTabContent">
-        
+
         {{-- ================= TAB 1: FUEL PRICES ================= --}}
         <div class="tab-pane fade show active" id="prices" role="tabpanel" aria-labelledby="prices-tab">
-            
+
             {{-- Current Price Cards --}}
-            <div class="row mb-4">
+            <div class="row">
                 @foreach($currentPrices as $price)
                 <div class="col-md-3 stretch-card grid-margin">
                     <div class="card bg-gradient-{{ $loop->index % 2 == 0 ? 'primary' : 'success' }} card-img-holder text-white">
@@ -55,12 +42,12 @@
                     </div>
                 </div>
                 @endforeach
-                
+
                 {{-- Add New Price Button Card --}}
                 <div class="col-md-3 stretch-card grid-margin">
-                    <div class="card bg-light text-center d-flex align-items-center justify-content-center" 
+                    <div class="card bg-light text-center d-flex align-items-center justify-content-center"
                          style="cursor: pointer; border: 2px dashed #ccc;"
-                         data-bs-toggle="modal" 
+                         data-bs-toggle="modal"
                          data-bs-target="#addPriceModal">
                         <div class="card-body d-flex flex-column align-items-center justify-content-center">
                             <i class="mdi mdi-plus-circle-outline text-primary" style="font-size: 40px;"></i>
@@ -73,7 +60,7 @@
             {{-- Price History Table --}}
             <div class="row">
                 <div class="col-12 grid-margin">
-                    <div class="card shadow-sm">
+                    <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                         <div class="card-body">
                             <h4 class="card-title text-primary"><i class="mdi mdi-history"></i> Price History Log</h4>
                             <div class="table-responsive">
@@ -101,16 +88,16 @@
                                             <td class="text-success"> {{ number_format($record->margin, 2) }} </td>
                                             <td>
                                                 @if($record->effective_to == null)
-                                                    <label class="badge badge-success">Active</label>
+                                                    <label class="badge badge-gradient-success">Active</label>
                                                 @else
-                                                    <label class="badge badge-secondary">History</label>
+                                                    <label class="badge badge-gradient-secondary">History</label>
                                                 @endif
                                             </td>
                                             <td>
                                                 <form action="{{ route('fuel-prices.destroy', $record->id) }}" method="POST" onsubmit="return confirm('Delete this record?');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-inverse-danger btn-icon">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
                                                         <i class="mdi mdi-delete"></i>
                                                     </button>
                                                 </form>
@@ -157,11 +144,12 @@
                                                 <div style="width: 25px; height: 25px; border-radius: 50%; background-color: {{ $type->color_code ?? '#ccc' }}; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"></div>
                                             </td>
                                             <td class="font-weight-bold">{{ $type->name }}</td>
-                                            <td><span class="badge badge-inverse-info">{{ $type->code }}</span></td>
+                                            <td><span class="badge badge-warning">{{ $type->code }}</span></td>
                                             <td>{{ $type->unit }}</td>
                                             <td>
-                                                <button class="btn btn-sm btn-inverse-primary btn-icon edit-type-btn"
-                                                    data-bs-toggle="modal" 
+                                                <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit edit-type-btn"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#editFuelTypeModal"
                                                     data-id="{{ $type->id }}"
                                                     data-name="{{ $type->name }}"
@@ -170,14 +158,15 @@
                                                     data-color="{{ $type->color_code }}">
                                                     <i class="mdi mdi-pencil"></i>
                                                 </button>
-                                                
+
                                                 <form action="{{ route('fuel-types.destroy', $type->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this fuel type? This might affect existing tanks/pumps.');">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-inverse-danger btn-icon">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger btn-gradient-danger btn-icon delete">
                                                         <i class="mdi mdi-delete"></i>
                                                     </button>
                                                 </form>
+                                                </div>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -237,7 +226,7 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-gradient-secondary me-1" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-gradient-primary">Save Price</button>
                 </div>
             </form>
@@ -276,7 +265,7 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-gradient-secondary me-1" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-gradient-info">Save Product</button>
                 </div>
             </form>
@@ -288,7 +277,7 @@
 <div class="modal fade" id="editFuelTypeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title">Edit Fuel Type</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
@@ -312,8 +301,8 @@
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-dark">Update Changes</button>
+                    <button type="button" class="btn btn-gradient-secondary btn-sm me-1" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gradient-primary btn-sm">Update Changes</button>
                 </div>
             </form>
         </div>
@@ -331,7 +320,7 @@
                 const id = this.getAttribute('data-id');
                 // Ensure this route exists or adjust strictly to your URL structure
                 form.action = "{{ url('fuel-types') }}/" + id;
-                
+
                 document.getElementById('edit_name').value = this.getAttribute('data-name');
                 document.getElementById('edit_code').value = this.getAttribute('data-code');
                 document.getElementById('edit_unit').value = this.getAttribute('data-unit');

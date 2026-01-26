@@ -1,4 +1,4 @@
-<div class="card shadow-sm border-0">
+<div class="card border-primary shadow-sm" style="border-top: 3px solid;">
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="card-title mb-0">Live Pumper Reconciliation</h4>
@@ -71,14 +71,14 @@
                             </td>
                             <td class="text-center">
                                 @if ($variance < 0)
-                                    <span class="badge badge-danger px-3">Rs. {{ number_format($variance, 2) }}
+                                    <span class="badge badge-gradient-danger px-3">Rs. {{ number_format($variance, 2) }}
                                         (Short)
                                     </span>
                                 @elseif($variance > 0)
-                                    <span class="badge badge-success px-3">Rs. {{ number_format($variance, 2) }}
+                                    <span class="badge badge-gradient-success px-3">Rs. {{ number_format($variance, 2) }}
                                         (Extra)</span>
                                 @else
-                                    <span class="badge badge-info px-3">Balanced</span>
+                                    <span class="badge badge-gradient-info px-3">Balanced</span>
                                 @endif
                             </td>
                         </tr>

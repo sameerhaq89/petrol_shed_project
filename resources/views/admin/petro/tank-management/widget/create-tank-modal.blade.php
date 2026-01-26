@@ -1,7 +1,7 @@
 <div class="modal fade" id="addTankModal" tabindex="-1" aria-labelledby="addTankModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title" id="addTankModalLabel">
                     <i class="mdi mdi-gas-station me-1"></i> Add New Tank
                 </h5>

@@ -17,7 +17,9 @@
                     @include('admin.common.alerts')
                 </div>
                 @yield('content')
-                @include('admin.common.quick-actions')
+                @can('view.admin.sidebar')
+                    @include('admin.common.quick-actions')
+                @endcan
                 @include('admin.layouts.footer')
             </div>
 

@@ -31,6 +31,7 @@ class PumpController extends Controller
 
         $pageHeader = [
             'title' => 'Pump Management',
+            'icon' => 'mdi mdi-gas-station',
             'breadcrumbs' => [
                 ['name' => 'Dashboard', 'url' => route('home')],
                 ['name' => 'Pumps', 'url' => '#'],

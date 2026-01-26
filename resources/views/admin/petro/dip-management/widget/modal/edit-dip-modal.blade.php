@@ -1,16 +1,16 @@
 <div class="modal fade" id="editDipModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title"><i class="mdi mdi-pencil me-1"></i> Edit Dip Reading</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            
+
             {{-- Form Action URL is set by JS --}}
             <form id="editDipForm" method="POST">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="modal-body">
                     {{-- Tank --}}
                     <div class="mb-3">
@@ -58,10 +58,10 @@
                         <textarea name="notes" id="edit_notes" class="form-control" rows="2"></textarea>
                     </div>
                 </div>
-                
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update Changes</button>
+
+                <div class="modal-footer d-flex justify-content-end">
+                    <button type="button" class="btn btn-gradient-secondary me-1" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-gradient-primary">Update Changes</button>
                 </div>
             </form>
         </div>

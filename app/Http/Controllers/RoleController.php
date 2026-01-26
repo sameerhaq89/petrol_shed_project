@@ -19,13 +19,21 @@ class RoleController extends Controller
     public function index(): View
     {
         $roles = $this->roleService->getManageableRoles();
-        
+
         $pageHeader = [
             'title' => 'Role Management',
+            'icon' => 'mdi mdi-account-key',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Roles', 'url' => '#']
-            ]
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Roles',
+                    'url'   => null, // active item
+                ],
+            ],
         ];
 
         return view('admin.roles.index', compact('roles', 'pageHeader'));
@@ -35,13 +43,10 @@ class RoleController extends Controller
     {
         $role = $this->roleService->getRoleById($id);
         $permissions = $this->roleService->getGroupedPermissions();
-        
+
         $pageHeader = [
-            'title' => 'Edit Permissions: ' . $role->name,
-            'breadcrumbs' => [
-                ['name' => 'Roles', 'url' => route('roles.index')],
-                ['name' => 'Edit', 'url' => '#']
-            ]
+            'title' => 'Manage Permissions for: ' . $role->name,
+            'icon' => 'mdi mdi-account-key',
         ];
 
         return view('admin.roles.edit', compact('role', 'permissions', 'pageHeader'));

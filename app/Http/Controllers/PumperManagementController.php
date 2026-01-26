@@ -25,13 +25,50 @@ class PumperManagementController extends Controller
 
         $pageHeader = [
             'title' => 'Pumper Management',
-            'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Pumpers', 'url' => '#'],
-            ],
+            'icon' => 'mdi mdi-account-hard-hat',
         ];
 
         return view('admin.petro.pumper-management.index', array_merge($data, ['pageHeader' => $pageHeader]));
+
+    }
+
+    public function dashboard()
+    {
+        $user = auth()->user();
+        $assignment = PumpOperatorAssignment::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->latest()
+            ->with(['pump'])
+            ->first();
+
+        if (!$assignment) {
+            return view('pumpers.no-assignment');
+        }
+
+        // Calculate Data
+        $totalSales = \App\Models\Sale::where('shift_id', $assignment->shift_id)
+            ->where('created_by', $user->id)
+            ->sum('amount');
+
+        $totalCashSales = \App\Models\Sale::where('shift_id', $assignment->shift_id)
+            ->where('created_by', $user->id)
+            ->where('payment_mode', 'cash')
+            ->sum('amount');
+
+        $totalDropped = \App\Models\CashDrop::where('shift_id', $assignment->shift_id)
+            ->where('user_id', $user->id)
+            ->sum('amount');
+
+        $openingFloat = $assignment->opening_cash ?? 0;
+        $cashInHand = $openingFloat + $totalCashSales - $totalDropped;
+
+        $recentDrops = \App\Models\CashDrop::where('shift_id', $assignment->shift_id)
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('pumpers.dashboard', compact('assignment', 'totalSales', 'totalDropped', 'cashInHand', 'recentDrops'));
     }
 
     public function assignPumper(AssignPumperRequest $request): RedirectResponse
@@ -166,10 +203,7 @@ class PumperManagementController extends Controller
 
         $pageHeader = [
             'title' => 'New Sale',
-            'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Sales Entry', 'url' => '#'],
-            ],
+            'icon' => 'mdi mdi-sale',
         ];
 
         return view('pumpers.sales-entry', compact('assignment', 'pump', 'fuelType', 'currentPrice', 'pageHeader'));
@@ -237,7 +271,7 @@ class PumperManagementController extends Controller
                 'rate' => $rate,
                 'amount' => $amount,
                 'final_amount' => $amount,
-                'payment_mode' => 'cash',
+                'payment_mode' => $request->payment_method ?? 'cash',
                 'status' => 'completed',
                 'created_by' => auth()->id(),
             ]);

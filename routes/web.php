@@ -30,8 +30,8 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // Simple Pages
-    Route::get('/add-purchases', [AddPurchasesController::class, 'index'])->name('add-purchases');
-    Route::get('/add-expenses', [AddExpensesController::class, 'index'])->name('add-expenses');
+    // Route::get('/add-purchases', [AddPurchasesController::class, 'index'])->name('add-purchases');
+    // Route::get('/add-expenses', [AddExpensesController::class, 'index'])->name('add-expenses');
 
     // Tank & Settlement
     // This creates all necessary routes: tanks.index, tanks.store, tanks.update, etc.
@@ -109,6 +109,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cash-drop/store', [App\Http\Controllers\CashDropController::class, 'store'])->name('cash-drop.store');
 
     // --- PUMPER SALES ENTRY ---
+    Route::get('/pumper/dashboard', [PumperManagementController::class, 'dashboard'])->name('pumpers-dashboard');
     Route::get('/pumper/sales', [PumperManagementController::class, 'salesEntry'])->name('pumper.sales.entry');
     Route::post('/pumper/sales', [PumperManagementController::class, 'storeSale'])->name('pumper.sales.store');
 

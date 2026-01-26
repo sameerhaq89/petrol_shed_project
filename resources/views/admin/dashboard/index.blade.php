@@ -133,7 +133,7 @@
 
                         {{-- Tank 1 Slot --}}
                         <div class="progress tank-progress mb-2">
-                            <div class="progress-bar bg-info" id="tankProgress1" style="width: 0%"></div>
+                            <div class="progress-bar bg-gradient-info" id="tankProgress1" style="width: 0%"></div>
                         </div>
                         <div class="row small text-muted">
                             <div class="col-6">Tank: <span id="tank1Id">#</span> (<span id="tank1Current">0</span> L)</div>
@@ -142,7 +142,7 @@
                         <hr>
                         {{-- Tank 2 Slot --}}
                         <div class="progress tank-progress mb-2">
-                            <div class="progress-bar bg-info" id="tankProgress2" style="width: 0%"></div>
+                            <div class="progress-bar bg-gradient-info" id="tankProgress2" style="width: 0%"></div>
                         </div>
                         <div class="row small text-muted">
                             <div class="col-6">Tank: <span id="tank2Id">#</span> (<span id="tank2Current">0</span> L)</div>
@@ -219,7 +219,7 @@
                                 {{-- Updated: Uses Cash Sales (Meter) for graph context --}}
                                 <div class="small mb-1">Cash (LKR {{ number_format($cashSalesToday) }})</div>
                                 <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-success" style="width: {{ $cashPercent }}%"></div>
+                                    <div class="progress-bar bg-gradient-success" style="width: {{ $cashPercent }}%"></div>
                                 </div>
                             </div>
                             <div class="ms-2 badge bg-success">{{ $cashPercent }}%</div>
@@ -228,7 +228,7 @@
                             <div class="flex-grow-1">
                                 <div class="small mb-1">Card (LKR {{ number_format($cardSalesToday) }})</div>
                                 <div class="progress" style="height: 8px;">
-                                    <div class="progress-bar bg-danger" style="width: {{ $cardPercent }}%"></div>
+                                    <div class="progress-bar bg-gradient-danger" style="width: {{ $cardPercent }}%"></div>
                                 </div>
                             </div>
                             <div class="ms-2 badge bg-danger">{{ $cardPercent }}%</div>
@@ -244,14 +244,14 @@
 
                         @if($currentShift)
                         <div class="shift-box current-shift">
-                            <span class="badge bg-success mb-2">Current Open Shift</span>
+                            <span class="badge bg-gradient-success mb-2">Current Open Shift</span>
                             <div class="small"><strong>#{{ $currentShift->shift_number }}</strong> (Started: {{ \Carbon\Carbon::parse($currentShift->start_time)->format('h:i A') }})</div>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <span class="small">{{ $currentShift->user->name ?? 'Unknown' }}</span>
                                 <span class="text-success fw-bold">Est. Sales: {{ number_format($currentShift->total_sales) }} LKR</span>
                             </div>
                             <div class="mt-2 d-flex gap-1">
-                                <a href="{{ route('settlement.entry', $currentShift->id) }}" class="btn btn-success btn-action text-white">Manage / Close Shift</a>
+                                <a href="{{ route('settlement.entry', $currentShift->id) }}" class="btn btn-gradient-success btn-action text-white">Manage / Close Shift</a>
                             </div>
                         </div>
                         @else
@@ -269,7 +269,7 @@
                                  <span class="text-muted small fw-bold">Next Shift</span>
                                 <div class="small mt-1">Waiting for new shift...</div>
                             @endif
-                                <a href="{{ route('settlement-list.index') }}" class="btn btn-warning btn-action mt-2 w-100">View All Settlements</a>
+                                <a href="{{ route('settlement-list.index') }}" class="btn btn-gradient-warning btn-action mt-2 w-100">View All Settlements</a>
                         </div>
                     </div>
                 </div>

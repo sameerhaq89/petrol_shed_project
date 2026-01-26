@@ -3,18 +3,18 @@
     <div class="modal-dialog">
         <form action="{{ route('settlement.close') }}" method="POST" class="modal-content">
             @csrf
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-danger text-white">
                 <h5 class="modal-title" id="closeShiftModalLabel">End Shift & Settle: {{ $currentShift->shift_number }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info py-2">
                     <small>
-                        <i class="mdi mdi-information-outline me-1"></i> 
+                        <i class="mdi mdi-information-outline me-1"></i>
                         System expects approximately <strong>Rs. {{ number_format(($currentShift->opening_cash + $currentShift->sales->sum('amount')), 2) }}</strong>.
                     </small>
                 </div>
-                
+
                 <div class="form-group mb-3">
                     <label class="font-weight-bold">Actual Physical Cash Count (LKR)</label>
                     <div class="input-group">
@@ -29,8 +29,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger btn-lg px-4">
+                <button type="button" class="btn btn-gradient-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-gradient-danger btn-lg px-4">
                     <i class="mdi mdi-check-all me-1"></i> Finalize Settlement
                 </button>
             </div>

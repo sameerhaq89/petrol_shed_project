@@ -23,6 +23,17 @@ class SettlementListController extends Controller
         // 2. Define Header
         $pageHeader = [
             'title' => 'Settlement List',
+            'icon' => 'mdi mdi-file-document',
+            'showButton' => true,
+            'buttonText' => 'Start New Shift',
+            'buttonClass' => 'btn btn-gradient-success btn-lg shadow',
+            'buttonId' => 'startNewShiftBtn',
+            'buttonUrl' => route('settlement.start'),
+            'buttonIcon' => 'mdi mdi-play-circle-outline me-2',
+            'form' => [
+                'action' => route('settlement.start'),
+                'method' => 'POST',
+            ],
             'breadcrumbs' => [
                 ['name' => 'Dashboard', 'url' => route('home')],
                 ['name' => 'Settlements', 'url' => '#']

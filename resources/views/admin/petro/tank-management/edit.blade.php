@@ -1,23 +1,15 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <div class="content-wrapper">
-        <div class="page-header">
-            <h3 class="page-title"> Edit Tank </h3>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('tanks.index') }}">Tanks</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8 grid-margin stretch-card mx-auto">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Update Tank Details: {{ $tank->tank_name }}</h4>
-                        <p class="card-description"> Change tank capacity, fuel type, or name. </p>
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
+    @include('admin.command.widgets.page-header', $pageHeader)
+    
+    <div class="row">
+        <div class="col-md-8 grid-margin stretch-card mx-auto">
+            <div class="card border-primary shadow-sm mt-2" style="border-top: 3px solid;">
+                <div class="card-body">
+                    <h4 class="card-title">Update Tank Details: {{ $tank->tank_name }}</h4>
+                    <p class="card-description"> Change tank capacity, fuel type, or name. </p>
 
                         <form class="forms-sample" action="{{ route('tanks.update', $tank->id) }}" method="POST">
                             @csrf

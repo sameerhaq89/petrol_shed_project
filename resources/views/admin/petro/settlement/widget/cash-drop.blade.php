@@ -101,11 +101,16 @@
                                     <td>
                                         {{-- Use your existing delete route if you have one,
                                         otherwise we need to create it --}}
-                                        {{-- <form action="{{ route('cash-drops.destroy', $drop->id) }}" ... --}} <button
-                                            class="btn btn-inverse-danger btn-sm btn-icon" disabled
-                                            title="Delete feature pending">
-                                            <i class="mdi mdi-delete"></i>
+                                        <form action="{{ route('cash-drops.destroy', $drop->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this drop?');"
+                                            style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-inverse-danger btn-sm btn-icon"
+                                                title="Delete Drop">
+                                                <i class="mdi mdi-delete"></i>
                                             </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty

@@ -7,11 +7,11 @@
     {{-- 1. Module Tabs --}}
     <div class="row mb-3">
         <div class="col-12">
-            <div class="btn-group w-100 shadow-sm d-flex flex-wrap" role="group">
+            <div class="btn-group shadow-sm flex-wrap" role="group">
                 <button type="button" class="btn btn-gradient-primary active">
                     <i class="mdi mdi-gas-station me-1"></i> Meter Sale
                 </button>
-                <button type="button" class="btn btn-outline-secondary">
+                {{-- <button type="button" class="btn btn-outline-secondary">
                     <i class="mdi mdi-cube-outline me-1"></i> Other Sale
                 </button>
                 <button type="button" class="btn btn-outline-secondary">
@@ -22,14 +22,14 @@
                 </button>
                 <button type="button" class="btn btn-outline-secondary">
                     <i class="mdi mdi-wallet-giftcard me-1"></i> Expense
-                </button>
+                </button> --}}
             </div>
 
         </div>
     </div>
     {{-- 2. Active Widget Inclusion --}}
     <div class="row">
-        <div class="col-12 mb-4 stretch-card">
+        <div class="col-12 mb-3 stretch-card">
             <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                 <div class="card-body">
                     @include('admin.petro.settlement.widget.meter-sale')
@@ -41,15 +41,15 @@
         <div class="col-12 mb-4 stretch-card">
             <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                 <div class="mt-4">
-    @include('admin.petro.settlement.widget.cash-drop')
-</div>
+                    @include('admin.petro.settlement.widget.cash-drop')
+                </div>
             </div>
         </div>
     </div>
-    
+
     {{-- 3. Table --}}
     @include('admin.petro.settlement.widget.entry-table')
-    
+
 
     {{-- 4. Summary Widget --}}
     <div class="row">

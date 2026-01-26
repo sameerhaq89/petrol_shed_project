@@ -12,7 +12,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 @include('admin.petro.settlement.widget.filter')
 
                 <div class="table-responsive">
@@ -75,7 +75,7 @@
             <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" onsubmit="return confirm('Delete this entry?');">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-inverse-danger btn-icon">
+                <button type="submit" class="btn btn-gradient-danger btn-sm btn-icon">
                     <i class="mdi mdi-delete"></i>
                 </button>
             </form>

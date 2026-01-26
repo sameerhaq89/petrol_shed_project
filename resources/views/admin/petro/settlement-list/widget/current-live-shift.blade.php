@@ -11,8 +11,8 @@
                         <small class="text-muted">Currently running since {{ \Carbon\Carbon::parse($currentShift->start_time)->format('h:i A') }}</small>
                     </div>
                     <div class="text-end">
-                        <span class="badge badge-success px-3 py-2">OPEN</span>
-                        
+                        <span class="badge badge-gradient-success px-3 py-2">OPEN</span>
+
                         {{-- Manage Readings Button --}}
                         <a href="{{ route('settlement.entry', $currentShift->id) }}" class="btn btn-sm btn-gradient-primary ms-2">
     <i class="mdi mdi-pencil me-1"></i> Manage Readings

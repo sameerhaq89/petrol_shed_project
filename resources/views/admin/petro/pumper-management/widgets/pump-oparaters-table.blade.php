@@ -1,4 +1,4 @@
-<div class="card shadow-sm border-0">
+<div class="card border-primary shadow-sm" style="border-top: 3px solid;">
     <div class="card-body">
         <h4 class="card-title mb-4">Current Duty Assignments</h4>
         <div class="table-responsive">
@@ -83,7 +83,7 @@
 
                             <td class="text-center">
                                 @if ($stat->status == 'active')
-                                    <label class="badge badge-success">On Duty</label>
+                                    <label class="badge badge-gradient-success">On Duty</label>
                                 @elseif($stat->status == 'pending_settlement')
                                     @if($pendingAmount <= 0)
                                         <span class="badge badge-info shadow-sm">Duty Closed</span>
@@ -91,7 +91,7 @@
                                         <span class="badge badge-danger shadow-sm">Settlement Pending</span>
                                     @endif
                                 @else
-                                    <span class="badge badge-info shadow-sm">Duty Closed</span>
+                                    <span class="badge badge-gradient-info shadow-sm">Duty Closed</span>
                                 @endif
                             </td>
                             <td class="text-center">
@@ -99,7 +99,7 @@
                                     {{-- ACTION 1: CLOSE DUTY (Only if Active) --}}
                                     @if ($stat->status == 'active')
                                         <a href="{{ route('pumper.close.form', $stat->assignment_id) }}"
-                                            class="btn btn-danger btn-sm shadow-sm d-flex align-items-center">
+                                            class="btn btn-gradient-danger btn-sm shadow-sm d-flex align-items-center">
                                             <i class="fas fa-door-closed me-1"></i> Close Duty
                                         </a>
 
@@ -122,7 +122,7 @@
                                     {{-- ACTION 3: REPORT (Available for any Closed or Pending Duty) --}}
                                     @if ($stat->status != 'active')
                                         <a href="{{ route('pumper.report', $stat->assignment_id) }}"
-                                            class="btn btn-primary btn-sm d-flex align-items-center shadow-sm">
+                                            class="btn btn-gradient-primary btn-sm d-flex align-items-center shadow-sm">
                                             <i class="fas fa-file-invoice me-1"></i> Report
                                         </a>
                                     @endif

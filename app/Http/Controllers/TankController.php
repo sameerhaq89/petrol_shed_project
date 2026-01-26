@@ -95,13 +95,43 @@ class TankController extends Controller
     public function show($id)
     {
         $tank = Tank::with('fuelType', 'station')->findOrFail($id);
-        return view('admin.petro.tank-management.show', compact('tank'));
+        $pageHeader = [
+            'title' => 'Tank Details',
+            'icon' => 'mdi mdi-gas-station',
+            'breadcrumbs' => [
+                [
+                    'label' => 'Dashboard',
+                    'url'   => route('home'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => 'Tanks',
+                    'url'   => route('tanks.index'),
+                    'class' => 'text-gradient-primary text-decoration-none',
+                ],
+                [
+                    'label' => $tank->tank_name,
+                    'url'   => null, // active breadcrumb
+                ],
+            ],
+        ];
+
+        return view('admin.petro.tank-management.show', compact('tank', 'pageHeader'));
     }
 
     public function edit($id): View
     {
+        $pageHeader = [
+            'title' => 'Edit Tank',
+            'icon' => 'mdi mdi-gas-station',
+            'breadcrumbs' => [
+                ['label' => 'Tanks', 'url' => route('tanks.index')],
+                ['label' => 'Edit']
+            ]
+        ];
+
         $tank = $this->tankService->getTankById($id);
-        return view('admin.petro.tank-management.edit', compact('tank'));
+        return view('admin.petro.tank-management.edit', compact('tank', 'pageHeader'));
     }
 
     public function update(UpdateTankRequest $request, $id): RedirectResponse

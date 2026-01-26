@@ -105,13 +105,6 @@
 
         @include('admin.command.widgets.page-header', $pageHeader)
 
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-gradient-primary btn-icon-text" data-bs-toggle="modal"
-                data-bs-target="#addTankModal">
-                <i class="mdi mdi-plus btn-icon-prepend"></i> Add New Tank
-            </button>
-        </div>
-
         <div class="row mt-3 command-row-gap">
             @if (isset($tanks) && count($tanks) > 0)
                 @foreach ($tanks as $tank)

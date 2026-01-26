@@ -60,8 +60,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
+            <div class="modal-footer bg-light d-flex justify-content-end">
+                <button type="button" class="btn btn-gradient-secondary btn-sm me-1" data-bs-dismiss="modal">
                     <i class="mdi mdi-close"></i> Close
                 </button>
                 <button type="button" class="btn btn-gradient-primary btn-sm">

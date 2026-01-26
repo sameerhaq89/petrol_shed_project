@@ -1,10 +1,19 @@
 @extends('admin.layouts.app')
 @section('content')
-<div class="content-wrapper">
+<div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
     @include('admin.command.widgets.page-header', $pageHeader)
 
     {{-- 1. Add Form --}}
-    @include('admin.petro.dip-management.widget.dip-form')
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Add New Dip</h5>
+                    @include('admin.petro.dip-management.widget.dip-form')
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- 2. List Table --}}
     @include('admin.petro.dip-management.widget.dip-list')
@@ -48,25 +57,25 @@
 
                 // 3. Fill Inputs (With safety checks)
                 try {
-                    if(document.getElementById('edit_tank_id')) 
+                    if(document.getElementById('edit_tank_id'))
                         document.getElementById('edit_tank_id').value = tankId;
                     else console.error("Missing input: edit_tank_id");
 
-                    if(document.getElementById('edit_reading_date')) 
+                    if(document.getElementById('edit_reading_date'))
                         document.getElementById('edit_reading_date').value = date;
-                    
-                    if(document.getElementById('edit_dip_level')) 
+
+                    if(document.getElementById('edit_dip_level'))
                         document.getElementById('edit_dip_level').value = level;
-                    
-                    if(document.getElementById('edit_volume')) 
+
+                    if(document.getElementById('edit_volume'))
                         document.getElementById('edit_volume').value = volume;
 
-                    if(document.getElementById('edit_temperature')) 
+                    if(document.getElementById('edit_temperature'))
                         document.getElementById('edit_temperature').value = temp;
 
-                    if(document.getElementById('edit_notes')) 
+                    if(document.getElementById('edit_notes'))
                         document.getElementById('edit_notes').value = notes;
-                        
+
                 } catch (e) {
                     console.error("Error filling form:", e);
                 }

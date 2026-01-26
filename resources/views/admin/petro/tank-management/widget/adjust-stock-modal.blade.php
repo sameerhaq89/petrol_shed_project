@@ -2,7 +2,7 @@
 <div class="modal fade" id="adjustStockModal{{ $id }}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-gradient-primary text-white">
                 <h5 class="modal-title">Dip / Refill: {{ $tankName ?? 'Tank' }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
@@ -11,7 +11,7 @@
             <form action="{{ route('tanks.adjustStock', $id) }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    
+
                     {{-- Operation Type --}}
                     <div class="mb-3">
                         <label class="form-label">Operation Type</label>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-success">Update Stock</button>
+                    <button type="submit" class="btn btn-gradient-success">Update Stock</button>
                 </div>
             </form>
         </div>

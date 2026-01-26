@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
+                <button type="button" class="btn btn-gradient-secondary btn-sm" data-bs-dismiss="modal">
                     <i class="mdi mdi-close"></i> Close
                 </button>
                 <button type="button" class="btn btn-gradient-primary btn-sm">

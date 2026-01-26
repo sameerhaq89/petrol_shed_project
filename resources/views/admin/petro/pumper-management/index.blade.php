@@ -24,7 +24,7 @@
     }
     .pumper-card:hover { background: #efe6ff; }
     .pumper-card.active { background: #c77dff; color: #000; border-color: #c77dff; }
-    
+
     /* Tab Logic */
     .content-section { display: none; }
     .content-section.active { display: block; animation: fadeIn 0.3s; }
@@ -33,15 +33,15 @@
 
 @section('content')
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
-        
+
         {{-- HEADER & ASSIGN BUTTON --}}
         <div class="d-flex justify-content-between align-items-center mb-3">
              @include('admin.command.widgets.page-header', $pageHeader)
              @include('admin.petro.pumper-management.modals.assign-pumper')
              {{-- ONLY SHOW IF SHIFT IS OPEN --}}
              @if(isset($activeShift))
-                 <button class="btn btn-gradient-primary btn-lg font-weight-bold shadow" 
-                         data-bs-toggle="modal" 
+                 <button class="btn btn-gradient-primary btn-lg font-weight-bold shadow"
+                         data-bs-toggle="modal"
                          data-bs-target="#assignPumperModal">
                     <i class="mdi mdi-account-plus me-2"></i> Open Shift for Pumper
                  </button>
@@ -65,7 +65,7 @@
             <button class="pumper-card" data-target="excess-shortage">
                 <i class="mdi mdi-scale-balance"></i> <span>Excess & Shortage</span>
             </button>
-            <button class="pumper-card" data-target="day-entries">
+            {{-- <button class="pumper-card" data-target="day-entries">
                 <i class="mdi mdi-calendar-clock"></i> <span>Day Entries</span>
             </button>
             <button class="pumper-card" data-target="shift-summary">
@@ -73,7 +73,7 @@
             </button>
             <button class="pumper-card" data-target="close-shift">
                 <i class="mdi mdi-lock-check"></i> <span>Close Shift</span>
-            </button>
+            </button> --}}
         </div>
 
         <div class="content-sections">
@@ -92,7 +92,7 @@
             </div>
     </div>
 
-   
+
 @endsection
 
 @push('js')
