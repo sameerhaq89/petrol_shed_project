@@ -140,8 +140,9 @@
             @endif
         @endcan
 
+
         @can('sales.entry.access')
-            @hasAddon('sales-entry')
+          @hasAddon('sales-entry')
                 <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('pumper.sales.entry') }}">
                         <span class="menu-title">Sales Entry</span>
@@ -149,6 +150,24 @@
                     </a>
                 </li>
             @endhasAddon
+            <li class="nav-item {{ Request::is('pumper/dashboard*', 'pumper/sales*') ? 'active' : '' }}">
+                <a class="nav-link" data-bs-toggle="collapse" href="#pumper-menu" aria-expanded="false"
+                    aria-controls="pumper-menu">
+                    <span class="menu-title">Pumper</span>
+                    <i class="menu-arrow"></i>
+                    <i class="mdi mdi-gas-station menu-icon"></i>
+                </a>
+                <div class="collapse" id="pumper-menu">
+                    <ul class="nav flex-column sub-menu">
+                        <li class="nav-item {{ Request::is('pumper/dashboard*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('pumpers-dashboard') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
+                            <a class="nav-link" href="{{ route('pumper.sales.entry') }}">Sales Entry</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
         @endcan
 
         {{-- @can('view.admin.sidebar')
