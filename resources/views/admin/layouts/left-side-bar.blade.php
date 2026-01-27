@@ -67,7 +67,7 @@
         @can('view.admin.sidebar')
             <li class="nav-item {{ Request::is('tanks*', 'pumps*', 'fuel-prices*', 'fuel-types*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#petro" aria-expanded="false" aria-controls="ui-basic">
-                    <span class="menu-title">Petro</span>
+                    <span class="menu-title">Petrol</span>
                     <i class="menu-arrow"></i>
                     <i class="mdi mdi-fire menu-icon"></i>
                 </a>

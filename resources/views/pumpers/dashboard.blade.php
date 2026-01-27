@@ -22,7 +22,7 @@
         }
     </style>
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
-        <div class="row" style="--bs-gutter-x: 20px !important;">
+        {{-- <div class="row" style="--bs-gutter-x: 20px !important;">
             <div class="col-md-6">
                 <button class="btn btn-gradient-success btn-block w-100" data-bs-toggle="modal"
                     data-bs-target="#dropCashModal">
@@ -35,7 +35,7 @@
                     <i class="mdi mdi-logout"></i> CLOSE DUTY
                 </button>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row" style="--bs-gutter-x: 20px !important;margin-top: 0.2rem;">
             <!-- Left Column: Duty Card -->
