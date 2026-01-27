@@ -155,12 +155,14 @@
                         <li class="nav-item {{ Request::is('pumper/dashboard*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('pumpers-dashboard') }}">Dashboard</a>
                         </li>
+                        
                         <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('pumper.sales.entry') }}">Sales Entry</a>
                         </li>
                     </ul>
                 </div>
             </li>
+            @endhasAddon
         @endcan
 
         {{-- @can('view.admin.sidebar')
