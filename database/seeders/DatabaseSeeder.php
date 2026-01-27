@@ -28,31 +28,41 @@ class DatabaseSeeder extends Seeder
             'sales',
             'cash_drops',
             'pump_readings',
-            'stock_movements'
+            'stock_movements',
+            'subscription_plans',
+            'addons',
         ];
+
         foreach ($tables as $table) {
             DB::table($table)->truncate();
         }
 
-        // 3. Run Seeders (While checks are still OFF)
         $this->call([
+
             PermissionSeeder::class,
+            SalesEntryPermissionSeeder::class, 
             RoleSeeder::class,
             UserSeeder::class,
-            StationSeeder::class,
 
+                
+            StationSeeder::class,
+            SubscriptionPlanSeeder::class,
+            AddonSeeder::class,
             FuelTypeSeeder::class,
             FuelPriceSeeder::class,
             TankSeeder::class,
             PumpSeeder::class,
+
+               
             ShiftSeeder::class,
             SaleSeeder::class,
-                // CashDropSeeder::class, // Optional/Test data
-            RolePermissionSeeder::class, // <--- Added Centralized Assignments
+            CashDropSeeder::class,
+
+              
+            RolePermissionSeeder::class,
         ]);
 
-        // 4. RE-ENABLE CHECKS (End)
-        // Only turn them back on AFTER all data is inserted
+       
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         echo "All Seeders Completed Successfully!\n";

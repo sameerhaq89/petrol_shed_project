@@ -43,8 +43,13 @@ class SettlementListController extends Controller
         // 3. Pass Data to View
         return view('admin.petro.settlement-list.index', [
             'currentShift' => $data['currentShift'],
-            'settlements'  => $data['settlements'],
-            'pageHeader'   => $pageHeader
+            'settlements' => $data['settlements'],
+            'pageHeader' => $pageHeader
         ]);
+    }
+    public function getData()
+    {
+        $data = $this->service->getSettlementListData();
+        return response()->json($data['settlements']);
     }
 }
