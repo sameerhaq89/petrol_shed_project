@@ -38,13 +38,13 @@ class TankController extends Controller
                 : 0;
 
             return [
-                'id'          => $tank->id,
-                'tankName'    => $tank->tank_name,
-                'capacity'    => number_format($tank->capacity) . ' L',
-                'current'     => number_format($tank->current_stock) . ' L',
-                'percentage'  => round($percentage, 0),
-                'color'       => $this->getFuelColor($tank->fuel_type_id),
-                'lastDip'     => $tank->updated_at->diffForHumans(),
+                'id' => $tank->id,
+                'tankName' => $tank->tank_name,
+                'capacity' => number_format($tank->capacity) . ' L',
+                'current' => number_format($tank->current_stock) . ' L',
+                'percentage' => round($percentage, 0),
+                'color' => $this->getFuelColor($tank->fuel_type_id),
+                'lastDip' => $tank->updated_at->diffForHumans(),
                 'alertStatus' => $percentage < 15 ? 'low-stock' : 'normal',
             ];
         });
@@ -54,19 +54,21 @@ class TankController extends Controller
 
         $pageHeader = [
             'title' => 'Tank & Pump Management',
-            'icon' => 'mdi mdi-gas-station',
-            'showButton' => true,
-            'buttonText' => 'Add New Tank',
-            'buttonClass' => 'btn btn-gradient-primary btn-icon-text',
-            'buttonIcon' => 'mdi mdi-plus btn-icon-prepend',
-            'buttonId' => 'addNewTankBtn',
-            'dataBsToggle' => 'modal',
-            'dataBsTarget' => '#addTankModal',
+            'breadcrumbs' => [
+                ['name' => 'Dashboard', 'url' => url('/')],
+                ['name' => 'Tanks', 'url' => '#']
+            ],
+            'action_button' => [
+                'label' => 'Add New Tank',
+                'icon' => 'plus',
+                'modal' => '#addTankModal', // Triggers the modal widget
+                'url' => '#'
+            ]
         ];
 
         return view('admin.petro.tank-management.index', [
-            'tanks'      => $tanks,
-            'pumps'      => $pumps,
+            'tanks' => $tanks,
+            'pumps' => $pumps,
             'pageHeader' => $pageHeader,
             'fuel_types' => $fuel_types
         ]);
@@ -171,9 +173,9 @@ class TankController extends Controller
     {
         return match ($type) {
             1, 'Petrol', 'Gasoline' => 'blue',
-            2, 'Diesel'             => 'green',
-            3, 'Super Petrol'       => 'orange',
-            default                 => 'blue',
+            2, 'Diesel' => 'green',
+            3, 'Super Petrol' => 'orange',
+            default => 'blue',
         };
     }
 }

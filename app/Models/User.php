@@ -12,6 +12,13 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ROLE_ADMIN = 1;
+    const ROLE_MANAGER = 2;
+    const ROLE_CASHIER = 3;
+    const ROLE_PUMPER = 4;
+    const IS_ACTIVE = 1;
+    const IS_INACTIVE = 0;
+    const IS_SUSPENDED = 2;
     /**
      * The attributes that are mass assignable.
      *
@@ -72,5 +79,21 @@ class User extends Authenticatable
     public function hasRole($roleSlug)
     {
         return $this->role && $this->role->slug === $roleSlug;
+    }
+
+    public function hasAnyRole($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRole($roles)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

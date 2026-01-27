@@ -114,7 +114,7 @@ Route::middleware(['auth', 'subscription'])->group(function () {
     Route::post('/cash-drop/store', [App\Http\Controllers\CashDropController::class, 'store'])->name('cash-drop.store');
 
     // --- PUMPER SALES ENTRY ---
-    Route::get('/pumper/dashboard', [PumperManagementController::class, 'index'])->name('pumper.dashboard');
+    Route::get('/pumper/dashboard', [PumperManagementController::class, 'dashboard'])->name('pumpers-dashboard');
     Route::get('/pumper/sales', [PumperManagementController::class, 'salesEntry'])->name('pumper.sales.entry');
     Route::post('/pumper/sales', [PumperManagementController::class, 'storeSale'])->name('pumper.sales.store');
 

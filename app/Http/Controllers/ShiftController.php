@@ -56,8 +56,16 @@ class ShiftController extends Controller
     {
         $shift = $this->shiftService->getShiftById($id);
 
+        // Fix: Exclude pumps that are currently occupied (active or pending settlement)
+        // Pumps with 'completed' assignments are free to be used again.
+        $assignedPumpIds = \App\Models\PumpOperatorAssignment::where('shift_id', $shift->id)
+            ->whereIn('status', ['active', 'pending_settlement'])
+            ->pluck('pump_id')
+            ->toArray();
+
         $pumps = Pump::where('station_id', $shift->station_id)
             ->where('status', 'active')
+            ->whereNotIn('id', $assignedPumpIds)
             ->get();
 
         // Fix: Use correct Role ID for Pumper (4), or lookup by slug

@@ -17,17 +17,17 @@ class TankService
     }
 
     public function getAllTanks(array $filters = [])
-{
-    $query = Tank::with(['fuelType', 'station']);
+    {
+        $query = Tank::with(['fuelType', 'station']);
 
-    // LOGIC UPDATE:
-    // If I am NOT a Super Admin (Role 1), restrict me to my station.
-    if (Auth::check() && Auth::user()->role_id !== 1) {
-        $query->where('station_id', Auth::user()->station_id);
+        // LOGIC UPDATE:
+        // If I am NOT a Super Admin (Role 1), restrict me to my station.
+        if (Auth::check() && Auth::user()->role_id !== 1) {
+            $query->where('station_id', Auth::user()->station_id);
+        }
+
+        return $query->latest()->get();
     }
-
-    return $query->latest()->get();
-}
 
     public function getTankById(int $id)
     {
@@ -47,7 +47,10 @@ class TankService
         // Prepare data for repository
         $data['station_id'] = $stationId;
         $data['current_stock'] = $data['current_stock'] ?? 0;
-        
+        $data['reorder_level'] = $data['reorder_level'] ?? 0;
+        $data['minimum_level'] = $data['minimum_level'] ?? 0;
+        $data['maximum_level'] = $data['maximum_level'] ?? 0;
+
         // If status wasn't passed, default to active
         if (!isset($data['status'])) {
             $data['status'] = 'active';

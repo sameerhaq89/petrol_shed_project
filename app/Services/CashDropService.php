@@ -21,25 +21,30 @@ class CashDropService
      */
     public function createDrop(array $data)
     {
-        // 1. Find the Active Shift (Business Logic)
+
         $activeShift = Shift::where('status', 'open')->latest()->first();
 
         if (!$activeShift) {
             throw new Exception("No active shift found. Please open a shift first.");
         }
 
-        // 2. Prepare Data for Repository
+
+        $status = 'pending';
+        if (Auth::check() && Auth::user()->hasAnyRole(['super-admin', 'admin', 'manager'])) {
+            $status = 'verified';
+        }
+
+
         $dropData = [
             'shift_id' => $activeShift->id,
-            // 'station_id' => $activeShift->station_id ?? 1, // field does not exist in migration
             'user_id' => $data['user_id'],
             'amount' => $data['amount'],
             'notes' => $data['notes'] ?? null,
             'dropped_at' => now(),
-            'status' => 'pending',
+            'status' => $status,
         ];
 
-        // 3. Call Repository
+        // 4. Call Repository
         return $this->cashDropRepo->create($dropData);
     }
 

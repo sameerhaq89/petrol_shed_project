@@ -5,12 +5,18 @@ namespace App\Repositories;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-                
+
 class UserRepository implements UserRepositoryInterface
 {
-    public function getAll()
+    public function getAll($stationId = null)
     {
-        return User::with(['role', 'station'])->latest()->paginate(10);
+        $query = User::with(['role', 'station']);
+
+        if ($stationId) {
+            $query->where('station_id', $stationId);
+        }
+
+        return $query->latest()->paginate(10);
     }
 
     public function find(int $id)
@@ -21,13 +27,13 @@ class UserRepository implements UserRepositoryInterface
     public function create(array $data)
     {
         return User::create([
-            'name'       => $data['name'],
-            'email'      => $data['email'],
-            'phone'      => $data['phone'] ?? null,
-            'role_id'    => $data['role_id'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
+            'role_id' => $data['role_id'],
             'station_id' => $data['role_id'] == 1 ? null : ($data['station_id'] ?? null),
-            'password'   => Hash::make($data['password']),
-            'is_active'  => true,
+            'password' => Hash::make($data['password']),
+            'is_active' => true,
         ]);
     }
 
@@ -36,10 +42,10 @@ class UserRepository implements UserRepositoryInterface
         $user = User::findOrFail($id);
 
         $updateData = [
-            'name'       => $data['name'],
-            'email'      => $data['email'],
-            'phone'      => $data['phone'] ?? null,
-            'role_id'    => $data['role_id'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
+            'role_id' => $data['role_id'],
             'station_id' => $data['role_id'] == 1 ? null : ($data['station_id'] ?? null),
         ];
 

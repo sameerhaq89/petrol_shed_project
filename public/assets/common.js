@@ -58,7 +58,10 @@ $("button[data-dismiss=modal]").click(function()
   $(".load-modal").modal('hide');
 });
 
-$(document).on('submit', 'form', function () {
+$(document).on('submit', 'form', function (e) {
+    if (e.isDefaultPrevented() && $(this).attr('id') !== 'ajax-form') {
+        return;
+    }
     let btn = $(this).find('button[type=submit]');
     let loadingText = btn.attr('data-loading-text');
     loadButton(btn, loadingText);

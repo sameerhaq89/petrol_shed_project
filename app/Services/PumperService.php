@@ -39,7 +39,7 @@ class PumperService
     public function assignPumper(array $data)
     {
         $activeShift = $this->repository->getActiveShift();
-        if (! $activeShift) {
+        if (!$activeShift) {
             throw new \Exception('No Main Shift is Open!');
         }
 
@@ -62,6 +62,29 @@ class PumperService
             'opening_cash' => $data['opening_cash'] ?? 0,
             'status' => 'active',
         ]);
+    }
+
+    public function getCloseDutyData($assignmentId)
+    {
+        $assignment = $this->repository->findAssignment($assignmentId);
+
+        // 1. Calculate Total Cash Drops (Mid-shift only)
+        $totalDrops = $this->repository->getCashDropsForAssignment($assignment)
+            ->filter(function ($drop) {
+                $note = $drop->notes;
+                return is_null($note) || (stripos($note, 'Final Settlement') === false && stripos($note, 'Shortage Settlement') === false);
+            })
+            ->sum('amount');
+
+        // 2. Get Current Price
+        $fuelTypeId = $assignment->pump->fuel_type_id ?? $assignment->pump->tank->fuel_type_id ?? 1;
+        $priceRecord = FuelPrice::where('station_id', $assignment->shift->station_id)
+            ->where('fuel_type_id', $fuelTypeId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $currentPrice = $priceRecord ? $priceRecord->selling_price : 0;
+
+        return compact('assignment', 'totalDrops', 'currentPrice');
     }
 
     public function closeDuty(int $assignmentId, float $closingReading, float $closingCashReceived)
@@ -91,7 +114,7 @@ class PumperService
                     'station_id' => $stationId,
                     'pump_id' => $assignment->pump_id,
                     'fuel_type_id' => $fuelTypeId,
-                    'sale_number' => 'SL-'.time(),
+                    'sale_number' => 'SL-' . time(),
                     'created_by' => $assignment->user_id,
                     'start_reading' => $lastRecordedMeter,
                     'end_reading' => $closingReading,
@@ -104,10 +127,32 @@ class PumperService
                     'payment_mode' => 'cash',
                 ]);
                 $assignment->shift->increment('total_sales', $totalAmount);
+
+                // Decrement Tank Stock
+                if ($assignment->pump->tank_id) {
+                    $tank = \App\Models\Tank::find($assignment->pump->tank_id);
+                    if ($tank) {
+                        $tank->decrement('current_stock', $soldQty);
+
+                        // Optional: Record element in StockMovement if you have that table
+                        \App\Models\StockMovement::create([
+                            'tank_id' => $tank->id,
+                            'type' => 'sales',
+                            'quantity' => $soldQty,
+                            'balance_after' => $tank->current_stock,
+                            'reference_type' => 'shift', // or 'assignment'
+                            'reference_id' => $assignment->shift_id,
+                            'recorded_at' => now(),
+                        ]);
+                    }
+                }
             }
 
             $midShiftDrops = $this->repository->getCashDropsForAssignment($assignment)
-                ->where('notes', 'NOT LIKE', '%Final Settlement%')
+                ->filter(function ($drop) {
+                    $note = $drop->notes;
+                    return is_null($note) || (stripos($note, 'Final Settlement') === false && stripos($note, 'Shortage Settlement') === false);
+                })
                 ->sum('amount');
 
             $totalSalesAmount = $this->repository->getSalesForAssignment($assignment);
@@ -136,7 +181,7 @@ class PumperService
                     'shift_id' => $assignment->shift_id,
                     'user_id' => $assignment->user_id,
                     'amount' => $closingCashReceived,
-                    'notes' => 'Final Settlement (Meter: '.$closingReading.')',
+                    'notes' => 'Final Settlement (Meter: ' . $closingReading . ')',
                     'dropped_at' => now(),
                     'status' => 'pending',
                 ]);
@@ -150,7 +195,7 @@ class PumperService
                     'type' => 'shortage',
                     'amount' => abs($variance),
                     'running_balance' => $lastBalance + abs($variance),
-                    'remarks' => 'Shortage from Shift '.$assignment->shift->shift_number,
+                    'remarks' => 'Shortage from Shift ' . $assignment->shift->shift_number,
                 ]);
             }
 
@@ -179,7 +224,7 @@ class PumperService
                 'type' => 'payment',
                 'amount' => $amount,
                 'running_balance' => $lastBalance - $amount,
-                'remarks' => 'Payment received for Shift '.$assignment->shift_id,
+                'remarks' => 'Payment received for Shift ' . $assignment->shift_id,
             ]);
 
             $assignment->update(['status' => 'completed']);

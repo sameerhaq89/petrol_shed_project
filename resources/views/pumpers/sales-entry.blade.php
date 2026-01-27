@@ -71,10 +71,19 @@
                                 <div class="col-md-4">
                                     <div class="form-group mb-4">
                                         <label class="h6 text-dark font-weight-bold mb-3">
-                                            Current Meter Reading
+                                            Closing Meter Reading
                                         </label>
-                                        <input type="number" name="meter_reading" class="form-control form-control-sm"
-                                            placeholder="e.g. 100,550" step="0.01" min="0">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light border-right-0">
+                                                    Start: {{ number_format($pump->current_reading, 2) }}
+                                                </span>
+                                            </div>
+                                            <input type="number" name="meter_reading" id="meter_reading"
+                                                class="form-control form-control-sm" placeholder="Auto-calculated"
+                                                step="0.01" min="{{ $pump->current_reading }}" readonly>
+                                        </div>
+                                        <small class="text-muted">Opening: {{ $pump->current_reading }}</small>
                                         @error('meter_reading')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -97,8 +106,7 @@
                                         </label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text bg-light border-2"
-                                                    style="color: #28a745;">
+                                                <span class="input-group-text bg-light border-2" style="color: #28a745;">
                                                     Rs.
                                                 </span>
                                             </div>
@@ -150,12 +158,10 @@
 
                             <div class="row mt-3">
                                 <div class="col-12 d-flex justify-content-end">
-                                    <a href="{{ url()->previous() }}"
-                                        class="btn btn-gradient-secondary me-2">
+                                    <a href="{{ url()->previous() }}" class="btn btn-gradient-secondary">
                                         <i class="mdi mdi-close-circle"></i> CLOSE
                                     </a>
-                                    <button type="submit"
-                                        class="btn btn-gradient-primary">
+                                    <button type="submit" class="btn btn-gradient-primary me-2">
                                         <i class="mdi mdi-check-circle"></i> SAVE SALE
                                     </button>
                                 </div>
@@ -167,23 +173,32 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const amountInput = document.getElementById('amount');
             const volumeInput = document.getElementById('volume');
-            const price = {{ $currentPrice->selling_price }};
+            const meterInput = document.getElementById('meter_reading');
 
-            amountInput.addEventListener('input', function() {
+            const price = {{ $currentPrice->selling_price }};
+            const openingMeter = {{ $pump->current_reading }};
+
+            amountInput.addEventListener('input', function () {
                 const amount = parseFloat(this.value);
                 if (!isNaN(amount) && amount > 0) {
+                    // Calculate Volume
                     const volume = amount / price;
                     volumeInput.value = volume.toFixed(2);
+
+                    // Calculate Closing Meter
+                    const closingMeter = openingMeter + volume;
+                    meterInput.value = closingMeter.toFixed(2);
                 } else {
                     volumeInput.value = '0.00';
+                    meterInput.value = '';
                 }
             });
 
             // Prevent double submission
-            document.getElementById('salesForm').addEventListener('submit', function() {
+            document.getElementById('salesForm').addEventListener('submit', function () {
                 const btn = this.querySelector('button[type="submit"]');
                 btn.disabled = true;
                 btn.innerText = 'Processing...';

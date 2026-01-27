@@ -19,32 +19,44 @@
     // 1. Fetch the Assignment Model
     $assignmentModel = \App\Models\PumpOperatorAssignment::find($stat->assignment_id);
 
-    // 2. Calculate Sales ONLY for this specific session
-    // CRITICAL FIX: We add ->where('start_reading', '>=', $stat->opening_reading)
-    // Assignment #2 starts at 100040. Old sales (100000, 100010) are smaller, so they are ignored.
+    // 2. Calculate Sales for this specific session
+    // FIX: Filter by assignment time range to prevent overlap with next assignment
     $pSales = \App\Models\Sale::where('shift_id', $activeShift->id)
                 ->where('pump_id', $stat->pump_id)
                 ->where('created_by', $stat->pumper_id)
-                ->where('start_reading', '>=', $stat->opening_reading) // <--- THIS LINE FIXES IT
+                ->where('start_reading', '>=', $stat->opening_reading)
+                ->when($assignmentModel->end_time, function($q) use ($assignmentModel) {
+                     return $q->where('created_at', '<=', $assignmentModel->end_time); 
+                })
                 ->sum('amount');
 
     // 3. Opening Cash Logic
-    // Only add opening cash if it wasn't already settled in a previous assignment
-   $pOpening = $assignmentModel->opening_cash ?? 0;
-
-    // If this is a second assignment in the same shift, you might want to set opening cash to 0
-    // dependent on whether you gave them another 5000 note.
-    // For now, let's assume they kept the float:
+    $pOpening = $assignmentModel->opening_cash ?? 0;
     $pExpected = $pSales + $pOpening;
 
     // 4. Calculate Drops
+    // FIX: Filter by assignment time range to ensure we don't count drops from next session
     $pDrops = \App\Models\CashDrop::where('shift_id', $activeShift->id)
                 ->where('user_id', $stat->pumper_id)
-                ->where('notes', 'NOT LIKE', '%Final Settlement%')
+                ->where('created_at', '>=', $assignmentModel->start_time)
+                ->when($assignmentModel->end_time, function($q) use ($assignmentModel) {
+                     return $q->where('created_at', '<=', $assignmentModel->end_time); 
+                })
+                ->where(function($q) {
+                    $q->whereNull('notes')
+                      ->orWhere('notes', 'NOT LIKE', '%Final Settlement%');
+                })
+                ->sum('amount');
+
+    // 5. Settlement Drops (Post-shift)
+    $settlementDrops = \App\Models\CashDrop::where('shift_id', $activeShift->id)
+                ->where('user_id', $stat->pumper_id)
+                ->where('notes', 'LIKE', '%Shortage Settlement%')
+                ->where('created_at', '>=', $assignmentModel->start_time)
                 ->sum('amount');
 
     $finalHandover = $assignmentModel->closing_cash_received ?? 0;
-    $totalCollected = $pDrops + $finalHandover;
+    $totalCollected = $pDrops + $finalHandover + $settlementDrops;
 
     $pendingAmount = $pExpected - $totalCollected;
 @endphp
@@ -73,7 +85,11 @@
                                 @if ($stat->status == 'active')
                                     <label class="badge badge-gradient-success">On Duty</label>
                                 @elseif($stat->status == 'pending_settlement')
-                                    <span class="badge badge-gradient-danger shadow-sm">Settlement Pending</span>
+                                    @if($pendingAmount <= 0)
+                                        <span class="badge badge-info shadow-sm">Duty Closed</span>
+                                    @else
+                                        <span class="badge badge-danger shadow-sm">Settlement Pending</span>
+                                    @endif
                                 @else
                                     <span class="badge badge-gradient-info shadow-sm">Duty Closed</span>
                                 @endif
@@ -87,13 +103,12 @@
                                             <i class="fas fa-door-closed me-1"></i> Close Duty
                                         </a>
 
-                                        {{-- ACTION 2: SETTLE (Only if Pending) --}}
-                                    @elseif($stat->status == 'pending_settlement')
+                                        {{-- ACTION 2: SETTLE (Only if Pending AND Amount > 0) --}}
+                                    @elseif($stat->status == 'pending_settlement' && $pendingAmount > 0)
                                         <button type="button"
-                                            class="btn btn-gradient-warning btn-sm d-flex align-items-center shadow-sm"
-                                            data-bs-toggle="modal" {{-- Added -bs- --}}
+                                            class="btn btn-warning btn-sm d-flex align-items-center shadow-sm"
+                                            data-bs-toggle="modal"
                                             data-bs-target="#settle-modal{{ $stat->assignment_id }}">
-                                            {{-- Added -bs- --}}
                                             <i class="fas fa-coins me-1"></i> Settle
                                         </button>
 
@@ -104,7 +119,7 @@
                                         ])
                                     @endif
 
-                                    {{-- ACTION 3: REPORT (Available for any Closed Duty) --}}
+                                    {{-- ACTION 3: REPORT (Available for any Closed or Pending Duty) --}}
                                     @if ($stat->status != 'active')
                                         <a href="{{ route('pumper.report', $stat->assignment_id) }}"
                                             class="btn btn-gradient-primary btn-sm d-flex align-items-center shadow-sm">

@@ -21,15 +21,54 @@ class PumperManagementController extends Controller
 
     public function index()
     {
-        // $data = $this->pumperService->getDashboardData();
+        $data = $this->pumperService->getDashboardData();
 
         $pageHeader = [
             'title' => 'Pumper Management',
             'icon' => 'mdi mdi-account-hard-hat',
         ];
 
-        // return view('admin.petro.pumper-management.index', array_merge($data, ['pageHeader' => $pageHeader]));
-        return view('pumpers.dashboard', compact('pageHeader'));
+        return view('admin.petro.pumper-management.index', array_merge($data, ['pageHeader' => $pageHeader]));
+
+    }
+
+    public function dashboard()
+    {
+        $user = auth()->user();
+        $assignment = PumpOperatorAssignment::where('user_id', $user->id)
+            ->where('status', 'active')
+            ->latest()
+            ->with(['pump'])
+            ->first();
+
+        if (!$assignment) {
+            return view('pumpers.no-assignment');
+        }
+
+        // Calculate Data
+        $totalSales = \App\Models\Sale::where('shift_id', $assignment->shift_id)
+            ->where('created_by', $user->id)
+            ->sum('amount');
+
+        $totalCashSales = \App\Models\Sale::where('shift_id', $assignment->shift_id)
+            ->where('created_by', $user->id)
+            ->where('payment_mode', 'cash')
+            ->sum('amount');
+
+        $totalDropped = \App\Models\CashDrop::where('shift_id', $assignment->shift_id)
+            ->where('user_id', $user->id)
+            ->sum('amount');
+
+        $openingFloat = $assignment->opening_cash ?? 0;
+        $cashInHand = $openingFloat + $totalCashSales - $totalDropped;
+
+        $recentDrops = \App\Models\CashDrop::where('shift_id', $assignment->shift_id)
+            ->where('user_id', $user->id)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('pumpers.dashboard', compact('assignment', 'totalSales', 'totalDropped', 'cashInHand', 'recentDrops'));
     }
 
     public function assignPumper(AssignPumperRequest $request): RedirectResponse
@@ -37,7 +76,7 @@ class PumperManagementController extends Controller
         try {
             $this->pumperService->assignPumper($request->validated());
 
-            return back()->with('success', 'Pumper Assigned. Float Given: Rs. '.number_format($request->opening_cash, 2));
+            return back()->with('success', 'Pumper Assigned. Float Given: Rs. ' . number_format($request->opening_cash, 2));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -45,21 +84,22 @@ class PumperManagementController extends Controller
 
     public function closeDutyForm($id)
     {
-        $assignment = PumpOperatorAssignment::with(['pumper', 'pump'])->findOrFail($id);
+        $data = $this->pumperService->getCloseDutyData($id);
+        $assignment = $data['assignment'];
 
         if ($assignment->status == 'completed') {
             return redirect()->route('pumper.index')->with('error', 'This duty is already closed.');
         }
 
         $pageHeader = [
-            'title' => 'Close Duty: '.$assignment->pumper->name,
+            'title' => 'Close Duty: ' . $assignment->pumper->name,
             'breadcrumbs' => [
                 ['name' => 'Pumpers', 'url' => route('pumper.index')],
                 ['name' => 'Close Duty', 'url' => '#'],
             ],
         ];
 
-        return view('admin.petro.pumper-management.close-duty', compact('assignment', 'pageHeader'));
+        return view('admin.petro.pumper-management.close-duty', array_merge($data, ['pageHeader' => $pageHeader]));
     }
 
     public function processCloseDuty(CloseDutyRequest $request, $id): RedirectResponse
@@ -71,9 +111,9 @@ class PumperManagementController extends Controller
                 $request->closing_cash_received
             );
 
-            return redirect()->route('pumper.index')->with('success', 'Duty closed. Status: '.$status);
+            return redirect()->route('pumper.index')->with('success', 'Duty closed. Status: ' . $status);
         } catch (\Exception $e) {
-            return back()->with('error', 'Error closing duty: '.$e->getMessage());
+            return back()->with('error', 'Error closing duty: ' . $e->getMessage());
         }
     }
 
@@ -89,15 +129,32 @@ class PumperManagementController extends Controller
         try {
             $amount = $this->pumperService->settleShortage($id, $request->settle_amount);
 
-            return back()->with('success', 'Ledger updated. Received Rs. '.number_format($amount, 2));
+            return back()->with('success', 'Ledger updated. Received Rs. ' . number_format($amount, 2));
         } catch (\Exception $e) {
-            return back()->with('error', 'Error settling shortage: '.$e->getMessage());
+            return back()->with('error', 'Error settling shortage: ' . $e->getMessage());
         }
     }
 
     public function settlementReport($id)
     {
-        return back()->with('info', 'Report logic pending refactor (see comments).');
+        $data = $this->pumperService->getCloseDutyData($id);
+        $assignment = $data['assignment'];
+
+        // Add page header
+        $pageHeader = [
+            'title' => 'Settlement Report: ' . $assignment->pumper->name,
+            'breadcrumbs' => [
+                ['name' => 'Pumpers', 'url' => route('pumper.index')],
+                ['name' => 'Report', 'url' => '#'],
+            ],
+            'action_button' => [
+                'label' => 'Print Report',
+                'icon' => 'printer',
+                'onclick' => 'window.print()',
+            ],
+        ];
+
+        return view('admin.petro.pumper-management.report', array_merge($data, ['pageHeader' => $pageHeader]));
     }
 
     /**
@@ -113,7 +170,7 @@ class PumperManagementController extends Controller
             ->with(['pump', 'pump.tank.fuelType.currentPrice'])
             ->first();
 
-        if (! $assignment) {
+        if (!$assignment) {
             return view('pumpers.no-assignment');
         }
 
@@ -124,13 +181,13 @@ class PumperManagementController extends Controller
         // But for safety, we might need to get the price directly via FuelType
         $fuelType = \App\Models\FuelType::find($pump->fuel_type_id);
 
-        if (! $fuelType) {
+        if (!$fuelType) {
             // Fallback if pump uses tank correlation
             $tank = \App\Models\Tank::find($pump->tank_id);
             $fuelType = $tank ? $tank->fuelType : null;
         }
 
-        if (! $fuelType) {
+        if (!$fuelType) {
             return back()->with('error', 'Configuration Error: Pump not linked to fuel type.');
         }
 
@@ -140,8 +197,8 @@ class PumperManagementController extends Controller
             ->latest('effective_from')
             ->first();
 
-        if (! $currentPrice) {
-            return back()->with('error', 'No active fuel price set for '.$fuelType->name);
+        if (!$currentPrice) {
+            return back()->with('error', 'No active fuel price set for ' . $fuelType->name);
         }
 
         $pageHeader = [
@@ -198,7 +255,7 @@ class PumperManagementController extends Controller
             }
 
             // Generate Sale Number
-            $saleNumber = 'SALE-'.time().'-'.rand(100, 999);
+            $saleNumber = 'SALE-' . time() . '-' . rand(100, 999);
 
             // Create Sale Record
             $sale = \App\Models\Sale::create([
@@ -214,19 +271,19 @@ class PumperManagementController extends Controller
                 'rate' => $rate,
                 'amount' => $amount,
                 'final_amount' => $amount,
-                'payment_mode' => 'cash',
+                'payment_mode' => $request->payment_method ?? 'cash',
                 'status' => 'completed',
                 'created_by' => auth()->id(),
             ]);
 
             DB::commit();
 
-            return redirect()->route('pumper.sales.entry')->with('success', 'Sale Recorded: '.$quantity.' Liters for Rs. '.$amount);
+            return redirect()->route('pumper.sales.entry')->with('success', 'Sale Recorded: ' . $quantity . ' Liters for Rs. ' . $amount);
 
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return back()->with('error', 'Error recording sale: '.$e->getMessage())->withInput();
+            return back()->with('error', 'Error recording sale: ' . $e->getMessage())->withInput();
         }
     }
 }

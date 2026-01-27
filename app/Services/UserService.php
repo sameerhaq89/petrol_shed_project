@@ -18,7 +18,10 @@ class UserService
 
     public function getAllUsers()
     {
-        return $this->repository->getAll();
+        $user = Auth::user();
+        $stationId = $user->station_id ?? null;
+
+        return $this->repository->getAll($stationId);
     }
 
     public function getUserById(int $id)

@@ -22,7 +22,7 @@
         }
     </style>
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
-        <div class="row" style="--bs-gutter-x: 20px !important;">
+        {{-- <div class="row" style="--bs-gutter-x: 20px !important;">
             <div class="col-md-6">
                 <button class="btn btn-gradient-success btn-block w-100" data-bs-toggle="modal"
                     data-bs-target="#dropCashModal">
@@ -35,7 +35,7 @@
                     <i class="mdi mdi-logout"></i> CLOSE DUTY
                 </button>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row" style="--bs-gutter-x: 20px !important;margin-top: 0.2rem;">
             <!-- Left Column: Duty Card -->
@@ -51,12 +51,13 @@
                                     ON DUTY <span class="badge badge-gradient-primary"><strong>{{ Auth::user()->name }}
                                             👋</strong></span></h4>
                                 <div class="mb-2">
-                                    <strong>Assigned Pump:</strong> Island 1 - Petrol
+                                    <strong>Assigned Pump:</strong> {{ $assignment->pump->pump_name ?? 'Unknown Pump' }}
                                 </div>
                                 <div class="mb-3">
-                                    <strong>Opening Float:</strong> Rs. 5,000
+                                    <strong>Opening Float:</strong> Rs. {{ number_format($assignment->opening_cash, 2) }}
                                 </div>
-                                <p class="mb-0 opacity-75">Started: 08:00 AM | Start Meter: 100,450</p>
+                                <p class="mb-0 opacity-75">Started: {{ $assignment->created_at->format('h:i A') }} | Start
+                                    Meter: {{ number_format($assignment->opening_reading, 0) }}</p>
                             </div>
                         </div>
                     </div>
@@ -73,18 +74,18 @@
                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                     alt="circle-image" />
                                 <p class="font-weight-normal mb-2">ESTIMATED CASH IN HAND:</p>
-                                <h2 class="mb-4">Rs. 12,450</h2>
+                                <h2 class="mb-4">Rs. {{ number_format($cashInHand, 2) }}</h2>
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="border-right pr-2">
                                             <p class="mb-1 font-weight-normal">My Sales:</p>
-                                            <h4 class="mb-0">Rs. 9,450</h4>
+                                            <h4 class="mb-0">Rs. {{ number_format($totalSales, 2) }}</h4>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="pl-2">
                                             <p class="mb-1 font-weight-normal">Total Dropped:</p>
-                                            <h4 class="mb-0">Rs. 2,000</h4>
+                                            <h4 class="mb-0">Rs. {{ number_format($totalDropped, 2) }}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -104,28 +105,28 @@
                         <div class="table-responsive mt-3">
                             <table class="table table-borderless">
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex flex-column">
-                                                <span class="font-weight-bold">Rs. 2,000.00</span>
-                                                <span class="text-muted small">10:30 AM</span>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <label class="badge badge-gradient-warning">Pending</label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex flex-column">
-                                                <span class="font-weight-bold">Rs. 5,000.00</span>
-                                                <span class="text-muted small">08:15 AM</span>
-                                            </div>
-                                        </td>
-                                        <td class="text-right">
-                                            <label class="badge badge-gradient-success">Verified</label>
-                                        </td>
-                                    </tr>
+                                    @forelse($recentDrops as $drop)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    <span class="font-weight-bold">Rs.
+                                                        {{ number_format($drop->amount, 2) }}</span>
+                                                    <span
+                                                        class="text-muted small">{{ $drop->created_at->format('h:i A') }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="text-right">
+                                                <label
+                                                    class="badge badge-{{ $drop->status == 'verified' ? 'success' : 'warning' }}">
+                                                    {{ ucfirst($drop->status) }}
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="2" class="text-center text-muted">No drops yet today.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -157,21 +158,20 @@
                         </div>
                         <div class="form-group">
                             <label>Volume Sold (Liters)</label>
-                            <input type="number" name="liter" class="form-control" placeholder="Enter liters sold"
-                                required min="1" step="100.00">
+                            <input type="number" name="liter" class="form-control" placeholder="Enter liters sold" required
+                                min="1" step="100.00">
                         </div>
                         <div class="form-group">
                             <label>Amount to Drop (Rs.)</label>
-                            <input type="number" name="amount" class="form-control" placeholder="Enter amount"
-                                required min="1" step="0.01">
+                            <input type="number" name="amount" class="form-control" placeholder="Enter amount" required
+                                min="1" step="0.01">
                         </div>
                         <div class="form-group">
                             <label>Payment Method</label>
                             <div class="row mt-2">
                                 <div class="col-4">
                                     <label class="card payment-method-card p-3 text-center mb-0" style="cursor: pointer;">
-                                        <input type="radio" name="payment_method" value="card" class="d-none"
-                                            required>
+                                        <input type="radio" name="payment_method" value="card" class="d-none" required>
                                         <div class="payment-content">
                                             <i class="mdi mdi-credit-card text-primary" style="font-size: 2rem;"></i>
                                             <div class="mt-2 font-weight-bold">Card</div>
@@ -180,8 +180,7 @@
                                 </div>
                                 <div class="col-4">
                                     <label class="card payment-method-card p-3 text-center mb-0" style="cursor: pointer;">
-                                        <input type="radio" name="payment_method" value="cash" class="d-none"
-                                            required>
+                                        <input type="radio" name="payment_method" value="cash" class="d-none" required>
                                         <div class="payment-content">
                                             <i class="mdi mdi-cash text-success" style="font-size: 2rem;"></i>
                                             <div class="mt-2 font-weight-bold">Cash</div>
@@ -190,8 +189,7 @@
                                 </div>
                                 <div class="col-4">
                                     <label class="card payment-method-card p-3 text-center mb-0" style="cursor: pointer;">
-                                        <input type="radio" name="payment_method" value="qr" class="d-none"
-                                            required>
+                                        <input type="radio" name="payment_method" value="qr" class="d-none" required>
                                         <div class="payment-content">
                                             <i class="mdi mdi-qrcode-scan text-warning" style="font-size: 2rem;"></i>
                                             <div class="mt-2 font-weight-bold">QR</div>
@@ -226,17 +224,18 @@
                     <div class="modal-body">
                         <div class="form-group">
                             <label>End Meter Reading</label>
-                            <input type="number" name="end_meter" class="form-control"
-                                placeholder="Enter meter reading" required min="0" step="0.01">
+                            <input type="number" name="end_meter" class="form-control" placeholder="Enter meter reading"
+                                required min="0" step="0.01">
                         </div>
                         <div class="form-group">
                             <label>Closing Cash in Hand (Rs.)</label>
-                            <input type="number" name="closing_cash" class="form-control"
-                                placeholder="Enter cash amount" required min="0" step="0.01">
+                            <input type="number" name="closing_cash" class="form-control" placeholder="Enter cash amount"
+                                required min="0" step="0.01">
                         </div>
                         <div class="form-group">
                             <label>Remarks (Optional)</label>
-                            <textarea name="remarks" class="form-control" rows="3" placeholder="Any remarks about the shift..."></textarea>
+                            <textarea name="remarks" class="form-control" rows="3"
+                                placeholder="Any remarks about the shift..."></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
