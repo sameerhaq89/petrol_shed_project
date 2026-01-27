@@ -23,33 +23,19 @@
     </style>
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
         <div class="row" style="--bs-gutter-x: 20px !important;">
-            <div class="col-6">
+            <div class="col-md-6">
                 <button class="btn btn-gradient-success btn-block w-100" data-bs-toggle="modal"
                     data-bs-target="#dropCashModal">
                     <i class="mdi mdi-cash-multiple"></i> DROP CASH
                 </button>
             </div>
-            <div class="col-6">
+            <div class="col-md-6">
                 <button class="btn btn-gradient-danger btn-block w-100" data-bs-toggle="modal"
                     data-bs-target="#closeDutyModal">
                     <i class="mdi mdi-logout"></i> CLOSE DUTY
                 </button>
             </div>
         </div>
-        {{-- <div class="page-header"> --}}
-            {{-- <h3 class="page-title">Hi, {{ Auth::user()->name }} 👋</h3> --}}
-            {{-- <p class="text-muted">{{ now()->format('l, d F Y') }}</p> --}}
-
-            {{-- <div class="btn-group">
-                <button class="btn btn-gradient-success btn-block me-2" data-bs-toggle="modal"
-                    data-bs-target="#dropCashModal">
-                    <i class="mdi mdi-cash-multiple"></i> DROP CASH
-                </button>
-                <button class="btn btn-gradient-danger btn-block" data-bs-toggle="modal" data-bs-target="#closeDutyModal">
-                    <i class="mdi mdi-logout"></i> CLOSE DUTY
-                </button>
-            </div> --}}
-            {{-- </div> --}}
 
         <div class="row" style="--bs-gutter-x: 20px !important;margin-top: 0.2rem;">
             <!-- Left Column: Duty Card -->
@@ -62,7 +48,7 @@
                                 <img src="{{ asset('assets/images/dashboard/circle.svg') }}" class="card-img-absolute"
                                     alt="circle-image" />
                                 <h4 class="font-weight-normal mb-3"><i class="mdi mdi-gas-station mdi-24px float-left"></i>
-                                    ON DUTY <span class="badge badge-gradient-danger"><strong>{{ Auth::user()->name }}
+                                    ON DUTY <span class="badge badge-gradient-primary"><strong>{{ Auth::user()->name }}
                                             👋</strong></span></h4>
                                 <div class="mb-2">
                                     <strong>Assigned Pump:</strong> {{ $assignment->pump->pump_name ?? 'Unknown Pump' }}
