@@ -143,13 +143,6 @@
 
         @can('sales.entry.access')
           @hasAddon('sales-entry')
-                <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('pumper.sales.entry') }}">
-                        <span class="menu-title">Sales Entry</span>
-                        <i class="mdi mdi-gas-station menu-icon"></i>
-                    </a>
-                </li>
-            @endhasAddon
             <li class="nav-item {{ Request::is('pumper/dashboard*', 'pumper/sales*') ? 'active' : '' }}">
                 <a class="nav-link" data-bs-toggle="collapse" href="#pumper-menu" aria-expanded="false"
                     aria-controls="pumper-menu">
