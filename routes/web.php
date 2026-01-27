@@ -22,8 +22,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes(['register']);
 
+// Subscription Expired Page (accessible without subscription check)
+Route::get('/subscription-expired', function () {
+    return view('subscription-expired');
+})->name('subscription.expired')->middleware('auth');
+
 // --- AUTHENTICATED ROUTES GROUP ---
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'subscription'])->group(function () {
 
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('home');

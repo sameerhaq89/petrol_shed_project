@@ -38,6 +38,30 @@
                                         </span>
                                     @enderror
                                 </div>
+                                <div class="form-group">
+                                    <input id="phone" type="text"
+                                        class="form-control form-control-lg @error('phone') is-invalid @enderror"
+                                        name="phone" value="{{ old('phone') }}" required autocomplete="phone"
+                                        placeholder="Phone Number">
+
+                                    @error('phone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <input id="password" type="password"
+                                        class="form-control form-control-lg @error('password') is-invalid @enderror"
+                                        name="password" required autocomplete="new-password"
+                                        placeholder="Password">
+
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
                                 {{-- <div class="form-group">
                                     <select class="form-select form-select-lg" id="exampleFormControlSelect2">
                                     <option>Country</option>
@@ -51,7 +75,7 @@
                                 <div class="form-group">
                                     <input id="password-confirm" type="password" class="form-control form-control-lg"
                                         name="password_confirmation" required autocomplete="new-password"
-                                        placeholder="Password">
+                                        placeholder="Confirm Password">
                                 </div>
                                 {{-- <div class="mb-4">
                                     <div class="form-check">

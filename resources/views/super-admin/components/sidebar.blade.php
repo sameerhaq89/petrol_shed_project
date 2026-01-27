@@ -15,15 +15,22 @@
                 </a>
             </li>
 
-            <li class="nav-item {{ request()->routeIs('super-admin.subscriptions*') ? 'active' : '' }}">
-                <a href="{{ route('super-admin.subscriptions') }}" class="nav-link">
+            <li class="nav-item {{ request()->routeIs('super-admin.plans*') ? 'active' : '' }}">
+                <a href="{{ route('super-admin.plans.index') }}" class="nav-link">
                     <i class="fas fa-credit-card"></i>
-                    <span>Subscriptions</span>
+                    <span>Subscription Plans</span>
+                </a>
+            </li>
+
+            <li class="nav-item {{ request()->routeIs('super-admin.addons*') ? 'active' : '' }}">
+                <a href="{{ route('super-admin.addons.index') }}" class="nav-link">
+                    <i class="fas fa-puzzle-piece"></i>
+                    <span>Addons</span>
                 </a>
             </li>
 
             <li class="nav-item {{ request()->routeIs('super-admin.stations*') ? 'active' : '' }}">
-                <a href="{{ route('super-admin.stations') }}" class="nav-link">
+                <a href="{{ route('super-admin.stations.index') }}" class="nav-link">
                     <i class="fas fa-gas-pump"></i>
                     <span>Stations</span>
                 </a>

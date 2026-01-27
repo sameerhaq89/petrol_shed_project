@@ -10,30 +10,29 @@
         <!-- Stats Cards -->
         <div class="stats-grid">
             @include('super-admin.components.stat-card', [
-                'title' => 'Total Subscriptions',
-                'value' => '1,250',
-                'icon' => 'fas fa-arrow-up',
-                'iconClass' => 'icon-green',
-                'trend' => 'up',
-            ])
-
-            @include('super-admin.components.stat-card', [
-                'title' => 'Active Stations',
-                'value' => '350',
+                'title' => 'Total Stations',
+                'value' => $stats['total_stations'],
                 'icon' => 'fas fa-gas-pump',
                 'iconClass' => 'icon-blue',
             ])
 
             @include('super-admin.components.stat-card', [
-                'title' => 'Total Users',
-                'value' => '4,800',
-                'icon' => 'fas fa-users',
-                'iconClass' => 'icon-blue',
+                'title' => 'Active Subscriptions',
+                'value' => $stats['active_subscriptions'],
+                'icon' => 'fas fa-check-circle',
+                'iconClass' => 'icon-green',
+            ])
+
+            @include('super-admin.components.stat-card', [
+                'title' => 'Expiring Soon',
+                'value' => $stats['expiring_soon'],
+                'icon' => 'fas fa-exclamation-triangle',
+                'iconClass' => 'icon-orange',
             ])
 
             @include('super-admin.components.stat-card', [
                 'title' => 'Revenue (MTD)',
-                'value' => '$52,000',
+                'value' => '$' . number_format($stats['total_revenue'], 2),
                 'icon' => 'fas fa-dollar-sign',
                 'iconClass' => 'icon-blue',
             ])
