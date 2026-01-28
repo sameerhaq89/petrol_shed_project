@@ -36,13 +36,34 @@ class StationManagementController extends Controller
     public function index()
     {
         $stations = $this->stationRepository->getAllStations();
-        
+
         // Load subscriptions for each station
         foreach ($stations as $station) {
             $station->activeSubscription = $this->subscriptionRepository->getStationActiveSubscription($station->id);
         }
 
         return view('super-admin.pages.stations.index', compact('stations'));
+    }
+
+    public function create()
+    {
+        return view('super-admin.pages.stations.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+        ]);
+
+        $this->stationRepository->createStation($validated);
+
+        return redirect()->route('super-admin.stations.index')
+            ->with('success', 'Station created successfully.');
     }
 
     public function show($id)
@@ -113,7 +134,7 @@ class StationManagementController extends Controller
         ]);
 
         $activeSubscription = $this->subscriptionRepository->getStationActiveSubscription($stationId);
-        
+
         if (!$activeSubscription) {
             return redirect()->back()->with('error', 'Station has no active subscription');
         }

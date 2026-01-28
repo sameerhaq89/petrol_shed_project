@@ -15,6 +15,7 @@ class UserSeeder extends Seeder
 
         User::truncate();
 
+        // Super Admin (No Station)
         User::create([
             'id' => 1,
             'name' => 'imara (Super)',
@@ -26,7 +27,8 @@ class UserSeeder extends Seeder
             'station_id' => null,
         ]);
 
-        User::create([
+        // Station Owner (Has 2 Stations)
+        $owner = User::create([
             'id' => 2,
             'name' => 'Station Owner (Mr. Perera)',
             'email' => 'owner@purple.com',
@@ -34,10 +36,15 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'role_id' => 2,
             'is_active' => 1,
-            'station_id' => 1,
+            'station_id' => 1, // Default Station
         ]);
+        // Assign both stations to owner
+        // Note: Station seeding must run BEFORE referencing IDs here, but UserSeeder usually runs first.
+        // We will attach purely by ID since we know the IDs.
+        $owner->stations()->sync([1, 2]);
 
-        User::create([
+        // Manager (One Station)
+        $manager = User::create([
             'id' => 3,
             'name' => 'Manager John',
             'email' => 'manager@purple.com',
@@ -47,8 +54,10 @@ class UserSeeder extends Seeder
             'is_active' => 1,
             'station_id' => 1,
         ]);
+        $manager->stations()->sync([1]);
 
-        User::create([
+        // Pumper (One Station)
+        $pumper = User::create([
             'id' => 4,
             'name' => 'Pumper Anil',
             'email' => 'anil@purple.com',
@@ -58,6 +67,7 @@ class UserSeeder extends Seeder
             'is_active' => 1,
             'station_id' => 1,
         ]);
+        $pumper->stations()->sync([1]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             'stock_movements',
             'subscription_plans',
             'addons',
+            'station_user',
         ];
 
         foreach ($tables as $table) {
@@ -40,11 +41,11 @@ class DatabaseSeeder extends Seeder
         $this->call([
 
             PermissionSeeder::class,
-            SalesEntryPermissionSeeder::class, 
+            SalesEntryPermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
 
-                
+
             StationSeeder::class,
             SubscriptionPlanSeeder::class,
             AddonSeeder::class,
@@ -53,16 +54,16 @@ class DatabaseSeeder extends Seeder
             TankSeeder::class,
             PumpSeeder::class,
 
-               
+
             ShiftSeeder::class,
             SaleSeeder::class,
             CashDropSeeder::class,
 
-              
+
             RolePermissionSeeder::class,
         ]);
 
-       
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         echo "All Seeders Completed Successfully!\n";

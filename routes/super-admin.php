@@ -7,6 +7,7 @@ use App\Http\Controllers\SuperAdmin\AddonController;
 use App\Http\Controllers\SuperAdmin\StationManagementController;
 use App\Http\Controllers\SuperAdmin\Auth\LoginController;
 use App\Http\Controllers\SuperAdmin\Auth\RegisterController;
+use App\Http\Controllers\SuperAdmin\UserManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,7 @@ use App\Http\Controllers\SuperAdmin\Auth\RegisterController;
 
 // Super Admin Authentication Routes
 Route::prefix('super-admin')->name('super-admin.')->group(function () {
-    
+
     // Login Routes
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
@@ -51,6 +52,8 @@ Route::prefix('super-admin')->name('super-admin.')->middleware(['auth:super-admi
 
     // Stations Management
     Route::get('/stations', [StationManagementController::class, 'index'])->name('stations.index');
+    Route::get('/stations/create', [StationManagementController::class, 'create'])->name('stations.create');
+    Route::post('/stations', [StationManagementController::class, 'store'])->name('stations.store');
     Route::get('/stations/{id}', [StationManagementController::class, 'show'])->name('stations.show');
     Route::post('/stations/{id}/assign-subscription', [StationManagementController::class, 'assignSubscription'])->name('stations.assign-subscription');
     Route::get('/stations/{id}/manage-addons', [StationManagementController::class, 'manageAddons'])->name('stations.manage-addons');
@@ -58,17 +61,15 @@ Route::prefix('super-admin')->name('super-admin.')->middleware(['auth:super-admi
 
     // Users
     Route::prefix('users')->name('users.')->group(function () {
-        Route::get('/list', function () {
-            return view('super-admin.pages.users.list');
-        })->name('list');
+        Route::get('/list', [UserManagementController::class, 'index'])->name('list');
+        Route::get('/create', [UserManagementController::class, 'create'])->name('create');
+        Route::post('/store', [UserManagementController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [UserManagementController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [UserManagementController::class, 'update'])->name('update');
+        Route::patch('/{id}/toggle-status', [UserManagementController::class, 'toggleStatus'])->name('toggle-status');
 
-        Route::get('/admins', function () {
-            return view('super-admin.pages.users.admins');
-        })->name('admins');
-
-        Route::get('/staff', function () {
-            return view('super-admin.pages.users.staff');
-        })->name('staff');
+        Route::get('/admins', [UserManagementController::class, 'admins'])->name('admins');
+        Route::get('/staff', [UserManagementController::class, 'staff'])->name('staff');
     });
 
     // Extras
