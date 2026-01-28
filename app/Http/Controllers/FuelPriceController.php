@@ -25,8 +25,8 @@ class FuelPriceController extends Controller
         $pageHeader = [
             'title' => 'Fuel Price Management',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Fuel Prices', 'url' => '#']
+                ['name' => 'Dashboard', 'url' => route('/')],
+                ['name' => 'Fuel Prices', 'url' => null]
             ]
         ];
 

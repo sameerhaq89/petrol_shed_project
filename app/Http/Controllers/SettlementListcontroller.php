@@ -32,8 +32,8 @@ class SettlementListController extends Controller
             'dataBsToggle' => 'modal',
             'dataBsTarget' => '#openShiftModal',
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'url' => route('home')],
-                ['label' => 'Settlements', 'url' => '#']
+                ['label' => 'Dashboard', 'url' => route('/')],
+                ['label' => 'Settlements', 'url' => null]
             ]
         ];
 

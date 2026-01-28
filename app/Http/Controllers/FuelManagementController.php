@@ -17,7 +17,7 @@ class FuelManagementController extends Controller
             'breadcrumbs' => [
                 [
                     'label' => 'Dashboard',
-                    'url'   => route('home'),
+                    'url'   => route('/'),
                     'class' => 'text-gradient-primary text-decoration-none',
                 ],
                 [

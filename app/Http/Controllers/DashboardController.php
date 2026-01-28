@@ -25,7 +25,7 @@ class DashboardController extends Controller
             'title' => 'Petrol Station Dashboard',
             'icon'  => 'mdi mdi-home menu-icon',
             'breadcrumbs' => [
-                ['name' => 'Home', 'url' => route('home')],
+                ['name' => 'Home', 'url' => route('/')],
                 // Add more breadcrumbs if needed
             ]
         ];

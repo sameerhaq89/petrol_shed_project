@@ -28,8 +28,8 @@ class ShiftController extends Controller
         $pageHeader = [
             'title' => 'Settlement List',
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'url' => route('home')],
-                ['label' => 'Settlements', 'url' => '#'],
+                ['label' => 'Dashboard', 'url' => route('/')],
+                ['label' => 'Settlements', 'url' => null],
             ],
             // Action button configuration for page-header widget
             'showButton' => true,
