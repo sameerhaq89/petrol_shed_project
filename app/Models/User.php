@@ -67,6 +67,14 @@ class User extends Authenticatable
         return $this->belongsTo(Station::class);
     }
 
+    /**
+     * Relationship: A user can belong to multiple stations.
+     */
+    public function stations()
+    {
+        return $this->belongsToMany(Station::class);
+    }
+
     public function hasPermission($permissionSlug)
     {
         if ($this->role_id === 1)

@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function getAll($stationId = null)
+    public function getAll($stationId = null, array $roleIds = [])
     {
         $query = User::with(['role', 'station']);
 
         if ($stationId) {
             $query->where('station_id', $stationId);
+        }
+
+        if (!empty($roleIds)) {
+            $query->whereIn('role_id', $roleIds);
         }
 
         return $query->latest()->paginate(10);
