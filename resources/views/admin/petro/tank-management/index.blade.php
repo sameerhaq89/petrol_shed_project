@@ -103,6 +103,7 @@
 
     <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
 
+       
         @include('admin.command.widgets.page-header', $pageHeader)
 
         <div class="row mt-3 command-row-gap">

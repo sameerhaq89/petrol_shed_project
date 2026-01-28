@@ -1,61 +1,63 @@
 <div class="row">
     {{-- LEFT COLUMN: ADD CASH DROP FORM --}}
-    <div class="col-md-4 grid-margin stretch-card">
-        <div class="card shadow-sm border-0">
-            <div class="card-body">
-                <h4 class="card-title text-warning">
-                    <i class="mdi mdi-cash-marker me-2"></i>Add Cash Drop
-                </h4>
-                <p class="card-description text-muted small">Record cash collected from pumpers.</p>
+    @if($shift->status === 'open')
+        <div class="col-md-4 grid-margin stretch-card">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h4 class="card-title text-warning">
+                        <i class="mdi mdi-cash-marker me-2"></i>Add Cash Drop
+                    </h4>
+                    <p class="card-description text-muted small">Record cash collected from pumpers.</p>
 
-                {{-- FORM START --}}
-                <form action="{{ route('cash-drop.store') }}" method="POST">
-                    @csrf
-                    {{-- Hidden Shift ID is handled by Controller using 'open' shift,
-                    but we can keep this if your controller uses it --}}
-                    <input type="hidden" name="shift_id" value="{{ $shift->id }}">
+                    {{-- FORM START --}}
+                    <form action="{{ route('cash-drop.store') }}" method="POST">
+                        @csrf
+                        {{-- Hidden Shift ID is handled by Controller using 'open' shift,
+                        but we can keep this if your controller uses it --}}
+                        <input type="hidden" name="shift_id" value="{{ $shift->id }}">
 
-                    {{-- 1. SELECT PUMPER (NEW) --}}
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold">Select Pumper</label>
-                        <select name="user_id" class="form-control" required>
-                            <option value="">-- Select Pumper --</option>
-                            {{-- Now $pumpers is guaranteed to be only pumpers --}}
-                            @foreach($pumpers as $pumper)
-                                <option value="{{ $pumper->id }}">{{ $pumper->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    {{-- 2. AMOUNT --}}
-                    <div class="form-group mb-3">
-                        <label class="font-weight-bold">Amount (LKR)</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light text-dark">Rs.</span>
-                            <input type="number" step="0.01" name="amount"
-                                class="form-control form-control-lg font-weight-bold text-success" placeholder="0.00"
-                                required>
+                        {{-- 1. SELECT PUMPER (NEW) --}}
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold">Select Pumper</label>
+                            <select name="user_id" class="form-control" required>
+                                <option value="">-- Select Pumper --</option>
+                                {{-- Now $pumpers is guaranteed to be only pumpers --}}
+                                @foreach($pumpers as $pumper)
+                                    <option value="{{ $pumper->id }}">{{ $pumper->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
 
-                    {{-- 3. NOTES --}}
-                    <div class="form-group mb-4">
-                        <label>Note (Optional)</label>
-                        <textarea name="notes" class="form-control" rows="2"
-                            placeholder="e.g. 5000 x 4 notes"></textarea>
-                    </div>
+                        {{-- 2. AMOUNT --}}
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold">Amount (LKR)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light text-dark">Rs.</span>
+                                <input type="number" step="0.01" name="amount"
+                                    class="form-control form-control-lg font-weight-bold text-success" placeholder="0.00"
+                                    required>
+                            </div>
+                        </div>
 
-                    <button type="submit" class="btn btn-gradient-warning w-100 btn-lg font-weight-bold">
-                        <i class="mdi mdi-check-circle-outline me-2"></i> Save Drop
-                    </button>
-                </form>
-                {{-- FORM END --}}
+                        {{-- 3. NOTES --}}
+                        <div class="form-group mb-4">
+                            <label>Note (Optional)</label>
+                            <textarea name="notes" class="form-control" rows="2"
+                                placeholder="e.g. 5000 x 4 notes"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-gradient-warning w-100 btn-lg font-weight-bold">
+                            <i class="mdi mdi-check-circle-outline me-2"></i> Save Drop
+                        </button>
+                    </form>
+                    {{-- FORM END --}}
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
     {{-- RIGHT COLUMN: DROP HISTORY TABLE --}}
-    <div class="col-md-8 grid-margin stretch-card">
+    <div class="{{ $shift->status === 'open' ? 'col-md-8' : 'col-md-12' }} grid-margin stretch-card">
         <div class="card shadow-sm border-0">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">

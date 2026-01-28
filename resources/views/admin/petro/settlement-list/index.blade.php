@@ -29,6 +29,7 @@
     {{-- Ensure these paths exist or create empty files to avoid errors --}}
     @include('admin.petro.settlement-list.widget.modals.view-details')
     @include('admin.petro.settlement-list.widget.modals.import')
+    @include('admin.petro.settlement-list.widget.modals.open-shift')
 
 @endsection
 

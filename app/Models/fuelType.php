@@ -12,7 +12,13 @@ class FuelType extends Model
     use HasFactory;
 
     protected $fillable = [
-        // ... your existing fillable fields ...
+        'name',
+        'code',
+        'unit',
+        'density',
+        'color_code',
+        'is_active',
+        'station_id' // Added just in case, though not in request, often needed later
     ];
 
     // ... other existing relationship methods ...

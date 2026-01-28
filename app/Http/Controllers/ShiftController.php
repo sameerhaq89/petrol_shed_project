@@ -28,14 +28,16 @@ class ShiftController extends Controller
         $pageHeader = [
             'title' => 'Settlement List',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Settlements', 'url' => '#'],
+                ['label' => 'Dashboard', 'url' => route('home')],
+                ['label' => 'Settlements', 'url' => '#'],
             ],
-            'action_button' => [
-                'label' => 'Open New Shift',
-                'icon' => 'plus',
-                'modal' => '#openShiftModal',
-            ],
+            // Action button configuration for page-header widget
+            'showButton' => true,
+            'buttonText' => 'Start New Shift',
+            'buttonIcon' => 'mdi mdi-play-circle-outline',
+            'buttonClass' => 'btn btn-gradient-success btn-lg shadow',
+            'dataBsToggle' => 'modal',
+            'dataBsTarget' => '#openShiftModal',
         ];
 
         return view('admin.petro.settlement-list.index', compact('settlements', 'pageHeader'));
@@ -150,6 +152,22 @@ class ShiftController extends Controller
 
         if ($openShift) {
             return redirect()->route('settlement.entry', $openShift->id);
+        }
+
+        return redirect()->route('settlement-list.index')
+            ->with('warning', 'No active shift found. Please open a new shift first.');
+    }
+
+    public function startShift(Request $request)
+    {
+        $stationId = Auth::user()->station_id ?? 1;
+        $shift = Shift::where('station_id', $stationId)
+            ->where('status', 'open')
+            ->latest()
+            ->first();
+
+        if ($shift) {
+            return redirect()->route('settlement.entry', $shift->id);
         }
 
         return redirect()->route('settlement-list.index')

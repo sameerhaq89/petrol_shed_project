@@ -27,16 +27,13 @@ class SettlementListController extends Controller
             'showButton' => true,
             'buttonText' => 'Start New Shift',
             'buttonClass' => 'btn btn-gradient-success btn-lg shadow',
-            'buttonId' => 'startNewShiftBtn',
-            'buttonUrl' => route('settlement.start'),
             'buttonIcon' => 'mdi mdi-play-circle-outline me-2',
-            'form' => [
-                'action' => route('settlement.start'),
-                'method' => 'POST',
-            ],
+            // Remove form/link and use Modal
+            'dataBsToggle' => 'modal',
+            'dataBsTarget' => '#openShiftModal',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Settlements', 'url' => '#']
+                ['label' => 'Dashboard', 'url' => route('home')],
+                ['label' => 'Settlements', 'url' => '#']
             ]
         ];
 

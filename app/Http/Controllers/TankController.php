@@ -52,18 +52,16 @@ class TankController extends Controller
         $pumps = $this->pumpService->getPumpsForDashboard();
         $fuel_types = FuelType::where('is_active', true)->get();
 
-        $pageHeader = [
+       $pageHeader = [
             'title' => 'Tank & Pump Management',
-            'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => url('/')],
-                ['name' => 'Tanks', 'url' => '#']
-            ],
-            'action_button' => [
-                'label' => 'Add New Tank',
-                'icon' => 'plus',
-                'modal' => '#addTankModal', // Triggers the modal widget
-                'url' => '#'
-            ]
+            'icon' => 'mdi mdi-gas-station',
+            'showButton' => true,
+            'buttonText' => 'Add New Tank',
+            'buttonClass' => 'btn btn-gradient-primary btn-icon-text',
+            'buttonIcon' => 'mdi mdi-plus btn-icon-prepend',
+            'buttonId' => 'addNewTankBtn',
+            'dataBsToggle' => 'modal',
+            'dataBsTarget' => '#addTankModal',
         ];
 
         return view('admin.petro.tank-management.index', [

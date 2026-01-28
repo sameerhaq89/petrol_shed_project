@@ -10,6 +10,7 @@
 
     <nav aria-label="breadcrumb" class="d-flex justify-content-between align-items-center">
 
+        
         {{-- BREADCRUMBS --}}
         @if (!empty($breadcrumbs))
             <ol class="breadcrumb mb-0">
