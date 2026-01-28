@@ -105,7 +105,7 @@ class UserController extends Controller
             'breadcrumbs' => [
                 [
                     'label' => 'Dashboard',
-                    'url'   => route('/'),
+                    'url'   => route('home'),
                     'class' => 'text-gradient-primary text-decoration-none',
                 ],
                 [

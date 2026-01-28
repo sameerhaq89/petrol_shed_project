@@ -24,7 +24,7 @@ class FuelTypeController extends Controller
         $pageHeader = [
             'title' => 'Fuel Types',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('/')],
+                ['name' => 'Dashboard', 'url' => route('home')],
                 ['name' => 'Settings', 'url' => null],
                 ['name' => 'Fuel Types', 'url' => null],
             ],

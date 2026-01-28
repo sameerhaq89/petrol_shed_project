@@ -33,7 +33,7 @@ class PumpController extends Controller
             'title' => 'Pump Management',
             'icon' => 'mdi mdi-gas-station',
             'breadcrumbs' => [
-                ['label' => 'Dashboard', 'url' => route('/')],
+                ['label' => 'Dashboard', 'url' => route('home')],
                 ['label' => 'Pumps', 'url' => null],
             ],
         ];
