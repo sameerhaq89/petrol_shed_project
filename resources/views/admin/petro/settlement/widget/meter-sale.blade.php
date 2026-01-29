@@ -10,7 +10,7 @@
                 {{-- 1. SELECT PUMP (Searchable Dropdown) --}}
                 <div class="col-md-4 mb-3">
                     <label class="form-label font-weight-bold">Select Pump</label>
-                    <select id="pumpSelect" name="pump_id" class="form-select form-control-sm" required>
+                    <select id="pumpSelect" name="pump_id" class="form-select" required>
                         <option value="" selected disabled>-- Search & Select Pump --</option>
                         @foreach($pumps as $pump)
                             <option value="{{ $pump->id }}"
@@ -21,7 +21,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <small id="fuelTypeDisplay" class="text-muted"></small>
+                    {{-- <small id="fuelTypeDisplay" class="text-muted"></small> --}}
                 </div>
 
                 {{-- 2. OPENING READING (Auto-Filled) --}}
