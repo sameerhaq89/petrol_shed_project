@@ -62,21 +62,21 @@
                                 <td data-label="Action" class="text-center">
     <div class="btn-group">
         {{-- 1. VIEW BUTTON (Keep existing style) --}}
-        <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view"
-                data-bs-toggle="modal" 
+        {{-- <button class="btn btn-sm btn-outline-success btn-gradient-success btn-icon view"
+                data-bs-toggle="modal"
                 data-bs-target="#pumpViewDetailsModal">
             <i class="mdi mdi-eye-arrow-right-outline"></i>
-        </button>
+        </button> --}}
 
         {{-- 2. EDIT BUTTON (Updated with Data Attributes) --}}
-        <button type="button" 
+        <button type="button"
                 class="btn btn-sm btn-outline-primary btn-gradient-primary btn-icon edit-pump-btn"
-                data-bs-toggle="modal" 
+                data-bs-toggle="modal"
                 data-bs-target="#editPumpModal"
                 data-id="{{ $pump['id'] }}"
                 data-number="{{ $pump['pump_no'] }}"
                 data-name="{{ $pump['name'] }}"
-                data-tank="{{ $pump['tank_id'] ?? '' }}" 
+                data-tank="{{ $pump['tank_id'] ?? '' }}"
                 data-meter="{{ $pump['start_meter'] }}"
                 data-status="{{ $pump['status'] ?? 'active' }}">
             <i class="mdi mdi-pencil"></i>
