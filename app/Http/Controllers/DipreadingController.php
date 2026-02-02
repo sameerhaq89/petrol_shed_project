@@ -29,8 +29,8 @@ class DipReadingController extends Controller
             'title' => 'Dip Management',
             'icon' => 'mdi mdi-water',
             'breadcrumbs' => [
-                ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Dip Readings', 'url' => '#']
+                ['label' => 'Dashboard', 'url' => route('home')],
+                ['label' => 'Dip Readings', 'url' => null]
             ]
         ];
 

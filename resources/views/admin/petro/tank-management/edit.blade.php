@@ -3,7 +3,7 @@
 @section('content')
 <div class="content-wrapper" style="padding: 1.1rem 2.25rem !important;">
     @include('admin.command.widgets.page-header', $pageHeader)
-    
+
     <div class="row">
         <div class="col-md-8 grid-margin stretch-card mx-auto">
             <div class="card border-primary shadow-sm mt-2" style="border-top: 3px solid;">
@@ -106,9 +106,9 @@
                                 @enderror
                             </div>
 
-                            <div class="mt-4">
+                            <div class="mt-4 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-gradient-primary me-2">Update Tank</button>
-                                <a href="{{ route('tanks.index') }}" class="btn btn-light">Cancel</a>
+                                <a href="{{ route('tanks.index') }}" class="btn btn-gradient-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

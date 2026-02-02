@@ -108,7 +108,7 @@
                                             style="display: inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-inverse-danger btn-sm btn-icon"
+                                            <button type="submit" class="btn btn-gradient-danger btn-sm btn-icon"
                                                 title="Delete Drop">
                                                 <i class="mdi mdi-delete"></i>
                                             </button>

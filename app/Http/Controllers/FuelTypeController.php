@@ -25,8 +25,8 @@ class FuelTypeController extends Controller
             'title' => 'Fuel Types',
             'breadcrumbs' => [
                 ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Settings', 'url' => '#'],
-                ['name' => 'Fuel Types', 'url' => '#'],
+                ['name' => 'Settings', 'url' => null],
+                ['name' => 'Fuel Types', 'url' => null],
             ],
         ];
 

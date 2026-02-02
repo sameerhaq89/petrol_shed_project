@@ -29,7 +29,7 @@ class ShiftController extends Controller
             'title' => 'Settlement List',
             'breadcrumbs' => [
                 ['label' => 'Dashboard', 'url' => route('home')],
-                ['label' => 'Settlements', 'url' => '#'],
+                ['label' => 'Settlements', 'url' => null],
             ],
             // Action button configuration for page-header widget
             'showButton' => true,

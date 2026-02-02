@@ -26,7 +26,7 @@ class FuelPriceController extends Controller
             'title' => 'Fuel Price Management',
             'breadcrumbs' => [
                 ['name' => 'Dashboard', 'url' => route('home')],
-                ['name' => 'Fuel Prices', 'url' => '#']
+                ['name' => 'Fuel Prices', 'url' => null]
             ]
         ];
 

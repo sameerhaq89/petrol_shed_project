@@ -8,8 +8,11 @@
                     <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                    <span class="font-weight-bold mb-2">{{ Auth::user()->name }}</span>
+                    {{-- <span class="font-weight-bold mb-2 text-small">{{ Auth::user()->name }}</span> --}}
                     {{-- <span class="text-secondary text-small">Project Manager</span> --}}
+                    <span class="fw-bold d-block text-wrap" style="max-width: 140px; line-height: 1.2;">
+                        {{ Auth::user()->name }}
+                    </span>
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>
@@ -69,7 +72,7 @@
                 $petroAddons = ['tank-management', 'settlement', 'settlement-list', 'pump-management', 'pumper-management', 'dip-management', 'fuel-management'];
                 $hasPetroAccess = false;
                 $user = auth()->user();
-                
+
                 // Only check addons if user has a station assigned
                 if ($user && $user->station_id) {
                     $service = app(\App\Services\SubscriptionService::class);
@@ -155,7 +158,7 @@
                         <li class="nav-item {{ Request::is('pumper/dashboard*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('pumpers-dashboard') }}">Dashboard</a>
                         </li>
-                        
+
                         <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('pumper.sales.entry') }}">Sales Entry</a>
                         </li>

@@ -73,7 +73,7 @@
     </div>
 
     <div class="mt-3 d-flex justify-content-end">
-        <a href="{{ route('tanks.index') }}" class="btn btn-gradient-secondary">Back to List</a>
+        <a href="{{ route('tanks.index') }}" class="btn btn-gradient-secondary me-1">Back to List</a>
         <a href="{{ route('tanks.edit', $tank->id) }}" class="btn btn-gradient-primary">Edit Tank</a>
     </div>
 
