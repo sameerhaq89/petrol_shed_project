@@ -16,20 +16,34 @@ class PumperRepository implements PumperRepositoryInterface
 {
     public function getActiveShift()
     {
-        return Shift::where('status', 'open')->latest()->first();
+        return Shift::where('status', 'open')
+            ->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id)
+            ->latest()
+            ->first();
     }
 
     public function getBusyPumperIds()
     {
         return PumpOperatorAssignment::where('status', 'active')
+            ->whereHas('shift', function ($query) {
+                $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id);
+            })
             ->pluck('user_id')
             ->toArray();
     }
 
     public function getAvailablePumpers(array $busyIds)
     {
+        // 1. Get current station
+        $currentStationId = \Illuminate\Support\Facades\Auth::user()->station_id;
+
+        // 2. Find pumpers who belong to this station
+        // Using "whereHas" on the stations relationship
         return User::where('role_id', User::ROLE_PUMPER)
             ->where('is_active', User::IS_ACTIVE)
+            ->whereHas('stations', function ($query) use ($currentStationId) {
+                $query->where('stations.id', $currentStationId);
+            })
             ->whereNotIn('id', $busyIds)
             ->get();
     }
@@ -37,6 +51,9 @@ class PumperRepository implements PumperRepositoryInterface
     public function getActiveAssignments()
     {
         return PumpOperatorAssignment::where('status', 'active')
+            ->whereHas('shift', function ($query) {
+                $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id);
+            })
             ->with(['pumper', 'pump'])
             ->get();
     }
@@ -62,6 +79,7 @@ class PumperRepository implements PumperRepositoryInterface
     public function getAvailablePumps(array $assignedPumpIds)
     {
         return Pump::whereNotIn('id', $assignedPumpIds)
+            ->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id)
             ->where('status', 'active')
             ->get();
     }

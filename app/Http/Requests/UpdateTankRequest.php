@@ -23,16 +23,19 @@ class UpdateTankRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                // Check unique but ignore THIS tank's ID
-                Rule::unique('tanks')->ignore($tankId)->whereNull('deleted_at')
+                // Check unique but ignore THIS tank's ID and scope to station
+                Rule::unique('tanks')->ignore($tankId)->where(function ($query) {
+                    return $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id)
+                        ->whereNull('deleted_at');
+                })
             ],
             'station_id'    => 'nullable|exists:stations,id',
             'fuel_type_id'  => 'required|exists:fuel_types,id',
             'capacity'      => 'required|numeric|min:0',
-            
+
             // Stock is usually updated via AdjustStock, but if allowed here:
             'current_stock' => 'nullable|numeric|min:0|lte:capacity',
-            
+
             'reorder_level' => 'nullable|numeric|min:0',
             'minimum_level' => 'nullable|numeric|min:0',
             'maximum_level' => 'nullable|numeric|min:0',

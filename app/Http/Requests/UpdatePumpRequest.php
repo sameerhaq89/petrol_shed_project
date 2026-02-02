@@ -22,7 +22,10 @@ class UpdatePumpRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('pumps')->ignore($pumpId)->whereNull('deleted_at')
+                Rule::unique('pumps')->ignore($pumpId)->where(function ($query) {
+                    return $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id)
+                        ->whereNull('deleted_at');
+                })
             ],
             'pump_name'          => 'required|string|max:255',
             'tank_id'            => 'required|exists:tanks,id',

@@ -100,7 +100,7 @@ class ShiftController extends Controller
 
     public function close(CloseShiftRequest $request)
     {
-        $stationId = Auth::user()->station_id ?? 1;
+        $stationId = Auth::user()->station_id;
         $shift = Shift::where('station_id', $stationId)
             ->where('status', 'open')
             ->latest()->first();
@@ -124,7 +124,6 @@ class ShiftController extends Controller
             }
 
             return redirect()->route('settlement-list.index')->with('success', $msg);
-
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -143,7 +142,7 @@ class ShiftController extends Controller
 
     public function directEntry()
     {
-        $stationId = Auth::user()->station_id ?? 1;
+        $stationId = Auth::user()->station_id;
 
         $openShift = \App\Models\Shift::where('station_id', $stationId)
             ->where('status', 'open')
@@ -160,7 +159,7 @@ class ShiftController extends Controller
 
     public function startShift(Request $request)
     {
-        $stationId = Auth::user()->station_id ?? 1;
+        $stationId = Auth::user()->station_id;
         $shift = Shift::where('station_id', $stationId)
             ->where('status', 'open')
             ->latest()

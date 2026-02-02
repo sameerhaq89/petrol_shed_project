@@ -13,8 +13,8 @@ class SettlementListRepository implements SettlementListRepositoryInterface
         $query = Shift::where('status', 'open')
             ->with(['station', 'sales', 'cashDrops']);
 
-        // Filter by station if not Super Admin
-        if (Auth::check() && Auth::user()->role_id !== 1) {
+        // Filter by the user's active station ID (set by Station Switcher), regardless of role.
+        if (Auth::check() && Auth::user()->station_id) {
             $query->where('station_id', Auth::user()->station_id);
         }
 
@@ -27,8 +27,8 @@ class SettlementListRepository implements SettlementListRepositoryInterface
             ->where('status', 'closed')
             ->orderBy('id', 'desc');
 
-        // Filter by station if not Super Admin
-        if (Auth::check() && Auth::user()->role_id !== 1) {
+        // Filter by the user's active station ID (set by Station Switcher), regardless of role.
+        if (Auth::check() && Auth::user()->station_id) {
             $query->where('station_id', Auth::user()->station_id);
         }
 

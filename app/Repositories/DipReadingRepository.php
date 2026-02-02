@@ -10,7 +10,10 @@ class DipReadingRepository implements DipReadingRepositoryInterface
 {
     public function getAll()
     {
+        $stationId = Auth::user()->station_id;
+
         return DipReading::with(['tank', 'tank.fuelType', 'recorder'])
+            ->where('station_id', $stationId)
             ->latest()
             ->get();
     }
@@ -22,7 +25,7 @@ class DipReadingRepository implements DipReadingRepositoryInterface
 
     public function create(array $data)
     {
-        $stationId = Auth::user()->station_id ?? 1;
+        $stationId = Auth::user()->station_id;
 
         return DipReading::create([
             'station_id'    => $stationId,

@@ -11,7 +11,7 @@ class FuelPriceRepository implements FuelPriceRepositoryInterface
 
     public function getAllActivePrices()
     {
-        $stationId = Auth::user()->station_id ?? 1;
+        $stationId = Auth::user()->station_id;
 
         return FuelPrice::with('fuelType')
             ->where('station_id', $stationId)
@@ -19,10 +19,10 @@ class FuelPriceRepository implements FuelPriceRepositoryInterface
             ->get();
     }
 
-   
+
     public function getHistory()
     {
-        $stationId = Auth::user()->station_id ?? 1;
+        $stationId = Auth::user()->station_id;
 
         return FuelPrice::with(['fuelType', 'creator'])
             ->where('station_id', $stationId)
@@ -30,7 +30,7 @@ class FuelPriceRepository implements FuelPriceRepositoryInterface
             ->get();
     }
 
-  
+
     public function getActivePrice(int $fuelTypeId, int $stationId)
     {
         return FuelPrice::where('fuel_type_id', $fuelTypeId)

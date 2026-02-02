@@ -15,7 +15,19 @@ class PumpService
 
     public function getPumpsForDashboard()
     {
-        $pumps = $this->repository->getAll();
+        // Filter by the user's active station ID (set by Station Switcher), regardless of role.
+        $stationId = \Illuminate\Support\Facades\Auth::user()->station_id;
+        // Assuming the repository methods don't support filters easily, we filter the collection or query
+        // But since we can't see the repository, we'll assume we might need to adjust logic there or here.
+        // Wait, the repository->getAll() usually returns all. We should check if we can filter.
+        // Given constraints, let's assume we can filter on the collection returned, OR if the repository uses a model, we can add a global scope or specific where.
+
+        // BETTER APPROACH: Use the same pattern as TankService: manually query if repository doesn't support it, OR assume repository returns Model query builder. 
+        // Let's assume the repository returns a Collection currently based on 'all()'.
+        // If it returns a collection, we can filter it.
+        $pumps = \App\Models\Pump::with(['tank.fuelType', 'station'])
+            ->where('station_id', $stationId)
+            ->get();
 
         return $pumps->map(function ($pump) {
             $statusData = $this->getStatusDetails($pump->status);
@@ -24,18 +36,21 @@ class PumpService
                 'id' => $pump->id,
                 'pumpName' => $pump->pump_name ?? $pump->pump_number,
                 'pumpType' => $pump->tank ? $pump->tank->tank_name : 'No Tank',
-                'currentMeter' => number_format($pump->current_reading ?? 0, 2).' L',
+                'currentMeter' => number_format($pump->current_reading ?? 0, 2) . ' L',
                 'statusIcon' => $statusData['icon'],
                 'statusColor' => $statusData['color'],
                 'isActive' => $pump->status === 'active',
-                'linkStatus' => $pump->tank ? 'Linked to '.$pump->tank->tank_name : 'Unlinked',
+                'linkStatus' => $pump->tank ? 'Linked to ' . $pump->tank->tank_name : 'Unlinked',
             ];
         });
     }
 
     public function getPumpsForManagementTable()
     {
-        $pumps = $this->repository->getAll();
+        $stationId = \Illuminate\Support\Facades\Auth::user()->station_id;
+        $pumps = \App\Models\Pump::with(['tank.fuelType'])
+            ->where('station_id', $stationId)
+            ->get();
 
         return $pumps->map(function ($pump) {
             $productName = $pump->tank && $pump->tank->fuelType ? $pump->tank->fuelType->name : 'N/A';

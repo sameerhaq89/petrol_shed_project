@@ -12,8 +12,8 @@ class ShiftRepository implements ShiftRepositoryInterface
     {
         $query = Shift::with(['station', 'user'])->latest();
 
-        // Filter by Station (Role Security)
-        if (Auth::check() && Auth::user()->role_id !== 1) {
+        // Filter by the user's active station ID (set by Station Switcher), regardless of role.
+        if (Auth::check() && Auth::user()->station_id) {
             $query->where('station_id', Auth::user()->station_id);
         }
 
@@ -57,6 +57,13 @@ class ShiftRepository implements ShiftRepositoryInterface
 
     public function countShiftsForDate($date)
     {
-        return Shift::whereDate('created_at', $date)->count();
+        $stationId = Auth::user()->station_id;
+        $query = Shift::whereDate('created_at', $date);
+
+        if ($stationId) {
+            $query->where('station_id', $stationId);
+        }
+
+        return $query->count();
     }
 }

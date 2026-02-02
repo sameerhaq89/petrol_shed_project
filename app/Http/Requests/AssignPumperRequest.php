@@ -15,7 +15,12 @@ class AssignPumperRequest extends FormRequest
     {
         return [
             'user_id'      => 'required|exists:users,id',
-            'pump_id'      => 'required|exists:pumps,id',
+            'pump_id'      => [
+                'required',
+                \Illuminate\Validation\Rule::exists('pumps', 'id')->where(function ($query) {
+                    $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id);
+                }),
+            ],
             'opening_cash' => 'nullable|numeric|min:0',
         ];
     }

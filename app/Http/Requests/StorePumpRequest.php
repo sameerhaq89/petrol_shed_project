@@ -19,7 +19,10 @@ class StorePumpRequest extends FormRequest
                 'required',
                 'string', // Assuming pump numbers can be alphanumeric
                 'max:50',
-                Rule::unique('pumps')->whereNull('deleted_at')
+                Rule::unique('pumps')->where(function ($query) {
+                    return $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id)
+                        ->whereNull('deleted_at');
+                })
             ],
             'pump_name'          => 'required|string|max:255',
             'tank_id'            => 'required|exists:tanks,id',

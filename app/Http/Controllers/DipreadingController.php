@@ -44,7 +44,12 @@ class DipReadingController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tank_id'       => 'required|exists:tanks,id',
+            'tank_id'       => [
+                'required',
+                \Illuminate\Validation\Rule::exists('tanks', 'id')->where(function ($query) {
+                    $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id);
+                }),
+            ],
             'reading_date'  => 'required|date',
             'dip_level_cm'  => 'required|numeric',
             'volume_liters' => 'required|numeric',
@@ -59,7 +64,12 @@ class DipReadingController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'tank_id'       => 'required|exists:tanks,id',
+            'tank_id'       => [
+                'required',
+                \Illuminate\Validation\Rule::exists('tanks', 'id')->where(function ($query) {
+                    $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id);
+                }),
+            ],
             'reading_date'  => 'required|date',
             'dip_level_cm'  => 'required|numeric',
             'volume_liters' => 'required|numeric',

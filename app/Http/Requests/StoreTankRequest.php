@@ -20,8 +20,11 @@ class StoreTankRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                // Ensure uniqueness but ignore deleted records
-                Rule::unique('tanks')->whereNull('deleted_at')
+                // Ensure uniqueness scoped to the active station
+                Rule::unique('tanks')->where(function ($query) {
+                    return $query->where('station_id', \Illuminate\Support\Facades\Auth::user()->station_id)
+                        ->whereNull('deleted_at');
+                })
             ],
             // 'station_id' is auto-assigned by Service/Controller logic, no need to validate generic user input.
             'fuel_type_id' => 'required|exists:fuel_types,id',

@@ -9,6 +9,14 @@ use App\Models\FuelType;
 
 class FuelManagementController extends Controller
 {
+    protected $fuelPriceService;
+    protected $fuelPriceRepository; // Or just use the service if it exposes history
+
+    public function __construct(\App\Services\FuelPriceService $fuelPriceService)
+    {
+        $this->fuelPriceService = $fuelPriceService;
+    }
+
     public function index()
     {
         $pageHeader = [
@@ -27,18 +35,15 @@ class FuelManagementController extends Controller
             ],
         ];
 
-        // Data for Tab 1 (Prices)
-        $currentPrices = FuelPrice::with('fuelType')
-            ->whereNull('effective_to')
-            ->orderBy('id', 'desc')
-            ->get();
+        // Retrieve data via Service (which uses Repository with Station ID filter)
+        $data = $this->fuelPriceService->getDashboardData();
 
-        $history = FuelPrice::with('fuelType')
-            ->orderBy('effective_from', 'desc')
-            ->get();
+        $currentPrices = $data['current'];
+        $history = $data['history'];
 
         // Data for Tab 2 (Fuel Types) & Dropdowns
-        $fuelTypes = FuelType::all();
+        // Fuel Types are generally global, but if we wanted to show only active ones:
+        $fuelTypes = FuelType::all(); // or where('is_active', true)->get();
 
         return view('admin.petro.fuel-management.index', compact(
             'currentPrices',
