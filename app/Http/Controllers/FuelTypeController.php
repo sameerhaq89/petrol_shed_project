@@ -36,11 +36,14 @@ class FuelTypeController extends Controller
     public function store(StoreFuelTypeRequest $request): RedirectResponse
     {
         try {
-            $this->fuelTypeService->createFuelType($request->validated());
+            $data = $request->validated();
+            $data['station_id'] = auth()->user()->station_id;
+
+            $this->fuelTypeService->createFuelType($data);
 
             return back()->with('success', 'New fuel type added successfully.');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error creating fuel type: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Error creating fuel type: ' . $e->getMessage());
         }
     }
 
@@ -51,7 +54,7 @@ class FuelTypeController extends Controller
 
             return back()->with('success', 'Fuel type updated successfully.');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Error updating fuel type: '.$e->getMessage());
+            return back()->withInput()->with('error', 'Error updating fuel type: ' . $e->getMessage());
         }
     }
 

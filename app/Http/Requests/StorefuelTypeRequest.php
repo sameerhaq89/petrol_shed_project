@@ -17,10 +17,10 @@ class StoreFuelTypeRequest extends FormRequest
         return [
             'name'       => 'required|string|max:100',
             'code'       => [
-                'required', 
-                'string', 
-                'max:50', 
-                Rule::unique('fuel_types')->whereNull('deleted_at')
+                'max:50',
+                Rule::unique('fuel_types')
+                    ->where('station_id', auth()->user()->station_id)
+                    ->whereNull('deleted_at')
             ],
             'unit'       => 'required|string|max:20', // e.g., Liters
             'density'    => 'nullable|numeric|min:0',

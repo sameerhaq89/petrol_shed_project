@@ -7,9 +7,15 @@ use App\Models\FuelType;
 
 class FuelTypeRepository implements FuelTypeRepositoryInterface
 {
-    public function getAll()
+    public function getAll($stationId = null)
     {
-        return FuelType::latest()->get();
+        $query = FuelType::latest();
+
+        if ($stationId) {
+            $query->where('station_id', $stationId);
+        }
+
+        return $query->get();
     }
 
     public function find(int $id)

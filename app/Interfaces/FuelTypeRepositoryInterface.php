@@ -4,7 +4,7 @@ namespace App\Interfaces;
 
 interface FuelTypeRepositoryInterface
 {
-    public function getAll();
+    public function getAll($stationId = null);
     public function find(int $id);
     public function create(array $data);
     public function update(int $id, array $data);

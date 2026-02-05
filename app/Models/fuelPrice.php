@@ -53,4 +53,12 @@ class FuelPrice extends Model
     {
         return $this->belongsTo(User::class, 'changed_by');
     }
+
+    /**
+     * Relationship: Alias for user/changed_by to satisfy repository usage.
+     */
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'changed_by');
+    }
 }

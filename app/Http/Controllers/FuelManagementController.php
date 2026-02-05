@@ -42,8 +42,9 @@ class FuelManagementController extends Controller
         $history = $data['history'];
 
         // Data for Tab 2 (Fuel Types) & Dropdowns
-        // Fuel Types are generally global, but if we wanted to show only active ones:
-        $fuelTypes = FuelType::all(); // or where('is_active', true)->get();
+        // Filter by current user's station
+        $stationId = auth()->user()->station_id;
+        $fuelTypes = FuelType::where('station_id', $stationId)->get();
 
         return view('admin.petro.fuel-management.index', compact(
             'currentPrices',

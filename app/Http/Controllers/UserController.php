@@ -40,7 +40,7 @@ class UserController extends Controller
             'buttonClass' => 'btn btn-gradient-primary btn-fw',
             'link' => [
                 'url' => route('users.create'),
-                'can' => 'create-user',
+                'can' => 'users.create',
             ],
             'breadcrumbs' => [
                 [
@@ -81,7 +81,13 @@ class UserController extends Controller
             ],
         ];
         $roles = $this->roleService->getManageableRoles();
-        $stations = Station::all();
+
+        // Scope stations based on user role
+        if (auth()->user()->role_id == 1) { // Super Admin
+            $stations = Station::all();
+        } else {
+            $stations = Station::where('id', auth()->user()->station_id)->get();
+        }
 
         return view('admin.users.create', compact('roles', 'stations', 'pageHeader'));
     }
@@ -121,7 +127,13 @@ class UserController extends Controller
         ];
         $user = $this->userService->getUserById($id);
         $roles = $this->roleService->getManageableRoles();
-        $stations = Station::all();
+
+        // Scope stations based on user role
+        if (auth()->user()->role_id == 1) { // Super Admin
+            $stations = Station::all();
+        } else {
+            $stations = Station::where('id', auth()->user()->station_id)->get();
+        }
 
         return view('admin.users.edit', compact('user', 'roles', 'stations', 'pageHeader'));
     }

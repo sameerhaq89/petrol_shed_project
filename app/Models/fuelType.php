@@ -18,8 +18,16 @@ class FuelType extends Model
         'density',
         'color_code',
         'is_active',
-        'station_id' // Added just in case, though not in request, often needed later
+        'station_id'
     ];
+
+    /**
+     * Relationship: Fuel Type belongs to a Station.
+     */
+    public function station()
+    {
+        return $this->belongsTo(Station::class);
+    }
 
     // ... other existing relationship methods ...
 
