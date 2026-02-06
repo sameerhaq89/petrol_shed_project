@@ -41,8 +41,14 @@ Route::middleware(['auth', 'subscription'])->group(function () {
     Route::resource('pumps', PumpController::class);
     Route::resource('dip-management', DipReadingController::class);
 
+
     Route::resource('settlement-list', SettlementListcontroller::class);
     Route::get('/settlement-data', [SettlementListcontroller::class, 'getData']);
+
+    // Reports
+    Route::get('/reports', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/generate', [App\Http\Controllers\ReportController::class, 'generate'])->name('reports.generate');
+    Route::post('/reports/export', [App\Http\Controllers\ReportController::class, 'export'])->name('reports.export');
 
 
 

@@ -19,4 +19,8 @@ class stockMovement extends Model
         'reference_number',
         'recorded_at',
     ];
+    public function tank()
+    {
+        return $this->belongsTo(Tank::class);
+    }
 }
