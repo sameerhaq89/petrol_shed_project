@@ -206,14 +206,14 @@
             </script>
 
             @if (isset($reportData))
-                <div class="row" id="printable-area">
+                <div class="col-12" id="printable-area">
                     <div class="col-12 grid-margin stretch-card">
-                        <div class="card">
+                        <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
                                     <h4 class="card-title mb-0">Results</h4>
                                     <div class="no-print">
-                                        <button onclick="window.print()" class="btn btn-inverse-info btn-sm me-2">
+                                        <button onclick="window.print()" class="btn btn-gradient-info btn-sm me-2">
                                             <i class="mdi mdi-printer btn-icon-prepend"></i> Print
                                         </button>
                                         <form action="{{ route('reports.export') }}" method="POST" target="_blank"
@@ -225,7 +225,7 @@
                                             <input type="hidden" name="user_id" value="{{ $filters['user_id'] ?? '' }}">
                                             <input type="hidden" name="shift_number"
                                                 value="{{ $filters['shift_number'] ?? '' }}">
-                                            <button type="submit" class="btn btn-inverse-success btn-sm">
+                                            <button type="submit" class="btn btn-gradient-success btn-sm">
                                                 <i class="mdi mdi-file-export btn-icon-prepend"></i> Export CSV
                                             </button>
                                         </form>
