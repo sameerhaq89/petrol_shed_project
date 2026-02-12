@@ -7,11 +7,14 @@
                 <div class="row flex-grow">
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left p-5">
-                            <div class="brand-logo">
+                            {{-- <div class="brand-logo">
                                 <img src="{{ asset('assets/images/logo.svg') }}">
+                            </div> --}}
+                            <div class="brand-logo mb-0">
+                                <h2 style="color: #b66dff; font-weight: bold;text-align:center;">Imara</h2>
                             </div>
                             {{-- <h4>New here?</h4> --}}
-                            <h6 class="font-weight-light">Signing up is easy. It only takes a few steps</h6>
+                            <h6 class="font-weight-light text-center">Signing up is easy. It only takes a few steps</h6>
                             <form class="pt-3" method="POST" action="{{ route('register') }}">
                                 @csrf
                                 <div class="form-group">
@@ -53,8 +56,7 @@
                                 <div class="form-group">
                                     <input id="password" type="password"
                                         class="form-control form-control-lg @error('password') is-invalid @enderror"
-                                        name="password" required autocomplete="new-password"
-                                        placeholder="Password">
+                                        name="password" required autocomplete="new-password" placeholder="Password">
 
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">

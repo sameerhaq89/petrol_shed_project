@@ -18,12 +18,12 @@
             </a>
         </li>
         @can('view.admin.sidebar')
-        <li class="nav-item {{ Request::is('/') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('home') }}">
-                <span class="menu-title">Dashboard</span>
-                <i class="mdi mdi-home menu-icon"></i>
-            </a>
-        </li>
+            <li class="nav-item {{ Request::is('/') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('home') }}">
+                    <span class="menu-title">Dashboard</span>
+                    <i class="mdi mdi-home menu-icon"></i>
+                </a>
+            </li>
         @endcan
         {{-- <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#purchases" aria-expanded="false"
@@ -50,131 +50,142 @@
             </div>
         </li> --}}
         @can('users.create')
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('users.index') }}">
-                <span class="menu-title">User Management</span>
-                <i class="mdi mdi-account-multiple menu-icon"></i>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('users.index') }}">
+                    <span class="menu-title">User Management</span>
+                    <i class="mdi mdi-account-multiple menu-icon"></i>
+                </a>
+            </li>
         @endcan
         @can('roles.view')
-        <li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('roles.index') }}">
-                <span class="menu-title">Role Management</span>
-                <i class="mdi mdi-shield-account menu-icon"></i>
-            </a>
-        </li>
+            <li class="nav-item {{ Request::is('roles*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('roles.index') }}">
+                    <span class="menu-title">Role Management</span>
+                    <i class="mdi mdi-shield-account menu-icon"></i>
+                </a>
+            </li>
         @endcan
 
 
         @can('view.admin.sidebar')
-        @php
-        $petroAddons = ['tank-management', 'settlement', 'settlement-list', 'pump-management', 'pumper-management', 'dip-management', 'fuel-management'];
-        $hasPetroAccess = false;
-        $user = auth()->user();
+            @php
+                $petroAddons = [
+                    'tank-management',
+                    'settlement',
+                    'settlement-list',
+                    'pump-management',
+                    'pumper-management',
+                    'dip-management',
+                    'fuel-management',
+                ];
+                $hasPetroAccess = false;
+                $user = auth()->user();
 
-        // Only check addons if user has a station assigned
-        if ($user && $user->station_id) {
-        $service = app(\App\Services\SubscriptionService::class);
-        foreach ($petroAddons as $addon) {
-        if ($service->hasAddon($user->station_id, $addon)) {
-        $hasPetroAccess = true;
-        break;
-        }
-        }
-        }
-        @endphp
+                // Only check addons if user has a station assigned
+                if ($user && $user->station_id) {
+                    $service = app(\App\Services\SubscriptionService::class);
+                    foreach ($petroAddons as $addon) {
+                        if ($service->hasAddon($user->station_id, $addon)) {
+                            $hasPetroAccess = true;
+                            break;
+                        }
+                    }
+                }
+            @endphp
 
-        @if($hasPetroAccess)
-        <li class="nav-item {{ Request::is('tanks*', 'pumps*', 'fuel-prices*', 'fuel-types*') ? 'active' : '' }}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#petro" aria-expanded="false" aria-controls="ui-basic">
-                <span class="menu-title">Petro</span>
-                <i class="menu-arrow"></i>
-                <i class="mdi mdi-fire menu-icon"></i>
-            </a>
-            <div class="collapse" id="petro">
-                <ul class="nav flex-column sub-menu">
-                    @hasAddon('tank-management')
-                    <li class="nav-item {{ Request::is('tanks*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('/tanks') }}">Tank Management</a>
-                    </li>
-                    @endhasAddon
+            @if ($hasPetroAccess)
+                <li class="nav-item {{ Request::is('tanks*', 'pumps*', 'fuel-prices*', 'fuel-types*') ? 'active' : '' }}">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#petro" aria-expanded="false"
+                        aria-controls="ui-basic">
+                        <span class="menu-title">petroleum</span>
+                        <i class="menu-arrow"></i>
+                        <i class="mdi mdi-fire menu-icon"></i>
+                    </a>
+                    <div class="collapse" id="petro">
+                        <ul class="nav flex-column sub-menu">
+                            @hasAddon('tank-management')
+                                <li class="nav-item {{ Request::is('tanks*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ url('/tanks') }}">Tank Management</a>
+                                </li>
+                            @endhasAddon
 
-                    @hasAddon('settlement')
-                    <li class="nav-item {{ Request::is('settlement*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
-                    </li>
-                    @endhasAddon
+                            @hasAddon('settlement')
+                                <li
+                                    class="nav-item {{ Request::is('settlement') || Request::is('settlement/*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ url('/settlement') }}">Settlement</a>
+                                </li>
+                            @endhasAddon
 
-                    @hasAddon('settlement-list')
-                    <li class="nav-item {{ Request::is('settlement-list*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
-                    </li>
-                    @endhasAddon
+                            @hasAddon('settlement-list')
+                                <li
+                                    class="nav-item {{ Request::is('settlement-list') || Request::is('settlement-list/*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ url('/settlement-list') }}">Settlement List</a>
+                                </li>
+                            @endhasAddon
 
-                    @hasAddon('pump-management')
-                    <li class="nav-item {{ Request::is('pumps*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('/pumps') }}">Pump Management</a>
-                    </li>
-                    @endhasAddon
+                            @hasAddon('pump-management')
+                                <li class="nav-item {{ Request::is('pumps*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ url('/pumps') }}">Pump Management</a>
+                                </li>
+                            @endhasAddon
 
-                    @hasAddon('pumper-management')
-                    <li class="nav-item {{ Request::is('pumper-management*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('/pumper-management') }}">Pumper Management</a>
-                    </li>
-                    @endhasAddon
+                            @hasAddon('pumper-management')
+                                <li class="nav-item {{ Request::is('pumper-management*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ url('/pumper-management') }}">Pumper Management</a>
+                                </li>
+                            @endhasAddon
 
-                    @hasAddon('dip-management')
-                    <li class="nav-item {{ Request::is('dip-management*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
-                    </li>
-                    @endhasAddon
+                            @hasAddon('dip-management')
+                                <li class="nav-item {{ Request::is('dip-management*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ url('/dip-management') }}">Dip Management</a>
+                                </li>
+                            @endhasAddon
 
-                    @hasAddon('fuel-management')
-                    <li class="nav-item {{ Request::is('fuel-management*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('fuel-management.index') }}">
-                            <span class="menu-title">Fuel Management</span>
-                        </a>
-                    </li>
-                    @endhasAddon
-                </ul>
-            </div>
-        </li>
-        @endif
+                            @hasAddon('fuel-management')
+                                <li class="nav-item {{ Request::is('fuel-management*') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('fuel-management.index') }}">
+                                        <span class="menu-title">Fuel Management</span>
+                                    </a>
+                                </li>
+                            @endhasAddon
+                        </ul>
+                    </div>
+                </li>
+            @endif
         @endcan
 
 
         @can('view.admin.sidebar')
-        <li class="nav-item {{ Request::is('reports*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('reports.index') }}">
-                <span class="menu-title">Reports</span>
-                <i class="mdi mdi-chart-bar menu-icon"></i>
-            </a>
-        </li>
+            <li class="nav-item {{ Request::is('reports*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('reports.index') }}">
+                    <span class="menu-title">Reports</span>
+                    <i class="mdi mdi-chart-bar menu-icon"></i>
+                </a>
+            </li>
         @endcan
 
         @can('sales.entry.access')
-        @hasAddon('sales-entry')
-        <li class="nav-item {{ Request::is('pumper/dashboard*', 'pumper/sales*') ? 'active' : '' }}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#pumper-menu" aria-expanded="false"
-                aria-controls="pumper-menu">
-                <span class="menu-title">Pumper</span>
-                <i class="menu-arrow"></i>
-                <i class="mdi mdi-gas-station menu-icon"></i>
-            </a>
-            <div class="collapse" id="pumper-menu">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item {{ Request::is('pumper/dashboard*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('pumpers-dashboard') }}">Dashboard</a>
-                    </li>
+            @hasAddon('sales-entry')
+                <li class="nav-item {{ Request::is('pumper/dashboard*', 'pumper/sales*') ? 'active' : '' }}">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#pumper-menu" aria-expanded="false"
+                        aria-controls="pumper-menu">
+                        <span class="menu-title">Pumper</span>
+                        <i class="menu-arrow"></i>
+                        <i class="mdi mdi-gas-station menu-icon"></i>
+                    </a>
+                    <div class="collapse" id="pumper-menu">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item {{ Request::is('pumper/dashboard*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('pumpers-dashboard') }}">Dashboard</a>
+                            </li>
 
-                    <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('pumper.sales.entry') }}">Sales Entry</a>
-                    </li>
-                </ul>
-            </div>
-        </li>
-        @endhasAddon
+                            <li class="nav-item {{ Request::is('pumper/sales*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('pumper.sales.entry') }}">Sales Entry</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endhasAddon
         @endcan
 
         {{-- @can('view.admin.sidebar')

@@ -1,9 +1,11 @@
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-        <a class="navbar-brand brand-logo" href="{{route('home')}}" style="text-decoration: none; color: #b66dff; font-weight: bold; font-size: 1.2rem; line-height: 1.2; text-align: left; white-space: normal;">
+        <a class="navbar-brand brand-logo" href="{{ route('home') }}"
+            style="text-decoration: none; color: #b66dff; font-weight: bold; font-size: 1.2rem; line-height: 1.2; text-align: left; white-space: normal;">
             {{ Auth::user()->station->name ?? 'Purple' }}
         </a>
-        <a class="navbar-brand brand-logo-mini" href="{{route('home')}}" style="text-decoration: none; color: #b66dff; font-weight: bold;">
+        <a class="navbar-brand brand-logo-mini" href="{{ route('home') }}"
+            style="text-decoration: none; color: #b66dff; font-weight: bold;">
             {{ substr(Auth::user()->station->name ?? 'P', 0, 1) }}
         </a>
     </div>
@@ -22,25 +24,29 @@
             </form>
         </div>
         <ul class="navbar-nav navbar-nav-right">
-            @if(Auth::check() && Auth::user()->stations->count() > 1)
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="stationDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="mdi mdi-gas-station me-1"></i>
-                    {{ Auth::user()->station->name ?? 'Select Station' }}
-                </a>
-                <div class="dropdown-menu navbar-dropdown" aria-labelledby="stationDropdown">
-                    @foreach(Auth::user()->stations as $station)
-                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('switch-station-{{ $station->id }}').submit();">
-                        <i class="mdi mdi-arrow-right-bold-circle-outline me-2 {{ Auth::user()->station_id == $station->id ? 'text-success' : 'text-secondary' }}"></i>
-                        {{ $station->name }}
+            @if (Auth::check() && Auth::user()->stations->count() > 1)
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="stationDropdown" href="#" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="mdi mdi-gas-station me-1"></i>
+                        {{ Auth::user()->station->name ?? 'Select Station' }}
                     </a>
-                    <form id="switch-station-{{ $station->id }}" action="{{ route('switch-station') }}" method="POST" class="d-none">
-                        @csrf
-                        <input type="hidden" name="station_id" value="{{ $station->id }}">
-                    </form>
-                    @endforeach
-                </div>
-            </li>
+                    <div class="dropdown-menu navbar-dropdown" aria-labelledby="stationDropdown">
+                        @foreach (Auth::user()->stations as $station)
+                            <a class="dropdown-item" href="#"
+                                onclick="event.preventDefault(); document.getElementById('switch-station-{{ $station->id }}').submit();">
+                                <i
+                                    class="mdi mdi-arrow-right-bold-circle-outline me-2 {{ Auth::user()->station_id == $station->id ? 'text-success' : 'text-secondary' }}"></i>
+                                {{ $station->name }}
+                            </a>
+                            <form id="switch-station-{{ $station->id }}" action="{{ route('switch-station') }}"
+                                method="POST" class="d-none">
+                                @csrf
+                                <input type="hidden" name="station_id" value="{{ $station->id }}">
+                            </form>
+                        @endforeach
+                    </div>
+                </li>
             @endif
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
@@ -57,7 +63,8 @@
                     {{-- <a class="dropdown-item" href="#">
                         <i class="mdi mdi-cached me-2 text-success"></i> Activity Log </a>
                     <div class="dropdown-divider"></div> --}}
-                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="mdi mdi-logout me-2 text-primary"></i> Signout </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
@@ -112,7 +119,7 @@
                     <h6 class="p-3 mb-0 text-center">4 new messages</h6>
                 </div>
             </li> --}}
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                     data-bs-toggle="dropdown">
                     <i class="mdi mdi-bell-outline"></i>
@@ -160,9 +167,10 @@
                     <div class="dropdown-divider"></div>
                     <h6 class="p-3 mb-0 text-center">See all notifications</h6>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item nav-logout d-none d-lg-block">
-                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <a class="nav-link" href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="mdi mdi-power"></i>
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
