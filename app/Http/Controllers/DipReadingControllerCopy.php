@@ -37,6 +37,7 @@ class DipReadingController extends Controller
         // 3. DEBUG CHECK (Optional): Uncomment the line below to test if data exists
         // dd($tanks);
 
+
         // 4. PASS '$tanks' TO THE VIEW
         return view('admin.petro.dip-management.index', compact('dip_readings', 'tanks', 'pageHeader'));
     }
