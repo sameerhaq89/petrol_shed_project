@@ -236,7 +236,7 @@
 
                                 @if (isset($allReportsData))
                                     {{-- Display All Reports --}}
-                                    
+
                                     {{-- Sales Report Section --}}
                                     <div class="mb-5">
                                         <h4 class="mb-3 text-primary"><i class="mdi mdi-chart-bar"></i> Sales Report</h4>

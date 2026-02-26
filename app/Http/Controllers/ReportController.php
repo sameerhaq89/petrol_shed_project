@@ -38,7 +38,7 @@ class ReportController extends Controller
         }
 
         $reportType = $request->report_type;
-        
+
         // If no report type selected, get all reports
         if (empty($reportType)) {
             $allReportsData = [
@@ -47,7 +47,7 @@ class ReportController extends Controller
                 'stock' => $this->getReportData('stock', $request->start_date, $request->end_date, $stationId, $request->user_id, $request->shift_number),
                 'cash_drops' => $this->getReportData('cash_drops', $request->start_date, $request->end_date, $stationId, $request->user_id, $request->shift_number),
             ];
-            
+
             // Process settlements data
             if ($allReportsData['settlements']) {
                 $allReportsData['settlements']->transform(function ($shift) {
@@ -59,7 +59,7 @@ class ReportController extends Controller
                     return $shift;
                 });
             }
-            
+
             // Calculate totals for all report types
             $totals = [
                 'sales' => [
@@ -78,10 +78,10 @@ class ReportController extends Controller
                     'total_quantity' => $allReportsData['stock']->sum('quantity'),
                 ],
             ];
-            
+
             $filters = $request->only(['report_type', 'start_date', 'end_date', 'user_id', 'shift_number']);
             $users = User::where('station_id', $stationId)->get();
-            
+
             return view('admin.reports.index', compact('allReportsData', 'reportType', 'filters', 'users', 'totals'));
         }
 
