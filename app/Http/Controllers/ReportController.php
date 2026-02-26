@@ -24,7 +24,7 @@ class ReportController extends Controller
     public function generate(Request $request)
     {
         $request->validate([
-            'report_type' => 'required|string',
+            'report_type' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'user_id' => 'nullable|exists:users,id',
@@ -37,6 +37,54 @@ class ReportController extends Controller
             return redirect()->back()->with('error', 'You are not assigned to a station.');
         }
 
+        $reportType = $request->report_type;
+        
+        // If no report type selected, get all reports
+        if (empty($reportType)) {
+            $allReportsData = [
+                'sales' => $this->getReportData('sales', $request->start_date, $request->end_date, $stationId, $request->user_id, $request->shift_number),
+                'settlements' => $this->getReportData('settlements', $request->start_date, $request->end_date, $stationId, $request->user_id, $request->shift_number),
+                'stock' => $this->getReportData('stock', $request->start_date, $request->end_date, $stationId, $request->user_id, $request->shift_number),
+                'cash_drops' => $this->getReportData('cash_drops', $request->start_date, $request->end_date, $stationId, $request->user_id, $request->shift_number),
+            ];
+            
+            // Process settlements data
+            if ($allReportsData['settlements']) {
+                $allReportsData['settlements']->transform(function ($shift) {
+                    if ($shift->status === 'open') {
+                        $shift->total_sales = $shift->sales->sum('amount');
+                        $shift->cash_sales = $shift->sales->where('payment_mode', 'cash')->sum('amount');
+                        $shift->cash_variance = 0;
+                    }
+                    return $shift;
+                });
+            }
+            
+            // Calculate totals for all report types
+            $totals = [
+                'sales' => [
+                    'total_amount' => $allReportsData['sales']->sum('amount'),
+                    'total_quantity' => $allReportsData['sales']->sum('quantity'),
+                ],
+                'settlements' => [
+                    'total_sales' => $allReportsData['settlements']->sum('total_sales'),
+                    'cash_sales' => $allReportsData['settlements']->sum('cash_sales'),
+                    'total_variance' => $allReportsData['settlements']->sum('cash_variance'),
+                ],
+                'cash_drops' => [
+                    'total_amount' => $allReportsData['cash_drops']->sum('amount'),
+                ],
+                'stock' => [
+                    'total_quantity' => $allReportsData['stock']->sum('quantity'),
+                ],
+            ];
+            
+            $filters = $request->only(['report_type', 'start_date', 'end_date', 'user_id', 'shift_number']);
+            $users = User::where('station_id', $stationId)->get();
+            
+            return view('admin.reports.index', compact('allReportsData', 'reportType', 'filters', 'users', 'totals'));
+        }
+
         $data = $this->getReportData(
             $request->report_type,
             $request->start_date,
@@ -46,7 +94,6 @@ class ReportController extends Controller
             $request->shift_number
         );
 
-        $reportType = $request->report_type;
         $reportData = $data;
         $filters = $request->only(['report_type', 'start_date', 'end_date', 'user_id', 'shift_number']);
         $users = User::where('station_id', $stationId)->get();
@@ -85,7 +132,7 @@ class ReportController extends Controller
     public function export(Request $request)
     {
         $request->validate([
-            'report_type' => 'required|string',
+            'report_type' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'user_id' => 'nullable|exists:users,id',

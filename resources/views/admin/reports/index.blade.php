@@ -106,8 +106,8 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Report Type</label>
-                                    <select name="report_type" class="form-control form-control-sm" required>
-                                        <option value="">Select Type</option>
+                                    <select name="report_type" class="form-control form-control-sm">
+                                        <option value="">All Reports</option>
                                         <option value="sales"
                                             {{ isset($reportType) && $reportType == 'sales' ? 'selected' : '' }}>Sales
                                             Report</option>
@@ -205,7 +205,7 @@
                 }
             </script>
 
-            @if (isset($reportData))
+            @if (isset($reportData) || isset($allReportsData))
                 <div class="col-12" id="printable-area">
                     <div class="col-12 grid-margin stretch-card">
                         <div class="card border-primary shadow-sm" style="border-top: 3px solid;">
@@ -216,6 +216,7 @@
                                         <button onclick="window.print()" class="btn btn-gradient-info btn-sm me-2">
                                             <i class="mdi mdi-printer btn-icon-prepend"></i> Print
                                         </button>
+                                        @if(!isset($allReportsData))
                                         <form action="{{ route('reports.export') }}" method="POST" target="_blank"
                                             class="d-inline">
                                             @csrf
@@ -229,8 +230,233 @@
                                                 <i class="mdi mdi-file-export btn-icon-prepend"></i> Export CSV
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </div>
+
+                                @if (isset($allReportsData))
+                                    {{-- Display All Reports --}}
+                                    
+                                    {{-- Sales Report Section --}}
+                                    <div class="mb-5">
+                                        <h4 class="mb-3 text-primary"><i class="mdi mdi-chart-bar"></i> Sales Report</h4>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6 stretch-card">
+                                                <div class="card bg-gradient-success card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-normal mb-2">Total Sales Amount <i
+                                                                class="mdi mdi-currency-usd mdi-24px float-right"></i></h5>
+                                                        <h3>{{ number_format($totals['sales']['total_amount'], 2) }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 stretch-card">
+                                                <div class="card bg-gradient-info card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-normal mb-2">Total Quantity <i
+                                                                class="mdi mdi-gas-station mdi-24px float-right"></i></h5>
+                                                        <h3>{{ number_format($totals['sales']['total_quantity'], 2) }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        <th>Date</th>
+                                                        <th>Fuel Type</th>
+                                                        <th>Pump</th>
+                                                        <th>Quantity</th>
+                                                        <th>Amount</th>
+                                                        <th>Payment</th>
+                                                        <th>Created By</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($allReportsData['sales'] as $row)
+                                                        <tr>
+                                                            <td>{{ $row->sale_datetime->format('Y-m-d H:i') }}</td>
+                                                            <td>{{ $row->fuelType->name ?? '-' }}</td>
+                                                            <td>{{ $row->pump->pump_name ?? '-' }}</td>
+                                                            <td>{{ number_format($row->quantity, 2) }}</td>
+                                                            <td>{{ number_format($row->amount, 2) }}</td>
+                                                            <td>{{ ucfirst($row->payment_method) }}</td>
+                                                            <td>{{ $row->creator->name ?? '-' }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="7" class="text-center text-muted">No sales records found.</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {{-- Settlements Report Section --}}
+                                    <div class="mb-5">
+                                        <h4 class="mb-3 text-primary"><i class="mdi mdi-account-clock"></i> Settlements (Shifts)</h4>
+                                        <div class="row mb-3">
+                                            <div class="col-md-4 stretch-card">
+                                                <div class="card bg-gradient-primary card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h6 class="font-weight-normal mb-2">Total Sales <i
+                                                                class="mdi mdi-chart-line mdi-24px float-right"></i></h6>
+                                                        <h4>{{ number_format($totals['settlements']['total_sales'], 2) }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 stretch-card">
+                                                <div class="card bg-gradient-success card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h6 class="font-weight-normal mb-2">Cash Sales <i
+                                                                class="mdi mdi-cash mdi-24px float-right"></i></h6>
+                                                        <h4>{{ number_format($totals['settlements']['cash_sales'], 2) }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 stretch-card">
+                                                <div class="card {{ $totals['settlements']['total_variance'] < 0 ? 'bg-gradient-danger' : 'bg-gradient-success' }} card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h6 class="font-weight-normal mb-2">Total Variance <i
+                                                                class="mdi mdi-alert-circle-outline mdi-24px float-right"></i></h6>
+                                                        <h4>{{ number_format($totals['settlements']['total_variance'], 2) }}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        <th>Date</th>
+                                                        <th>Shift #</th>
+                                                        <th>User</th>
+                                                        <th>Total Sales</th>
+                                                        <th>Variance</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($allReportsData['settlements'] as $row)
+                                                        <tr>
+                                                            <td>{{ $row->shift_date }}</td>
+                                                            <td>{{ $row->shift_number }}</td>
+                                                            <td>{{ $row->user->name ?? '-' }}</td>
+                                                            <td>{{ number_format($row->total_sales, 2) }}</td>
+                                                            <td class="{{ $row->cash_variance < 0 ? 'text-danger' : 'text-success' }}">
+                                                                {{ number_format($row->cash_variance, 2) }}
+                                                            </td>
+                                                            <td>
+                                                                <label class="badge {{ $row->status === 'closed' ? 'badge-success' : 'badge-warning' }}">
+                                                                    {{ ucfirst($row->status) }}
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="6" class="text-center text-muted">No settlement records found.</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {{-- Stock Movement Report Section --}}
+                                    <div class="mb-5">
+                                        <h4 class="mb-3 text-primary"><i class="mdi mdi-cube-outline"></i> Stock Movement</h4>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12 stretch-card">
+                                                <div class="card bg-gradient-info card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-normal mb-2">Total Stock Movement <i
+                                                                class="mdi mdi-cube-outline mdi-24px float-right"></i></h5>
+                                                        <h3>{{ number_format($totals['stock']['total_quantity'], 2) }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        <th>Date</th>
+                                                        <th>Tank</th>
+                                                        <th>Type</th>
+                                                        <th>Quantity</th>
+                                                        <th>Reference</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($allReportsData['stock'] as $row)
+                                                        <tr>
+                                                            <td>{{ $row->created_at->format('Y-m-d H:i') }}</td>
+                                                            <td>{{ $row->tank->tank_name ?? '-' }}</td>
+                                                            <td>
+                                                                <label class="badge {{ $row->type === 'in' ? 'badge-success' : 'badge-danger' }}">
+                                                                    {{ ucfirst($row->type) }}
+                                                                </label>
+                                                            </td>
+                                                            <td>{{ number_format($row->quantity, 2) }}</td>
+                                                            <td>{{ $row->reference_number ?? '-' }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">No stock movement records found.</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    {{-- Cash Drops Report Section --}}
+                                    <div class="mb-5">
+                                        <h4 class="mb-3 text-primary"><i class="mdi mdi-cash-multiple"></i> Cash Drops</h4>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12 stretch-card">
+                                                <div class="card bg-gradient-success card-img-holder text-white">
+                                                    <div class="card-body">
+                                                        <h5 class="font-weight-normal mb-2">Total Cash Drops <i
+                                                                class="mdi mdi-cash-multiple mdi-24px float-right"></i></h5>
+                                                        <h3>{{ number_format($totals['cash_drops']['total_amount'], 2) }}</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        <th>Date</th>
+                                                        <th>User</th>
+                                                        <th>Shift #</th>
+                                                        <th>Amount</th>
+                                                        <th>Notes</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @forelse($allReportsData['cash_drops'] as $row)
+                                                        <tr>
+                                                            <td>{{ \Carbon\Carbon::parse($row->dropped_at)->format('Y-m-d H:i') }}</td>
+                                                            <td>{{ $row->user->name ?? '-' }}</td>
+                                                            <td>{{ $row->shift->shift_number ?? '-' }}</td>
+                                                            <td>{{ number_format($row->amount, 2) }}</td>
+                                                            <td>{{ $row->notes }}</td>
+                                                        </tr>
+                                                    @empty
+                                                        <tr>
+                                                            <td colspan="5" class="text-center text-muted">No cash drop records found.</td>
+                                                        </tr>
+                                                    @endforelse
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                @else
+                                    {{-- Display Single Report Type --}}
 
                                 <!-- Summary Cards -->
                                 <div class="row mb-4">
@@ -401,6 +627,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>
